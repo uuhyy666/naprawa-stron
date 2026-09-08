@@ -2,126 +2,175 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Naprawa stron internetowych — szybko i uczciwie</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Naprawa i przyspieszenie strony internetowej — nawet dziś</title>
+<meta name="description" content="Naprawiam błędy, brak wersji mobilnej, certyfikat SSL i wolne strony małych firm. Płatność po wykonaniu. Realizacja często tego samego dnia.">
 <style>
-:root{--bg:#0f1115;--card:#181b22;--line:#2a2f3a;--txt:#e8eaf0;--mut:#9aa3b5;--acc:#4f8cff;--ok:#3ecf8e}
-*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0f1115;--card:#181b22;--line:#2a2f3a;--txt:#e8eaf0;--mut:#9aa3b5;--acc:#4f8cff;--acc2:#7aa7ff;--ok:#3ecf8e;--warn:#ffb454}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{font-size:16px}
 body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6}
-.wrap{max-width:880px;margin:0 auto;padding:24px 20px 80px}
-header{padding:48px 0 24px}
-h1{font-size:clamp(26px,4vw,40px);line-height:1.15;font-weight:800}
-h1 em{color:var(--acc);font-style:normal}
-.sub{color:var(--mut);font-size:18px;margin-top:12px;max-width:640px}
-.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
-.badge{background:var(--card);border:1px solid var(--line);padding:6px 14px;border-radius:99px;font-size:14px;color:var(--mut)}
+.wrap{max-width:900px;margin:0 auto;padding:20px 18px 150px}
+header{padding:36px 0 20px}
+.kicker{color:var(--acc);font-weight:700;letter-spacing:.12em;font-size:12px;text-transform:uppercase}
+h1{font-size:clamp(24px,4.5vw,38px);line-height:1.15;font-weight:800;margin-top:8px}
+h1 em{color:var(--acc2);font-style:normal}
+.sub{color:var(--mut);font-size:17px;margin-top:12px;max-width:660px}
+.cta{display:inline-block;margin-top:20px;background:var(--acc);color:#fff;font-weight:700;padding:13px 26px;border-radius:12px;text-decoration:none;font-size:16px}
+.cta:active{transform:scale(.98)}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.badge{background:var(--card);border:1px solid var(--line);padding:6px 13px;border-radius:99px;font-size:13px;color:var(--mut)}
 .badge b{color:var(--ok)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:32px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
-.card h3{font-size:16px;margin-bottom:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:28px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.card h3{font-size:15px;margin-bottom:6px}
 .card p{color:var(--mut);font-size:14px}
-.price{font-size:22px;font-weight:700;color:var(--ok);margin-top:10px}
-h2{margin-top:48px;font-size:24px}
-.steps{counter-reset:s;margin-top:20px;display:grid;gap:12px}
-.step{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px 14px 56px;position:relative;color:var(--mut);font-size:15px}
-.step::before{counter-increment:s;content:counter(s);position:absolute;left:16px;top:14px;width:28px;height:28px;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
-ul.faq{list-style:none;margin-top:16px;display:grid;gap:10px}
-ul.faq li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:15px;color:var(--mut)}
+.price{font-size:20px;font-weight:700;color:var(--ok);margin-top:8px}
+h2{margin-top:40px;font-size:22px}
+.steps{counter-reset:s;margin-top:16px;display:grid;gap:10px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 14px 13px 54px;position:relative;color:var(--mut);font-size:14.5px}
+.step::before{counter-increment:s;content:counter(s);position:absolute;left:14px;top:13px;width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:13px}
+ul.faq{list-style:none;margin-top:14px;display:grid;gap:8px}
+ul.faq li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 15px;font-size:14.5px;color:var(--mut)}
 ul.faq b{color:var(--txt)}
-/* chat */
-#chat{position:fixed;bottom:20px;right:20px;width:340px;max-width:calc(100vw - 32px);background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.5);display:flex;flex-direction:column;z-index:99}
-#chat header{padding:12px 16px;border-bottom:1px solid var(--line);font-weight:600;font-size:15px;display:flex;align-items:center;gap:8px}
-#chat header .dot{width:9px;height:9px;border-radius:50%;background:var(--ok);display:inline-block}
-#msgs{height:240px;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
-.m{max-width:85%;padding:8px 12px;border-radius:12px;font-size:14px;white-space:pre-wrap;word-break:break-word}
+a{color:var(--acc2)}
+footer{margin-top:40px;color:var(--mut);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+/* ---- chat ---- */
+#chatbox{position:fixed;bottom:14px;right:14px;left:14px;max-width:400px;margin-left:auto;z-index:99}
+#chat{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.55);display:none;flex-direction:column;overflow:hidden}
+#chat.open{display:flex}
+#chat header{padding:11px 14px;border-bottom:1px solid var(--line);font-weight:600;font-size:14.5px;display:flex;align-items:center;gap:8px}
+#chat header .dot{width:9px;height:9px;border-radius:50%;background:var(--ok);flex:none}
+#chat header small{color:var(--mut);font-weight:400;margin-left:auto;font-size:12px}
+#msgs{height:min(300px,45vh);overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+.m{max-width:88%;padding:8px 12px;border-radius:12px;font-size:14.5px;white-space:pre-wrap;word-break:break-word;line-height:1.45}
 .m.client{align-self:flex-end;background:var(--acc);color:#fff;border-bottom-right-radius:4px}
 .m.dev{align-self:flex-start;background:#22262f;border-bottom-left-radius:4px}
-#chatform{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line)}
-#chatform input{flex:1;background:#10131a;border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:9px 12px;font-size:14px}
-#chatform button{background:var(--acc);border:none;color:#fff;border-radius:10px;padding:9px 14px;font-weight:600;cursor:pointer}
-#chatform input:focus{outline:1px solid var(--acc)}
-@media(max-width:600px){#chat{width:calc(100vw - 24px);right:12px;bottom:12px}}
-a{color:var(--acc)}
-footer{margin-top:48px;color:var(--mut);font-size:13px;border-top:1px solid var(--line);padding-top:20px}
+.m .who{display:block;font-size:11px;color:var(--mut);margin-bottom:2px}
+.m.client .who{color:#dce9ff}
+#chatform{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);align-items:center}
+#chattext{flex:1;min-width:0;background:#10131a;border:1px solid var(--line);color:var(--txt);border-radius:22px;padding:10px 15px;font-size:16px}
+#chattext:focus{outline:1.5px solid var(--acc)}
+#sendbtn{background:var(--acc);border:none;color:#fff;border-radius:50%;width:42px;height:42px;font-size:18px;cursor:pointer;flex:none}
+#chatopen{position:absolute;bottom:0;right:0;background:var(--acc);color:#fff;border-radius:14px;padding:13px 18px;font-weight:700;font-size:15px;cursor:pointer;border:none;box-shadow:0 8px 24px rgba(79,140,255,.4)}
+#chatopen.hidden,#chatbox.open + #chatopen{display:none}
+#namebar{display:none;padding:12px;border-bottom:1px solid var(--line);background:#141821}
+#namebar.show{display:flex;gap:8px;align-items:center}
+#nameinput{flex:1;min-width:0;background:#10131a;border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:9px 12px;font-size:15px}
+#namesave{background:var(--ok);border:none;color:#06281a;border-radius:10px;padding:9px 14px;font-weight:700;cursor:pointer}
+#editname{color:var(--acc2);font-size:12.5px;cursor:pointer;text-decoration:underline}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
-<h1>Naprawię błąd na Twojej stronie — <em>nawet dziś</em></h1>
-<p class="sub">Jestem programistą. Zajmuję się szybkimi naprawami i ulepszeniami stron małych firm: błędy, wolne ładowanie, wersja mobilna, formularze, aktualizacje. Pracę wyceniam za darmo w kilkanaście minut.</p>
+<div class="kicker">Usługa dla małych firm</div>
+<h1>Twoja strona działa wolno albo się sypie? <em>Naprawię to — często jeszcze dziś.</em></h1>
+<p class="sub">Jestem programistą. Diagnozuję i naprawiam strony małych firm: błędy, wolne ładowanie, brak wersji mobilnej, certyfikaty SSL, formularze. <b>Diagnoza i wycena są darmowe</b>, a płatność następuje dopiero po wykonaniu i Twojej akceptacji.</p>
+<button class="cta" id="opencta">Napisz o problemie — odpowiadam w kilka minut</button>
 <div class="badges">
-<span class="badge"><b>✔</b> płatność <b>po wykonaniu</b></span>
-<span class="badge"><b>✔</b> realizacja często tego samego dnia</span>
-<span class="badge"><b>✔</b> stała, uczciwa cena od 80 zł</span>
+<span class="badge"><b>✔</b> płatność po wykonaniu</span>
+<span class="badge"><b>✔</b> wycena w ~15 minut</span>
+<span class="badge"><b>✔</b> praca na kopii — zero ryzyka</span>
+<span class="badge"><b>✔</b> stała cena od 60 zł</span>
 </div>
 </header>
 
 <div class="grid">
-<div class="card"><h3>Naprawa błędów</h3><p>Wykrzaczone elementy, niedziałające linki i przyciski, błędy formularzy, „białe ekran”, problemy po aktualizacji.</p><div class="price">od 80 zł</div></div>
-<div class="card"><h3>Certyfikat SSL i bezpieczeństwo</h3><p>Usuwanie ostrzeżenia „Niezabezpieczona” w przeglądarce, mieszana treść, porządek po starych wtyczkach.</p><div class="price">od 100 zł</div></div>
-<div class="card"><h3>Wersja mobilna</h3><p>Strona źle wygląda na telefonie? Naprawiam układ, powiększam tekst, poprawiam klikalność.</p><div class="price">od 120 zł</div></div>
-<div class="card"><h3>Szybkość ładowania</h3><p>Strona ładuje się kilka sekund? Klienci uciekają — optymalizuję obrazy, cache i kod.</p><div class="price">od 120 zł</div></div>
-<div class="card"><h3>Drobne zmiany i treści</h3><p>Zmiana tekstu, zdjęć, cen, godzin otwarcia, dodanie sekcji lub podstrony.</p><div class="price">od 60 zł</div></div>
-<div class="card"><h3>Automatyzacje</h3><p>Skrypty, integracje, arkusze — rzeczy, które oszczędzają czas (wycena indywidualna).</p><div class="price">wycena</div></div>
+<div class="card"><h3>🐞 Naprawa błędów</h3><p>Wykrzaczone elementy, niedziałające linki, formularze, „biały ekran”, problemy po aktualizacji.</p><div class="price">od 80 zł</div></div>
+<div class="card"><h3>⚡ Przyspieszenie strony</h3><p>Strona ładuje się kilka sekund? Klienci uciekają. Optymalizuję zdjęcia, cache i kod — zwykle 2–5× szybciej.</p><div class="price">od 120 zł</div></div>
+<div class="card"><h3>📱 Wersja mobilna</h3><p>Strona źle wygląda na telefonie? Naprawiam układ i czytelność (większość klientów wchodzi z telefonu).</p><div class="price">od 150 zł</div></div>
+<div class="card"><h3>🔒 SSL / „Niezabezpieczona”</h3><p>Usuwanie ostrzeżeń przeglądarki przy adresie, certyfikat, mieszana treść.</p><div class="price">od 100 zł</div></div>
+<div class="card"><h3>✏️ Drobne zmiany</h3><p>Zmiana tekstów, zdjęć, cen, godzin otwarcia, dodanie sekcji lub podstrony.</p><div class="price">od 60 zł</div></div>
+<div class="card"><h3>🤖 Automatyzacje</h3><p>Skrypty, integracje, arkusze — rzeczy, które oszczędzają czas (wycena indywidualna).</p><div class="price">wycena</div></div>
 </div>
 
-<h2>Jak to wygląda?</h2>
+<h2>Jak to działa?</h2>
 <div class="steps">
-<div class="step">Opisujesz problem (lub wysyłam Ci link do testu) — czatem na dole ekranu, bez zobowiązań.</div>
-<div class="step">Dostajesz konkretną wycenę i termin — zwykle w kilkanaście minut.</div>
-<div class="step">Naprawiam i pokazuję efekt. Płacisz przelewem dopiero, gdy wszystko działa.</div>
+<div class="step">Piszesz na czacie, co się dzieje (albo wklejasz adres strony) — bez zobowiązań.</div>
+<div class="step">Sprawdzam problem i dostajesz konkretną wycenę oraz termin — zwykle w kilkanaście minut.</div>
+<div class="step">Naprawiam na kopii strony i pokazuję efekt. Płacisz przelewem dopiero, gdy wszystko działa.</div>
 </div>
 
 <h2>Częste pytania</h2>
 <ul class="faq">
-<li><b>Czy to bezpieczne?</b> Pracuję na kopii strony, dostęp dostaję dopiero po ustaleniu szczegółów, a płatność jest dopiero po wykonaniu usługi i Twojej akceptacji.</li>
-<li><b>Nie wiem, co jest nie tak.</b> Napisz po prostu „strona działa dziwnie” — sam sprawdzę i powiem, co się dzieje. Diagnoza jest darmowa.</li>
-<li><b>Faktura?</b> Tak — mogę wystawić fakturę przez platformę Useme (rozliczenie przez pośrednika) albo przygotować dane do faktury B2B.</li>
-<li><b>Kto za tym stoi?</b> Programista z realnymi, publicznymi projektami — zobacz np. <a href="https://github.com/uuhyy666" target="_blank">github.com/uuhyy666</a>.</li>
+<li><b>Czy to bezpieczne?</b> Pracuję na kopii strony, dostęp dostajesz po ustaleniu szczegółów, a płatność jest dopiero po wykonaniu usługi i Twojej akceptacji.</li>
+<li><b>Nie wiem, co jest nie tak.</b> Napisz po prostu „strona działa dziwnie” — sam zdiagnozuję problem. Diagnoza nic nie kosztuje.</li>
+<li><b>Faktura?</b> Tak — mogę wystawić fakturę przez platformę Useme albo przygotować dane do faktury B2B.</li>
+<li><b>Kto za tym stoi?</b> Programista z publicznymi projektami: <a href="https://github.com/uuhyy666" target="_blank" rel="noopener">github.com/uuhyy666</a>.</li>
 </ul>
 
 <footer>
-© 2026 — naprawa i pielęgnacja stron WWW dla małych firm. Kontakt: czat (prawy dolny róg) · odpowiedź zwykle w kilka minut w godzinach 8–22.
+© 2026 — naprawa i pielęgnacja stron WWW dla małych firm. Czat: przycisk w prawym dolnym rogu · odpowiedź zwykle w kilka minut (8:00–22:00).
 </footer>
 </div>
 
+<div id="chatbox">
 <div id="chat">
-<header><span class="dot"></span> Czat — napisz, co się dzieje ze stroną</header>
+<header><span class="dot"></span> Czat z programistą <small>odpowiedź w kilka minut</small></header>
+<div id="namebar">
+<input id="nameinput" placeholder="Twoje imię lub nazwa firmy" maxlength="60">
+<button id="namesave">OK</button>
+</div>
 <div id="msgs"></div>
 <form id="chatform">
-<input id="chatname" placeholder="Imię / nazwa firmy (opcjonalnie)" style="margin-bottom:6px">
-<input id="chattext" placeholder="Np. formularz nie wysyła maili…">
-<button>→</button>
+<input id="chattext" placeholder="Np. strona ładuje się 10 sekund…" autocomplete="off" maxlength="1500">
+<button id="sendbtn" type="submit">➤</button>
 </form>
 </div>
+<button id="chatopen">💬 Napisz do programisty</button>
+</div>
+
 <script>
 var API = (location.origin.indexOf('trycloudflare.com') >= 0 || location.origin.indexOf('localhost') >= 0) ? '' : 'https://exist-honolulu-place-achieved.trycloudflare.com';
-const cid = localStorage.cid || (localStorage.cid = 'c' + Math.random().toString(36).slice(2, 10));
-const msgsEl = document.getElementById('msgs');
-let last = 0;
-function add(who, text){
-  const d = document.createElement('div');
-  d.className = 'm ' + who; d.textContent = text;
+var cid = localStorage.cid || (localStorage.cid = 'c' + Math.random().toString(36).slice(2, 10));
+var myName = localStorage.chatName || '';
+var last = 0;
+var msgsEl = document.getElementById('msgs');
+var chat = document.getElementById('chat');
+var openbtn = document.getElementById('chatopen');
+var namebar = document.getElementById('namebar');
+
+function add(who, text, name){
+  var d = document.createElement('div');
+  d.className = 'm ' + who;
+  if (who === 'client' && myName) { var w = document.createElement('span'); w.className='who'; w.textContent = myName; d.appendChild(w); }
+  d.appendChild(document.createTextNode(text));
   msgsEl.appendChild(d); msgsEl.scrollTop = msgsEl.scrollHeight;
 }
-add('dev', 'Cześć! Opisz krótko problem ze stroną (albo wklej jej adres), a odpowiem z wyceną. Diagnoza i wycena są darmowe.');
+function openChat(){
+  chat.classList.add('open'); openbtn.style.display = 'none';
+  if (!myName) namebar.classList.add('show'); else document.getElementById('chattext').focus();
+}
+openbtn.onclick = openChat;
+document.getElementById('opencta').onclick = openChat;
+document.getElementById('namesave').onclick = function(){
+  var v = document.getElementById('nameinput').value.trim();
+  if (!v) return;
+  myName = v; localStorage.chatName = v;
+  namebar.classList.remove('show');
+  fetch(API + '/chat/send', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({clientId: cid, text: '[dołączył do czatu jako: ' + v + ']', name: v, join:true})}).catch(function(){});
+  document.getElementById('chattext').focus();
+};
+document.getElementById('nameinput').addEventListener('keydown', function(e){ if (e.key === 'Enter') document.getElementById('namesave').click(); });
+
+add('dev', 'Cześć! Opisz krótko problem ze stroną (albo wklej jej adres), a odpowiem z darmową diagnozą i wyceną.');
+
 async function poll(){
   try{
-    const r = await fetch(API + '/chat/poll?clientId=' + cid + '&after=' + last);
-    const d = await r.json();
-    for (const m of d.msgs){ add(m.who, m.text); last = m.t; }
+    var r = await fetch(API + '/chat/poll?clientId=' + cid + '&after=' + last);
+    var d = await r.json();
+    (d.msgs || []).forEach(function(m){ add(m.who, m.text); last = m.t; });
   }catch(e){}
 }
-document.getElementById('chatform').addEventListener('submit', async e => {
+document.getElementById('chatform').addEventListener('submit', async function(e){
   e.preventDefault();
-  const t = document.getElementById('chattext');
-  const n = document.getElementById('chatname');
-  const text = t.value.trim();
+  var t = document.getElementById('chattext');
+  var text = t.value.trim();
   if (!text) return;
+  if (!myName) { namebar.classList.add('show'); document.getElementById('nameinput').focus(); return; }
   add('client', text); t.value = '';
-  const name = n.value.trim() || undefined;
-  await fetch(API + '/chat/send', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ clientId: cid, text, name }) }).catch(()=>{});
+  await fetch(API + '/chat/send', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({clientId: cid, text: text, name: myName})}).catch(function(){});
 });
 setInterval(poll, 3000); poll();
 </script>
