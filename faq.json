@@ -1,0 +1,11 @@
+{
+  "faq": [
+    { "q": "cena, koszt, ile kosztuje, wycena, stawka, zł", "a": "Ceny ustalane indywidualnie — napisz w czacie, czego potrzebujesz, a dostaniesz wycenę tego samego dnia." },
+    { "q": "godziny, otwarte, kiedy pracujecie, dostępni", "a": "Odpowiadamy codziennie w godzinach 8–22." },
+    { "q": "kontakt, mail, e-mail, telefon, numer, zadzwonić", "a": "Napisz tutaj w czacie — wiadomość trafia bezpośrednio do nas i odpowiadamy najszybciej jak możemy." },
+    { "q": "gdzie jesteście, adres, lokalizacja, dojazd", "a": "Obsługujemy klientów zdalnie — w całej Polsce." },
+    { "q": "termin, kiedy, jak szybko, jak długo, czas realizacji", "a": "Typowe zlecenia realizujemy w 1–3 dni robocze. Dokładny termin ustalamy przed startem." },
+    { "q": "płatność, zapłacić, faktura, przelew, przelewy24", "a": "Płatność po wykonaniu usługi — przelew lub BLIK, na fakturę." }
+  ],
+  "unknown": "Nie znam odpowiedzi na to pytanie — zostaw e-mail lub numer, a człowiek odpowie najszybciej jak może."
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChatBot 24/7 — demo produktowe</title>
+<style>
+  body{font-family:system-ui,sans-serif;margin:0;background:#f4f6f8;color:#1a202c;padding:48px 20px}
+  .wrap{max-width:720px;margin:0 auto}
+  h1{font-size:26px;margin-bottom:4px}
+  .sub{color:#4a5568;font-size:15px;margin-bottom:24px}
+  .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:16px}
+  b{display:block;margin-bottom:6px}
+  code{background:#edf2f7;padding:2px 6px;border-radius:4px;font-size:13px;word-break:break-all}
+  .big{font-size:15px;padding:12px 10px;display:block;word-break:break-all;white-space:pre-wrap}
+  ol{margin:8px 0;padding-left:20px;line-height:1.6}
+  .muted{color:#718096;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🤖 ChatBot 24/7 — wersja dla Twojego klienta</h1>
+  <p class="sub">Widget + baza FAQ + panel edycji. Kliknij dymek 💬 w prawym dolnym rogu i sprawdź botu odpowiedzi.</p>
+
+  <div class="card">
+    <b>Co tutaj działa</b>
+    <ol>
+      <li><b>Fallback:</b> gdy bot nie zna odpowiedzi — pisze to wprost (spróbuj zapytać o coś dziwnego, np. „jaka pogoda na Marsie”).</li>
+      <li><b>Baza FAQ</b> ładowana z pliku <code>faq.json</code> (przykład zbudowany pod stronę serwisową).</li>
+      <li><b>Czysty HTML + JS</b> — osadzenie w jednej linijce (patrz niżej).</li>
+      <li><b>Panel edycji</b>: <a href="chatbot-panel.html">chatbot-panel.html</a> (hasło: <code>chatbot2026</code>) — edycja pytań/odpowiedzi, fallbacku, skrzynka pytań bez odpowiedzi, eksport faq.json.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <b>Osadzenie na stronie klienta — 1 linijka:</b>
+    <code class="big">&lt;script src="https://uuhyy666.github.io/naprawa-stron/chatbot.js" data-faq="faq.json"&gt;&lt;/script&gt;</code>
+    <p class="muted">Plik faq.json możesz hostować u siebie i aktualizować przez panel — bez zmian w kodzie strony.</p>
+  </div>
+
+  <div class="card">
+    <b>Test bota — spróbuj:</b>
+    <p>„Ile kosztuje strona?” → odpowiedź z bazy · „Pogoda na Marsie?” → szczerze: „Nie znam odpowiedzi…”</p>
+  </div>
+</div>
+
+<!-- WŁAŚCIWY WIDGET — 1 linijka -->
+<script src="chatbot.js" data-faq="faq.json"></script>
+</body>
+</html>

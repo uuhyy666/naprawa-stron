@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel — edycja FAQ chatbota</title>
+<style>
+  body{font-family:system-ui,sans-serif;margin:0;background:#f4f6f8;color:#1a202c;padding:40px 20px}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:22px}
+  .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:16px}
+  label{display:block;font-size:12px;font-weight:600;color:#4a5568;margin:8px 0 4px}
+  input[type=text],textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e0;border-radius:8px;padding:8px 10px;font-size:14px;font-family:inherit}
+  textarea{min-height:70px}
+  .row{display:flex;gap:8px}
+  button{background:#2b6cb0;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:14px;cursor:pointer}
+  button.ghost{background:#fff;color:#2b6cb0;border:1px solid #2b6cb0}
+  button.danger{background:#fff;color:#c53030;border:1px solid #c53030}
+  .faq-item{border-bottom:1px solid #edf2f7;padding:12px 0}
+  .muted{color:#718096;font-size:13px}
+  #login{max-width:360px;margin:0 auto;text-align:center}
+  #app{display:none}
+  .toast{position:fixed;bottom:20px;right:20px;background:#2f855a;color:#fff;padding:10px 18px;border-radius:8px;font-size:14px;opacity:0;transition:opacity .3s}
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="login" class="card">
+    <h1>🔒 Panel chatbota</h1>
+    <p class="muted">Podaj hasło (domyślne: <code>chatbot2026</code> — zmień po instalacji w pliku panel-pass)</p>
+    <input type="password" id="pass" placeholder="Hasło" onkeydown="if(event.key==='Enter')login()">
+    <br><br>
+    <button onclick="login()">Wejdź</button>
+    <p id="loginErr" class="muted" style="color:#c53030"></p>
+  </div>
+
+  <div id="app">
+    <h1>Panel — edycja FAQ chatbota</h1>
+
+    <div class="card">
+      <b>1. Odpowiedzi bota (FAQ)</b>
+      <p class="muted">"Kwestie" = słowa kluczowe rozdzielone przecinkami. Bot wybiera odpowiedź z największą liczbą trafień. Pytania, na które bot nie zna odpowiedzi, lądują w skrzynce poniżej.</p>
+      <div id="faqList"></div>
+      <br>
+      <label>Kwestie (słowa kluczowe, rozdzielone przecinkami)</label>
+      <input type="text" id="newQ" placeholder="np. cena, koszt, ile kosztuje, wycena">
+      <label>Odpowiedź</label>
+      <textarea id="newA" placeholder="np. Strona wizytówka od 800 zł…"></textarea>
+      <br><br>
+      <button onclick="addFaq()">+ Dodaj odpowiedź</button>
+    </div>
+
+    <div class="card">
+      <b>2. Odpowiedź gdy bot nie zna odpowiedzi</b>
+      <label>Tekst fallbacku</label>
+      <textarea id="unknownA"></textarea>
+      <br><button onclick="saveUnknown()">Zapisz</button>
+    </div>
+
+    <div class="card">
+      <b>3. 📥 Skrzynka — pytania bez odpowiedzi</b>
+      <p class="muted">Pytania, których bot nie rozpoznał (z visitorsów z tej samej przeglądarki) — do uzupełnienia FAQ.</p>
+      <div id="inbox"></div>
+      <button class="ghost" onclick="exportInbox()">Pobierz listę (JSON)</button>
+    </div>
+
+    <div class="card">
+      <b>4. 📤 Publikacja</b>
+      <p class="muted">Pobierz plik <code>faq.json</code> i wrzuć go na serwer obok <code>chatbot.js</code> (zastąp stary). Bot podchwyci nową bazę odświeżeniem strony.</p>
+      <button onclick="exportFaq()">Pobierz faq.json</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+var PASS = 'chatbot2026';
+var FAQ = [];
+var UNKNOWN = 'Nie znam odpowiedzi na to pytanie — zostaw e-mail lub numer, a człowiek odpowie najszybciej jak może.';
+
+function login(){
+  if (document.getElementById('pass').value === PASS) {
+    document.getElementById('login').style.display='none';
+    document.getElementById('app').style.display='block';
+    load();
+  } else document.getElementById('loginErr').textContent='Błędne hasło.';
+}
+
+function load(){
+  var x=new XMLHttpRequest();
+  x.open('GET','faq.json?t='+Date.now());
+  x.onload=function(){
+    if(x.status===200){try{
+      var d=JSON.parse(x.responseText);
+      FAQ=(d.faq||[]).map(function(f){return{q:f.q,a:f.a}});
+      UNKNOWN=d.unknown||UNKNOWN;
+    }catch(e){}}
+    render();
+    document.getElementById('unknownA').value=UNKNOWN;
+    renderInbox();
+  };
+  x.send();
+}
+
+function render(){
+  var el=document.getElementById('faqList');
+  el.innerHTML='';
+  FAQ.forEach(function(f,i){
+    var d=document.createElement('div');d.className='faq-item';
+    d.innerHTML='<label>Kwestie</label><input type="text" value="'+esc(f.q)+'" onchange="FAQ['+i+'].q=this.value">'+
+      '<label>Odpowiedź</label><textarea onchange="FAQ['+i+'].a=this.value">'+esc(f.a)+'</textarea>'+
+      '<br><button class="danger" style="margin-top:6px" onclick="FAQ.splice('+i+',1);render()">Usuń</button>';
+    el.appendChild(d);
+  });
+}
+function addFaq(){
+  var q=document.getElementById('newQ').value.trim(),a=document.getElementById('newA').value.trim();
+  if(!q||!a){toast('Uzupełnij oba pola');return}
+  FAQ.push({q:q,a:a});render();
+  document.getElementById('newQ').value='';document.getElementById('newA').value='';
+  toast('Dodane — pamiętaj o pobraniu faq.json');
+}
+function saveUnknown(){UNKNOWN=document.getElementById('unknownA').value;toast('Zapisane — pamiętaj o pobraniu faq.json')}
+function exportFaq(){
+  var blob=new Blob([JSON.stringify({faq:FAQ,unknown:UNKNOWN},null,2)],{type:'application/json'});
+  dl(blob,'faq.json');toast('faq.json pobrany');
+}
+function renderInbox(){
+  try{
+    var arr=JSON.parse(localStorage.getItem('cb_unknown')||'[]');
+    var el=document.getElementById('inbox');
+    if(!arr.length){el.innerHTML='<p class="muted">Brak pytań do obsłużenia.</p>';return}
+    el.innerHTML=arr.map(function(x){return '<div class="faq-item">❓ '+esc(x.q)+' <span class="muted">('+new Date(x.t).toLocaleString()+')</span></div>'}).join('');
+  }catch(e){}
+}
+function exportInbox(){
+  var arr=JSON.parse(localStorage.getItem('cb_unknown')||'[]');
+  dl(new Blob([JSON.stringify(arr,null,2)],{type:'application/json'}),'nieznane-pytania.json');
+}
+function dl(blob,name){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click()}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
+function toast(t){var el=document.getElementById('toast');el.textContent=t;el.classList.add('show');setTimeout(function(){el.classList.remove('show')},2500)}
+</script>
+</body>
+</html>
