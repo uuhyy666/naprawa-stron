@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog>
+  <product><sku>OP-100</sku><ean>5901234000011</ean><stock>24</stock><price>12,50</price></product>
+  <product><sku>OP-101</sku><ean>5901234000028</ean><stock>0</stock><price>15,00</price></product>
+  <product><sku>OP-102</sku><ean>5901234000035</ean><stock>7</stock><price>9,99</price></product>
+  <product><sku>OP-103</sku><ean>5901234000042</ean><stock>120</stock><price>3,20</price></product>
+  <product><sku>OP-104</sku><ean>5901234000059</ean><stock>0</stock><price>22,00</price></product>
+</catalog>

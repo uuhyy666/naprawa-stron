@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Przegląd techniczny aplikacji — format raportu (próbka)</title>
+<style>
+  body{font:16px/1.6 system-ui,sans-serif;max-width:820px;margin:2rem auto;padding:0 1rem;color:#1a1a2e}
+  h1{font-size:1.6rem} h2{margin-top:2rem;border-bottom:2px solid #e2e2ea;padding-bottom:.3rem}
+  .meta{background:#f4f4f8;border-radius:8px;padding:1rem 1.2rem;font-size:.9rem}
+  table{border-collapse:collapse;width:100%;font-size:.92rem}
+  th,td{border:1px solid #ddd;padding:.45rem .6rem;text-align:left;vertical-align:top}
+  th{background:#f4f4f8}
+  .sev-krytyczny{color:#b00020;font-weight:700}.sev-wysoki{color:#d64500;font-weight:700}
+  .sev-średni{color:#a67c00;font-weight:700}.sev-niski{color:#555;font-weight:700}
+  .uwaga{background:#fff8e1;border-left:4px solid #f0b400;padding:.6rem 1rem;border-radius:0 6px 6px 0}
+  code{background:#f4f4f8;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+</style>
+</head>
+<body>
+
+<h1>Przegląd techniczny aplikacji webowej</h1>
+<div class="meta">
+  <strong>Format raportu — próbka pokazowa.</strong> Poniższa struktura i poziom szczegółowości
+  to dokładnie to, co dostaje zleceniodawca. Przykładowe ustalenia pochodzą z fikcyjnej aplikacji
+  demonstracyjnej — w realnym przeglądzie każde ustalenie ma: plik, linijkę, dowód i rekomendację.
+</div>
+
+<h2>0. Informacje o przeglądzie</h2>
+<table>
+  <tr><th>Zakres</th><td>Next.js (App Router), PostgreSQL, Stripe, deployment</td></tr>
+  <tr><th>Metoda</th><td>przegląd statyczny kodu + testy konfiguracji + analiza zależności</td></tr>
+  <tr><th>Czas realizacji</th><td>5 dni roboczych</td></tr>
+  <tr><th>Pytania badawcze</th><td>(1) czy bezpieczeństwo tam, gdzie pieniądze i dane; (2) czy da się utrzymać i odtworzyć bez autorów; (3) jaki jest stan dziś</td></tr>
+</table>
+
+<h2>1. Podsumowanie zarządcze (1 strona — dladecydentów)</h2>
+<p>Werdykt w trzech zdaniach: co jest dobrze, co zagraża biznesowi, co zrobić najpierw.
+W próbce: aplikacja jest funkcjonalna, ale 3 ustalenia krytyczne wymagają działania przed skalowaniem;
+dokumentacja odbudowy środowiska nie istnieje — odtworzenie po awarii zajmie dni zamiast godzin.</p>
+
+<h2>2. Ustalenia</h2>
+<table>
+  <tr><th>#</th><th>Waga</th><th>Obszar</th><th>Ustalenie (próbka)</th><th>Rekomendacja</th></tr>
+  <tr><td>1</td><td class="sev-krytyczny">krytyczny</td><td>Stripe</td><td>Weryfikacja podpisu webhooka sprawdzana flagą <code>if (isDev)</code> — na produkcji wyłączona</td><td>Włączyć weryfikację zawsze; testy z fałszywym podpisem</td></tr>
+  <tr><td>2</td><td class="sev-krytyczny">krytyczny</td><td>PostgreSQL</td><td>Zapytanie z interpolacją stringów w wyszukiwarce (<code>WHERE name ILIKE '%${q}%'</code>)</td><td>Parametryzowane zapytanie; audyt wszystkich ścieżek wejścia</td></tr>
+  <tr><td>3</td><td class="sev-wysoki">wysoki</td><td>Sekrety</td><td>Klucz API w repo (<code>.env.local</code> commitnięty w historii)</td><td>Rotacja klucza, czyszczenie historii, sekrety poza repo</td></tr>
+  <tr><td>4</td><td class="sev-średni">średni</td><td>Odtwarzalność</td><td>Brak dokumentacji deployu; <code>README</code> bez instrukcji environment</td><td>Runbook + skrypt provisioningu</td></tr>
+  <tr><td>5</td><td class="sev-niski">niski</td><td>Zależności</td><td>2 pakiety z znanymi CVE (npm audit)</td><td>Aktualizacja + CI z audytem</td></tr>
+</table>
+
+<h2>3. Odpowiedzi na trzy pytania zleceniodawcy</h2>
+<ol>
+  <li><strong>Czy jest bezpieczna tam, gdzie pieniądze i dane?</strong> — ocena per obszar + lista luk z §2.</li>
+  <li><strong>Czy da się utrzymać i odtworzyć bez autorów?</strong> — mapa komponentów, runbook, ocena ryzyka "bus factor".</li>
+  <li><strong>Jaki jest stan dziś?</strong> — metryki: pokrycie testami, wiek zależności, czas odtworzenia środowiska.</li>
+</ol>
+
+<h2>4. Załączniki</h2>
+<p>Pełne listingi kodu z komentarzem, wyniki skanów, instrukcja reprodukcji każdego ustalenia.</p>
+
+<div class="uwaga">
+  <strong>Jak powstaje realny raport:</strong> przeglądam repozytorium i konfigurację, każdy wynik
+  weryfikuję uruchomieniem (nie zgaduję), a ustalenia szereguję wagą dla biznesu — od płatności
+  i danych w dół. Raport dostajesz w tym formacie + 30 minut omówienia na spotkaniu.
+</div>
+
+</body>
+</html>
