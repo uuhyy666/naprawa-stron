@@ -51,7 +51,8 @@
     if (gHits > 0 && wordCount <= 2) return { text: greetings[0][1], known: true };
     var best = null, bestHits = 0;
     for (var i = 0; i < FAQ.length; i++) {
-      var words = FAQ[i].q.split(',').map(function(w){return w.trim().toLowerCase();}).filter(Boolean);
+      // normalizacja haseł: bez ogonków, bez interpunkcji — tak jak treść pytania
+      var words = FAQ[i].q.split(',').map(function(w){ return norm(w).trim(); }).filter(Boolean);
       var hits = 0;
       for (var j = 0; j < words.length; j++) if (m.indexOf(' ' + words[j]) >= 0 || m.indexOf(words[j]) >= 0) hits++;
       if (hits > bestHits) { best = FAQ[i].a; bestHits = hits; }
