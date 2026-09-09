@@ -124,9 +124,13 @@ footer{margin-top:40px;color:var(--mut);font-size:13px;border-top:1px solid var(
 
 <script>
 var API = (location.origin.indexOf('trycloudflare.com') >= 0 || location.origin.indexOf('localhost') >= 0) ? '' : 'https://stat-creativity-finder-listed.trycloudflare.com';
+// Przywracanie rozmowy po zmianie adresu tunelu: localStorage jest per-domena, więc po
+// zmianie URL stare rozmowy "znikają". Link z #cid=<id> przywraca konwersację na tej domenie.
+(function(){ var h = location.hash.match(/cid=([A-Za-z0-9_-]+)/); if (h) { localStorage.cid = h[1]; history.replaceState(null, '', location.pathname + location.search); } })();
 var cid = localStorage.cid || (localStorage.cid = 'c' + Math.random().toString(36).slice(2, 10));
 var myName = localStorage.chatName || '';
 var last = 0;
+var polNieUdalo = 0; // liczba nieudanych sondowań z rzędu — po 2 pokazujemy ostrzeżenie (raz)
 var msgsEl = document.getElementById('msgs');
 var chat = document.getElementById('chat');
 var openbtn = document.getElementById('chatopen');
@@ -161,8 +165,12 @@ async function poll(){
   try{
     var r = await fetch(API + '/chat/poll?clientId=' + cid + '&after=' + last);
     var d = await r.json();
+    polNieUdalo = 0;
     (d.msgs || []).forEach(function(m){ add(m.who, m.text); last = m.t; });
-  }catch(e){}
+  }catch(e){
+    polNieUdalo++;
+    if (polNieUdalo === 2) add('dev', '⚠️ Nie mogę dosięgnąć serwera czatu — odśwież stronę (Ctrl+F5). Jeśli problem trwa, czat jest chwilowo niedostępny.');
+  }
 }
 document.getElementById('chatform').addEventListener('submit', async function(e){
   e.preventDefault();
@@ -171,7 +179,12 @@ document.getElementById('chatform').addEventListener('submit', async function(e)
   if (!text) return;
   if (!myName) { namebar.classList.add('show'); document.getElementById('nameinput').focus(); return; }
   add('client', text); t.value = '';
-  await fetch(API + '/chat/send', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({clientId: cid, text: text, name: myName})}).catch(function(){});
+  try {
+    var r = await fetch(API + '/chat/send', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({clientId: cid, text: text, name: myName})});
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+  } catch(e) {
+    add('dev', '⚠️ Wiadomość NIE dotarła (serwer czatu nie odpowiada). Odśwież stronę (Ctrl+F5) i wyślij ponownie — nic nie zginęło, po prostu nie wyszło.');
+  }
 });
 setInterval(poll, 3000); poll();
 </script>
