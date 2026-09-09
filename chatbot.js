@@ -14,13 +14,17 @@
 
   // --- 1. Ładowanie FAQ ---
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', faqUrl + '?t=' + Date.now());
   xhr.onload = function () {
     if (xhr.status === 200) {
-      try { FAQ = JSON.parse(xhr.responseText); } catch (e) { /* fallback poniżej */ }
+      try {
+        var data = JSON.parse(xhr.responseText);
+        if (Array.isArray(data)) { FAQ = data; }
+        else if (data && Array.isArray(data.faq)) { FAQ = data.faq; if (data.unknown) unknownAnswer = data.unknown; }
+      } catch (e) { /* fallback poniżej */ }
     }
     if (!FAQ.length) FAQ = defaultFaq;
   };
+  xhr.open('GET', faqUrl + '?t=' + Date.now());
   xhr.send();
 
   var defaultFaq = [
