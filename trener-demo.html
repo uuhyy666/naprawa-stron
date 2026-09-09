@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Strona trenera z kalendarzem — demo (Wrocław)</title>
+<meta name="description" content="Demo strony-wizytówki trenera personalnego z kalendarzem rezerwacji treningów: klient wybiera termin i zostawia kontakt, trener zarządza dostępnymi godzinami i nieobecnościami.">
+<style>
+:root{--bg:#0f1115;--card:#181b22;--line:#2a2f3a;--txt:#e8eaf0;--mut:#9aa3b5;--acc:#4f8cff;--acc2:#7aa7ff;--ok:#3ecf8e;--warn:#ffb454;--bad:#ff6b6b}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6}
+.wrap{max-width:920px;margin:0 auto;padding:20px 18px 80px}
+.kicker{color:var(--acc);font-weight:700;letter-spacing:.12em;font-size:12px;text-transform:uppercase;margin-top:28px}
+h1{font-size:clamp(24px,4.5vw,36px);line-height:1.15;font-weight:800;margin-top:8px}
+h1 em{color:var(--acc2);font-style:normal}
+.sub{color:var(--mut);font-size:16.5px;margin-top:10px;max-width:640px}
+h2{margin:36px 0 12px;font-size:21px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.badge{background:var(--card);border:1px solid var(--line);padding:6px 13px;border-radius:99px;font-size:13px;color:var(--mut)}
+.badge b{color:var(--ok)}
+/* kalendarz */
+.calhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.calhead button{background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:7px 14px;cursor:pointer;font-size:15px}
+.calhead .miesiac{font-weight:700;font-size:17px}
+.dow,.days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.dow span{text-align:center;color:var(--mut);font-size:12px;padding:4px 0}
+.day{background:#141821;border:1px solid var(--line);border-radius:10px;min-height:52px;padding:6px 4px;text-align:center;font-size:14px;cursor:pointer;position:relative;color:var(--txt)}
+.day:hover{border-color:var(--acc)}
+.day.out{opacity:.25;pointer-events:none}
+.day.blocked{background:#2a1b1b;border-color:#5a3030;color:#e0a0a0;cursor:not-allowed}
+.day.blocked::after{content:"nieobecność";position:absolute;left:0;right:0;bottom:3px;font-size:8.5px;color:#e0a0a0}
+.day.full .kropka{background:var(--warn)}
+.day.avail .kropka{background:var(--ok)}
+.kropka{display:block;width:7px;height:7px;border-radius:50%;margin:3px auto 0}
+.dzien-tyt{display:none}
+/* sloty */
+#slots{margin-top:14px}
+.sloty{display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:8px;margin-top:10px}
+.slot{background:#141821;border:1px solid var(--line);border-radius:10px;padding:9px 4px;text-align:center;font-size:14.5px;cursor:pointer}
+.slot:hover{border-color:var(--acc)}
+.slot.taken{opacity:.4;cursor:default;text-decoration:line-through}
+.slot.taken:hover{border-color:var(--line)}
+#dzientyt{font-weight:700;font-size:16px;margin-top:0}
+/* formularz */
+#bookform{margin-top:14px;display:none;grid-template-columns:1fr 1fr;gap:10px}
+#bookform.show{display:grid}
+#bookform input{background:#10131a;border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:10px 12px;font-size:15px;width:100%}
+#bookform .full{grid-column:1/-1}
+#bookform button{background:var(--acc);border:none;color:#fff;border-radius:10px;padding:12px;font-weight:700;font-size:15px;cursor:pointer}
+.potwierdzenie{margin-top:12px;background:rgba(62,207,142,.08);border:1px solid var(--ok);border-radius:12px;padding:12px 15px;font-size:14.5px;color:var(--ok);display:none}
+.potwierdzenie.show{display:block}
+/* panel */
+#panel{display:none}
+#panel.show{display:block}
+.zapis{display:flex;justify-content:space-between;gap:10px;align-items:center;background:#141821;border:1px solid var(--line);border-radius:10px;padding:10px 13px;margin-top:8px;font-size:14.5px}
+.zapis small{color:var(--mut);display:block}
+.zapis button{background:#2a2f3a;border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:6px 11px;cursor:pointer;font-size:13px}
+.zapis button:hover{border-color:var(--bad);color:var(--bad)}
+.pinput{background:#10131a;border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:9px 12px;font-size:15px;width:130px}
+.tabs{display:flex;gap:8px;margin-top:30px}
+.tabs button{flex:1;background:var(--card);border:1px solid var(--line);color:var(--mut);border-radius:12px;padding:11px;font-size:15px;cursor:pointer;font-weight:600}
+.tabs button.on{color:#fff;border-color:var(--acc);background:#1b2436}
+.note{margin-top:14px;color:var(--mut);font-size:13px;border-top:1px solid var(--line);padding-top:12px}
+footer{margin-top:44px;color:var(--mut);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+a{color:var(--acc2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="kicker">Trener personalny · Wrocław · demo strony</div>
+<h1>Umów trening <em>w 30 sekund</em> — bez dzwonienia.</h1>
+<p class="sub">Cześć, jestem Bartek — trener personalny. Wybierz wolny termin w kalendarzu, zostaw kontakt i przyjdź. Reszta ustali się na miejscu.</p>
+<div class="badges">
+<span class="badge"><b>✔</b> treningi 1-na-1 i pary</span>
+<span class="badge"><b>✔</b> pierwsza konsultacja bezpłatna</span>
+<span class="badge"><b>✔</b> sala przy ul. Legnickiej / dojazd do klienta</span>
+</div>
+
+<div class="tabs">
+<button id="tab-kalendarz" class="on" onclick="showTab('kalendarz')">📅 Kalendarz — umów trening</button>
+<button id="tab-panel" onclick="showTab('panel')">🔐 Panel trenera</button>
+</div>
+
+<div id="kalendarz">
+<h2>Wybierz termin</h2>
+<div class="card">
+<div class="calhead">
+<button onclick="miesiac(-1)">‹</button>
+<div class="miesiac" id="miesiac"></div>
+<button onclick="miesiac(1)">›</button>
+</div>
+<div class="dow"><span>Pn</span><span>Wt</span><span>Śr</span><span>Cz</span><span>Pt</span><span>So</span><span>Nd</span></div>
+<div class="days" id="days"></div>
+
+<div id="slots">
+<p id="dzientyt"></p>
+<div class="sloty" id="sloty"></div>
+<form id="bookform" onsubmit="return zapisz(event)">
+<input id="f-imie" placeholder="Imię" required>
+<input id="f-tel" type="tel" placeholder="Telefon" required>
+<input id="f-mail" type="email" placeholder="E-mail" class="full" required>
+<button class="full" type="submit">Potwierdzam ten termin</button>
+</form>
+<div class="potwierdzenie" id="potw"></div>
+</div>
+</div>
+<p class="note">Godziny 7:00–20:00. Terminy szare są już zajęte, dni oznaczone „nieobecność” — trener niedostępny. Po zapisie trener otrzymuje Twój telefon i e-mail i potwierdza termin.</p>
+</div>
+
+<div id="panel">
+<h2>Panel trenera <small style="font-weight:400;color:var(--mut);font-size:13px">(w wersji dla klienta chroniony hasłem)</small></h2>
+<div class="card">
+<p style="font-size:14.5px;color:var(--mut)">Twoje zapisy — klient zostawia <b style="color:var(--txt)">imię, telefon i e-mail</b>, resztę ustalasz telefonicznie. Kliknij dzień w kalendarzu, aby <b style="color:var(--txt)">zablokować nieobecność</b> lub dodać zajęty termin.</p>
+<div id="zapisy"></div>
+<div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+<label style="font-size:14px;color:var(--mut)">Zablokuj dzień:</label>
+<input type="date" class="pinput" id="blok-data">
+<button style="background:#2a2f3a;border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:9px 14px;cursor:pointer" onclick="blokujDzien()">Zaznacz nieobecność</button>
+</div>
+</div>
+<p class="note">W pełnej wersji: powiadomienie e-mail o każdym zapisie, edycja godzin pracy, rozbudowa o płatności online (zadatek BLIK/karta).</p>
+</div>
+
+<footer>
+<strong>TO JEST DEMO</strong> — strona pokazowa pod zlecenie „wizytówka z kalendarzem spotkań” (Wrocław). Dane zapisów trzymane są tylko w tej przeglądarce; w wersji wdrożonej trafiają do panelu właściciela + powiadomienie e-mail. Zbudowane przez <a href="https://uuhyy666.github.io/naprawa-stron/">bartekdev</a> — strony i automatyzacje dla małych firm.
+</footer>
+</div>
+<script>
+/* --- stan demo (u klienta: backend + powiadomienia e-mail) --- */
+var LS='trener-demo-v1';
+var stan=JSON.parse(localStorage.getItem(LS)||'null')||{zapisy:[],blokady:[],zajete:{}};
+function save(){localStorage.setItem(LS,JSON.stringify(stan))}
+var dziś=new Date(); var R=dziś.getFullYear(), M=dziś.getMonth();
+var POCZ=7, KON=20; /* godziny pracy */
+var DNI=['Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela'];
+var MIES=['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
+
+function key(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function jestBlok(k){return stan.blokady.indexOf(k)>=0}
+function zajeteSloty(k){return stan.zajete[k]||[]}
+function czyNiedziela(d){return d.getDay()===0}
+
+function render(){
+document.getElementById('miesiac').textContent=['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'][M]+' '+R;
+var box=document.getElementById('days'); box.innerHTML='';
+var first=new Date(R,M,1); var off=(first.getDay()+6)%7;
+for(var i=0;i<off;i++) box.insertAdjacentHTML('beforeend','<div class="day out"></div>');
+var d=new Date(R,M,1), n=0;
+while(d.getMonth()===M){
+var k=key(d), cls='day';
+if(jestBlok(k)||czyNiedziela(d)) cls+=' blocked';
+else{
+var z=zajeteSloty(k), ile=(KON-POCZ+1)-z.length;
+cls+= ile===0?' full':' avail';
+}
+box.insertAdjacentHTML('beforeend','<div class="'+cls+'" data-k="'+k+'" onclick="wybierz(\''+k+'\')">'+d.getDate()+'<span class="kropka"></span></div>');
+d.setDate(d.getDate()+1); n++;
+}
+renderZapisy();
+}
+function miesiac(d){M+=d; if(M<0){M=11;R--} if(M>11){M=0;R++} render(); document.getElementById('dzientyt').textContent=''; document.getElementById('sloty').innerHTML='';}
+
+var wybrany=null;
+function wybierz(k){
+if(jestBlok(k)) return;
+wybrany=k;
+var d=new Date(k+'T12:00:00');
+document.getElementById('dzientyt').textContent=DNI[(d.getDay()+6)%7]+', '+d.getDate()+' '+MIES[d.getMonth()];
+var box=document.getElementById('sloty'); box.innerHTML='';
+var z=zajeteSloty(k);
+for(var h=POCZ;h<=KON;h++){
+var t=String(h).padStart(2,'0')+':00';
+var take=z.indexOf(t)>=0;
+box.insertAdjacentHTML('beforeend','<div class="slot'+(take?' taken':'')+'" onclick="'+(take?'':'slotKlik(\''+t+'\')')+'">'+t+'</div>');
+}
+document.getElementById('potw').className='potwierdzenie';
+document.getElementById('bookform').className='';
+}
+function slotKlik(t){
+Array.prototype.forEach.call(document.querySelectorAll('#sloty .slot'),function(s){s.style.borderColor='';s.style.background=''});
+var el=event.target; el.style.borderColor='var(--acc)'; el.style.background='#1b2436';
+document.getElementById('bookform').className='show';
+document.getElementById('potw').className='potwierdzenie';
+document.getElementById('bookform').dataset.godz=t;
+}
+function zapisz(e){
+e.preventDefault();
+var t=document.getElementById('bookform').dataset.godz;
+if(!t||!wybrany) return false;
+stan.zajete[wybrany]=stan.zajete[wybrany]||[]; stan.zajete[wybrany].push(t);
+stan.zapisy.push({d:wybrany,g:t,imie:document.getElementById('f-imie').value,tel:document.getElementById('f-tel').value,mail:document.getElementById('f-mail').value});
+save(); render(); wybierz(wybrany);
+var p=document.getElementById('potw');
+p.innerHTML='✔ <b>Zapisano!</b> Termin: '+wybrany+' godz. '+t+'. Trener dostał Twój telefon i e-mail i potwierdzi termin. (W demo — spróbuj teraz zakładki „Panel trenera”.)';
+p.className='potwierdzenie show';
+return false;
+}
+function blokujDzien(){
+var v=document.getElementById('blok-data').value;
+if(!v) return;
+if(jestBlok(v)) stan.blokady.splice(stan.blokady.indexOf(v),1); else stan.blokady.push(v);
+save(); render();
+}
+function renderZapisy(){
+var box=document.getElementById('zapisy');
+if(!stan.zapisy.length){box.innerHTML='<p style="color:var(--mut);font-size:14px;margin-top:8px">Brak zapisów — umów się w zakładce „Kalendarz”, a pojawi się tu telefon i e-mail klienta.</p>'; return}
+box.innerHTML='';
+stan.zapisy.slice().reverse().forEach(function(z,i){
+var idx=stan.zapisy.indexOf(z);
+box.insertAdjacentHTML('beforeend','<div class="zapis"><div><b>'+z.imie+'</b> — '+z.d+', '+z.g+'<small>tel. '+z.tel+' · '+z.mail+'</small></div><button onclick="odwol('+idx+')">Odwołaj</button></div>');
+});
+}
+function odwol(i){
+var z=stan.zapisy[i];
+var arr=stan.zajete[z.d]||[]; var pos=arr.indexOf(z.g); if(pos>=0)arr.splice(pos,1);
+stan.zapisy.splice(i,1); save(); render();
+}
+function showTab(t){
+document.getElementById('kalendarz').className=t==='kalendarz'?'show':'';
+document.getElementById('kalendarz').style.display=t==='kalendarz'?'block':'none';
+document.getElementById('panel').style.display=t==='panel'?'block':'none';
+document.getElementById('tab-kalendarz').className=t==='kalendarz'?'on':'';
+document.getElementById('tab-panel').className=t==='panel'?'on':'';
+}
+render();
+</script>
+</body>
+</html>
