@@ -1,0 +1,20 @@
+{
+  "faq": [
+    { "q": "cena, koszt, ile kosztuje, wycena, stawka, zł, kosztuje", "a": "Ceny ustalane indywidualnie — napisz w czacie, czego potrzebujesz, a dostaniesz wycenę tego samego dnia." },
+    { "q": "godziny, otwarte, kiedy pracujecie, dostępni, godzinach", "a": "Odpowiadamy codziennie w godzinach 8–22." },
+    { "q": "kontakt, mail, e-mail, telefon, numer, zadzwonić, kontaktować", "a": "Napisz tutaj w czacie — wiadomość trafia bezpośrednio do nas i odpowiadamy najszybciej jak możemy." },
+    { "q": "gdzie jesteście, adres, lokalizacja, dojazd, siedziba", "a": "Obsługujemy klientów zdalnie — w całej Polsce." },
+    { "q": "termin, kiedy, jak szybko, jak długo, czas realizacji, szybko", "a": "Typowe zlecenia realizujemy w 1–3 dni robocze. Dokładny termin ustalamy przed startem." },
+    { "q": "płatność, zapłacić, płatność, przelew, przelewy24, blik", "a": "Płatność po wykonaniu usługi — zwykły przelew lub BLIK." },
+    { "q": "zaliczka, przedpłata, z góry, przedpłat", "a": "Przy większych zleceniach ustalamy zaliczkę, przy mniejszych płatność po odbiorze — zapisujemy to w wiadomości przed startem." },
+    { "q": "wycena, bezpłatna, darmowa wycena, ile kosztuje wycena", "a": "Wycena jest bezpłatna — opisz w czacie, czego potrzebujesz, a dostaniesz konkretną kwotę bez zobowiązań." },
+    { "q": "umowa, formalności, warunki współpracy, umowy", "a": "Warunki ustalamy na piśmie w wiadomości: zakres, cena, termin i sposób płatności — żeby obie strony wiedziały, co na siebie biorą." },
+    { "q": "poprawki, zmiany, reklamacja, poprawić, poprawek", "a": "Poprawki w uzgodnionym zakresie są w cenie. Jeśli coś nie działa tak, jak się umówiliśmy — naprawiamy bez dodatkowych kosztów." },
+    { "q": "portfolio, przykłady, prace, realizacje, przykład", "a": "Napisz w czacie, czego szukasz — podeślemy przykłady podobnych realizacji." },
+    { "q": "jak długo trwa odpowiedź, odpisujecie, czekać na odpowiedź", "a": "Zwykle odpowiadamy w ciągu kilku godzin, maksymalnie następnego dnia roboczego." },
+    { "q": "zdalnie, na miejscu, dojazd do klienta, spotkanie", "a": "Współpracujemy zdalnie — telefon, czat i e-mail wystarczą. Spotkanie na miejscu tylko w wyjątkowych przypadkach." },
+    { "q": "gwarancja, co jeśli nie będę zadowolony, zadowolony, gwarancji", "a": "Płacisz po odbiorze — jeśli efekt nie odpowiada uzgodnieniu, poprawiamy, zanim dostaniesz rachunek." },
+    { "q": "nowe zlecenie, jak zlecić, zamówić, zamówienie, zlecenie", "a": "Opisz w czacie, czego potrzebujesz — odpowiemy z wyceną i terminem. Jeśli się zgodzisz, ruszamy od razu." }
+  ],
+  "unknown": "Nie znam odpowiedzi na to pytanie — zostaw e-mail lub numer, a człowiek odpowie najszybciej jak może."
+}
