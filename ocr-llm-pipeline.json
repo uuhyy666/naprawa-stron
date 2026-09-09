@@ -1,0 +1,67 @@
+{
+  "name": "OCR + LLM — ekstrakcja danych z faktur (szkielet n8n)",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Email Trigger (IMAP)",
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "notes": "Nadzorca skrzynki: nowe maile z załącznikiem PDF startują pipeline"
+    },
+    {
+      "parameters": { "binaryPropertyName": "data" },
+      "name": "OCR (pdf → tekst)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [220, 0],
+      "notes": "Np. OCR.space API (free tier) albo Google Vision — zależnie od wolumenu"
+    },
+    {
+      "parameters": {
+        "prompt": "Wyciągnij z faktury JSON: {nip_sprzedawcy, nip_nabywcy, numer_faktury, data_wystawienia, kwota_netto, kwota_brutto, waluta}. Jeśli pola brak — null. Tylko JSON, bez komentarzy.",
+        "jsonOutput": true
+      },
+      "name": "Ekstrakcja pól (LLM)",
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            { "value1": "={{ $json.nip_sprzedawcy }}", "operation": "notEmpty" },
+            { "value1": "={{ $json.kwota_brutto }}", "operation": "notEmpty" }
+          ]
+        }
+      },
+      "name": "Walidacja (NIP + kwota)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [660, 0]
+    },
+    {
+      "parameters": { "operation": "append", "columns": "A:F" },
+      "name": "Zapis do arkusza / bazy",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [880, -100],
+      "notes": "Docelowo: Sheets albo Twoja baza — do ustalenia"
+    },
+    {
+      "parameters": {},
+      "name": "Kolejka ręczna (wątpliwe)",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [880, 100],
+      "notes": "Dokument z brakującym NIP/kwotą → mail z prośbą o uzupełnienie"
+    }
+  ],
+  "connections": {
+    "Email Trigger (IMAP)": { "main": [[{ "node": "OCR (pdf → tekst)", "type": "main", "index": 0 }]] },
+    "OCR (pdf → tekst)": { "main": [[{ "node": "Ekstrakcja pól (LLM)", "type": "main", "index": 0 }]] },
+    "Ekstrakcja pól (LLM)": { "main": [[{ "node": "Walidacja (NIP + kwota)", "type": "main", "index": 0 }]] },
+    "Walidacja (NIP + kwota)": { "main": [[{ "node": "Zapis do arkusza / bazy", "type": "main", "index": 0 }], [{ "node": "Kolejka ręczna (wątpliwe)", "type": "main", "index": 0 }]] }
+  }
+}
