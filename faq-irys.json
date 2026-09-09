@@ -1,0 +1,20 @@
+{
+  "faq": [
+    { "q": "godziny, otwarte, otwarcia, kiedy otwarte, w jakich godzinach, godzinach, sobota, sobotę, niedziela, niedzielę, poniedziałek, piątek, pracujecie, działacie", "a": "Godziny otwarcia: poniedziałek–piątek 8:00–19:00, sobota 8:00–16:00, niedziela 10:00–14:00." },
+    { "q": "gdzie jesteście, adres, lokalizacja, dojazd, gdzie, ostrow, ostrów, kościuszki", "a": "Znajdujemy się w Ostrowie Wielkopolskim, ul. Tadeusza Kościuszki 23b, 63-400. Zapraszamy!" },
+    { "q": "telefon, zadzwonić, numer, kontakt, zadzwonię, telefonu, obdzwoń", "a": "Zadzwoń: 62 736 57 07. Możesz też napisać na czacie — odpowiemy najszybciej jak możemy." },
+    { "q": "mail, e-mail, email, poczta, mailowy, napisać mailem", "a": "Nasz adres e-mail: kwiaciarnia.irys@op.pl." },
+    { "q": "bukiet, bukiety, kwiaty, kompozycja, kompozycje, wiązanka, wiązanki, świeże, kwiatowe", "a": "Tworzymy wyjątkowe bukiety i kompozycje kwiatowe z pasją i dbałością o każdy detal — na każdą okazję. Podeślij swój pomysł w czacie lub zadzwoń: 62 736 57 07." },
+    { "q": "okazja, okazji, urodziny, imieniny, rocznica, ślub, wesele, wesele, pogrzeb, wiązanka pogrzebowa, stypa, chrzest, dziękuję, podziękowanie", "a": "Komponujemy kwiaty na każdą okazję — urodziny, imieniny, rocznice, śluby, chrzciny, a także wiązanki okolicznościowe. Zadzwoń: 62 736 57 07, doradzimy dobór kwiatów." },
+    { "q": "dostawa, dowóz, dostarczenie, przesyłka, pocztą, kwiaty na adres, dowieźć, dostarczyć", "a": "Prowadzimy pocztę kwiatową — kwiaty dowozimy pod wskazany adres. Zadzwoń: 62 736 57 07, ustalimy termin i szczegóły dostawy." },
+    { "q": "cena, koszt, ile kosztuje, wycena, cenę, zapłacić, drogo, tanio, cenach, kosztować", "a": "Ceny bukietów zależą od dobranych kwiatów i wielkości — jak nasi klienci piszą: „piękne bukiety warte swojej ceny”. Zadzwoń: 62 736 57 07, wycenimy bukiet pod Twój budżet." },
+    { "q": "opinia, opinie, polecam, polecacie, recenzje, się sprawdza, zaufali", "a": "Nasi klienci oceniają nas na 5 gwiazdek — „Zawsze pięknie, zawsze profesjonalnie, zawsze z miłością do kwiatów”, „Najlepsza kwiaciarnia w Ostrowie”. Dziękujemy za zaufanie!" },
+    { "q": "na zamówienie, indywidualnie, spersonalizowany, własny pomysł, własny bukiet, konkretny bukiet", "a": "Bukiet komponujemy indywidualnie — powiedz nam okazję i preferencje, a resztę zrobimy za Ciebie. Zadzwoń: 62 736 57 07." },
+    { "q": "zamówić, zamówienie, jak zamówić, złożyć zamówienie, kupić", "a": "Najprościej: zadzwoń 62 736 57 07 albo napisz tutaj w czacie — ustalimy bukiet, cenę i termin (w razie potrzeby z dostawą)." },
+    { "q": "świeżość, świeże kwiaty, jak długo, w Wieniu, zwiędnięcia, zwiędną", "a": "Dbamy o świeżość kwiatów — bukiety wykonujemy z sezonowych, świeżych kwiatów. Porady, jak przedłużyć trwałość, chętnie udzielimy przy odbiorze." },
+    { "q": "kondolencje, pogrzeb, stypy, żałoba, wiązanki, na pożegnanie", "a": "Przygotowujemy wiązanki i kompozycje na pożegnanie. Zadzwoń: 62 736 57 07 — doradzimy i przygotujemy dyskretnie i na czas." },
+    { "q": "ślub, wesele, dekoracje ślubne, bukiet ślubny, wiązanka ślubna, florystyka ślubna", "a": "Wykonujemy bukiety ślubne i dekoracje na wesele. Zadzwoń: 62 736 57 07 — umówimy się na rozmowę i prezentację pomysłów." },
+    { "q": "płatność, zapłata, zapłacić, kartą, gotówka, blik", "a": "Płatność przy odbiorze — gotówka i karta. Szczegóły ustalisz przy zamówieniu: 62 736 57 07." }
+  ],
+  "unknown": "Nie znam odpowiedzi na to pytanie — zadzwoń: 62 736 57 07 albo zostaw tu pytanie, a człowiek odpowie najszybciej jak może."
+}

@@ -37,6 +37,14 @@
       .replace(/[^a-z0-9 ]/g,' ') + ' '; }
   function answer(msg) {
     var m = norm(msg);
+    // Powitania i formy grzecznościowe — bot odpowiada kulturalnie, zanim poleci do FAQ
+    var greetings = [['witam,witam,czesc,cześć,hej,siema,dzien dobry,dobry,hello,hi,hejka', 'Dzień dobry! 👋 W czym mogę pomóc? Zapytaj o godziny otwarcia, dostawę, bukiety lub kontakt — a jeśli nie będę znać odpowiedzi, napiszę to szczerze.']];
+    var g = greetings[0][0].split(',');
+    var gHits = 0;
+    for (var gi = 0; gi < g.length; gi++) if (m.indexOf(g[gi]) >= 0) gHits++;
+    // Czyste powitanie (1–2 słowa) — nie traktuj "witam ile kosztuje" jako samego powitania
+    var wordCount = m.trim().split(/\s+/).length;
+    if (gHits > 0 && wordCount <= 2) return { text: greetings[0][1], known: true };
     var best = null, bestHits = 0;
     for (var i = 0; i < FAQ.length; i++) {
       var words = FAQ[i].q.split(',').map(function(w){return w.trim().toLowerCase();}).filter(Boolean);
