@@ -1,59 +1,651 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ChatBot FAQ — demo pod kwiaciarnię Irys (Ostrów Wlkp.)</title>
-<style>
-  body{font-family:system-ui,sans-serif;margin:0;background:#f4f6f8;color:#1a202c;padding:48px 20px}
-  .wrap{max-width:720px;margin:0 auto}
-  h1{font-size:26px;margin-bottom:4px}
-  .sub{color:#4a5568;font-size:15px;margin-bottom:24px}
-  .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:16px}
-  b{display:block;margin-bottom:6px}
-  code{background:#edf2f7;padding:2px 6px;border-radius:4px;font-size:13px;word-break:break-all}
-  .big{font-size:14px;padding:12px 10px;display:block;word-break:break-all;white-space:pre-wrap}
-  ul{margin:8px 0;padding-left:20px;line-height:1.7}
-  .muted{color:#718096;font-size:13px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kwiaciarnia IRYS</title>
+  <style>
+    /* RESET */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* PŁYNNE PRZEWIJANIE NA POZIOMIE HTML */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #333;
+      background-color: #fff0f5;
+      overflow-x: hidden;
+    }
+
+    /* STAŁY PRZYCISK MENU */
+    .menu-btn {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+      color: white;
+      border: 3px solid #ffffff;
+      border-radius: 50%;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1.05rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .menu-btn:hover {
+      transform: scale(1.08) rotate(5deg);
+      box-shadow: 0 6px 25px rgba(255, 105, 180, 0.5);
+    }
+
+    /* OVERLAY MENU */
+    .menu-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(50, 20, 35, 0.96) 0%, rgba(20, 5, 12, 0.98) 100%);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      z-index: 1000;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      overflow: hidden;
+    }
+    .menu-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    /* PŁYWAJĄCE KWIATY I PSZCZOŁY W TLE */
+    .floating-element {
+      position: absolute;
+      pointer-events: none;
+      user-select: none;
+      filter: drop-shadow(0 0 12px rgba(255, 182, 193, 0.6));
+      will-change: transform; /* Optymalizacja karty graficznej */
+    }
+
+    .bee-1 {
+      top: 15%;
+      left: 10%;
+      font-size: 3rem;
+      animation: floatBee1 6s ease-in-out infinite alternate;
+    }
+    .bee-2 {
+      bottom: 20%;
+      right: 12%;
+      font-size: 2.5rem;
+      animation: floatBee2 8s ease-in-out infinite alternate;
+    }
+
+    .flower-1 { top: 8%; right: 15%; font-size: 4rem; animation: spinSlow 20s linear infinite; }
+    .flower-2 { bottom: 10%; left: 8%; font-size: 5rem; animation: spinSlow 25s linear infinite reverse; }
+    .flower-3 { top: 50%; left: 5%; font-size: 3.5rem; animation: pulseGlow 4s ease-in-out infinite; }
+    .flower-4 { bottom: 35%; right: 6%; font-size: 3rem; animation: pulseGlow 5s ease-in-out infinite 1s; }
+
+    @keyframes floatBee1 {
+      0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+      50% { transform: translate(30px, -40px) rotate(15deg) scale(1.1); }
+      100% { transform: translate(-20px, 30px) rotate(-10deg) scale(0.95); }
+    }
+    @keyframes floatBee2 {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(-40px, 20px) rotate(-20deg); }
+      100% { transform: translate(30px, -30px) rotate(10deg); }
+    }
+    @keyframes spinSlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.2); opacity: 1; filter: drop-shadow(0 0 20px #ff69b4); }
+    }
+
+    /* ZŁOTE PYŁKI */
+    .pollen-particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #ffee55;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #ffeb3b, 0 0 20px #ff9800;
+      animation: pollenFloat 7s linear infinite;
+      will-change: transform, opacity;
+    }
+    .p1 { top: 80%; left: 20%; animation-delay: 0s; }
+    .p2 { top: 70%; left: 70%; animation-delay: 2s; }
+    .p3 { top: 90%; left: 45%; animation-delay: 4s; }
+
+    @keyframes pollenFloat {
+      0% { transform: translateY(0) scale(0.8); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-300px) scale(1.5); opacity: 0; }
+    }
+
+    /* NAGŁÓWEK MENU */
+    .menu-title {
+      color: #ffb6c1;
+      font-family: 'Georgia', serif;
+      font-size: 2.2rem;
+      margin-bottom: 35px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-shadow: 0 0 15px rgba(255, 105, 180, 0.8), 0 0 30px rgba(255, 182, 193, 0.5);
+      position: relative;
+      z-index: 2;
+    }
+    .menu-title::before, .menu-title::after {
+      content: '🌸';
+      margin: 0 12px;
+      font-size: 1.8rem;
+      vertical-align: middle;
+    }
+
+    /* PRZYCISKI W OVERLAY */
+    .menu-links {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      width: 90%;
+      max-width: 420px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .menu-card-btn {
+      background: rgba(255, 255, 255, 0.07);
+      border: 2px solid rgba(255, 182, 193, 0.4);
+      padding: 20px 28px;
+      border-radius: 20px;
+      color: #ffffff;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .menu-card-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 182, 193, 0.3), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .menu-card-btn:hover::before {
+      left: 100%;
+    }
+
+    .menu-card-btn .btn-text {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .menu-card-btn .btn-num {
+      font-size: 0.95rem;
+      color: #ff69b4;
+      background: rgba(255, 255, 255, 0.9);
+      font-weight: bold;
+      padding: 6px 12px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+    }
+
+    .menu-card-btn:hover {
+      background: rgba(255, 105, 180, 0.35);
+      border-color: #ff69b4;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(255, 105, 180, 0.6);
+      color: #fff;
+    }
+
+    /* ZAMKNIĘCIE MENU */
+    .close-btn {
+      position: absolute;
+      top: 35px;
+      right: 35px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 2px solid rgba(255, 182, 193, 0.8);
+      color: #ffffff;
+      font-size: 1.6rem;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      z-index: 10;
+      box-shadow: 0 0 15px rgba(255, 182, 193, 0.3);
+    }
+    .close-btn:hover {
+      background: #ff69b4;
+      border-color: #ffffff;
+      transform: rotate(90deg) scale(1.15);
+      box-shadow: 0 0 25px rgba(255, 105, 180, 0.9);
+    }
+
+    /* SEKCJA HOME */
+    #home-container {
+      min-height: 100vh;
+      background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25)), url('https://images.unsplash.com/photo-1526047932273-341f2a7631f9?q=80&w=1600') no-repeat center center/cover;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-bottom: 60px;
+    }
+
+    #home-container::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      background: linear-gradient(to bottom, transparent, #fff0f5);
+      pointer-events: none;
+    }
+
+    header {
+      text-align: center;
+      padding: 60px 20px 20px 20px;
+      position: relative;
+      z-index: 1;
+    }
+    header h1 {
+      font-family: 'Georgia', serif;
+      font-size: 3.8rem;
+      color: #ffffff;
+      letter-spacing: 3px;
+      text-shadow: 2px 4px 10px rgba(0,0,0,0.4);
+    }
+
+    .home-description {
+      margin: 0 auto;
+      background: rgba(255, 240, 245, 0.88);
+      backdrop-filter: blur(10px);
+      padding: 35px 45px;
+      border-radius: 20px;
+      max-width: 780px;
+      width: 90%;
+      text-align: center;
+      border: 2px solid rgba(255, 182, 193, 0.9);
+      box-shadow: 0 12px 35px rgba(219, 112, 147, 0.25);
+      position: relative;
+      z-index: 2;
+    }
+    .home-description p {
+      font-size: 1.25rem;
+      line-height: 1.8;
+      color: #2b4c27;
+      font-weight: 600;
+    }
+
+    /* SEKCJA OPINIE */
+    #opinie {
+      min-height: 100vh;
+      padding: 90px 20px;
+      background: linear-gradient(180deg, #fff0f5 0%, #fce4ec 50%, #f8bbd0 100%);
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    .opinie-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    .opinie-header h2 {
+      font-family: 'Georgia', serif;
+      font-size: 2.8rem;
+      color: #2b4c27;
+      margin-bottom: 10px;
+    }
+    .opinie-header p {
+      color: #6d4c57;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .reviews-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .review-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      width: 320px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(219, 112, 147, 0.15);
+      border: 2px solid rgba(255, 182, 193, 0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .review-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 35px rgba(219, 112, 147, 0.3);
+    }
+
+    .card-flower-avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      border: 3px solid #ffb6c1;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .stars {
+      color: #ffb400;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+
+    .review-text-content {
+      font-size: 1.05rem;
+      font-style: italic;
+      color: #444;
+      line-height: 1.5;
+      margin-bottom: 15px;
+      flex-grow: 1;
+    }
+
+    .reviewer-name {
+      font-weight: bold;
+      color: #2b4c27;
+      font-size: 1rem;
+      letter-spacing: 1px;
+    }
+
+    .fa-1 { background-image: url('https://images.unsplash.com/photo-1561181286-d3fee7d55364?q=80&w=300'); }
+    .fa-2 { background-image: url('https://images.unsplash.com/photo-1490750967868-88aa4486c946?q=80&w=300'); }
+    .fa-3 { background-image: url('https://images.unsplash.com/photo-1508610048659-a06b669e3321?q=80&w=300'); }
+
+    /* SEKCJA KONTAKT */
+    #kontakt {
+      min-height: 100vh;
+      width: 100%;
+      background: linear-gradient(180deg, #f8bbd0 0%, #fce4ec 50%, #fff0f5 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    .garden-box {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      padding: 45px;
+      border-radius: 20px;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      border: 2px solid rgba(255, 182, 193, 0.9);
+      box-shadow: 0 12px 35px rgba(219, 112, 147, 0.2);
+    }
+    .garden-box h2 {
+      color: #2b4c27;
+      margin-bottom: 25px;
+      font-size: 2.2rem;
+      font-family: 'Georgia', serif;
+    }
+    .garden-box p {
+      margin: 14px 0;
+      font-size: 1.15rem;
+      color: #333;
+    }
+
+    /* ==========================================================
+       RESPONSYWNOŚĆ DLA URZĄDZEŃ MOBILNYCH (MEDIA QUERIES)
+       ================ ========================================== */
+    @media (max-width: 768px) {
+      .menu-btn {
+        width: 55px;
+        height: 55px;
+        top: 15px;
+        right: 15px;
+        font-size: 0.9rem;
+      }
+
+      header {
+        padding: 40px 15px 10px 15px;
+      }
+      header h1 {
+        font-size: 2.3rem;
+        letter-spacing: 1px;
+      }
+
+      .home-description {
+        padding: 20px;
+        width: 92%;
+      }
+      .home-description p {
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      #opinie {
+        padding: 60px 15px;
+      }
+      .opinie-header h2 {
+        font-size: 2rem;
+      }
+      .opinie-header p {
+        font-size: 0.95rem;
+      }
+      .review-card {
+        width: 100%;
+        max-width: 340px;
+        padding: 20px;
+      }
+
+      #kontakt {
+        padding: 30px 15px;
+      }
+      .garden-box {
+        padding: 25px 20px;
+        max-width: 100%;
+      }
+      .garden-box h2 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+      }
+      .garden-box p {
+        font-size: 1rem;
+        margin: 10px 0;
+      }
+
+      .menu-title {
+        font-size: 1.6rem;
+        margin-bottom: 25px;
+      }
+      .menu-links {
+        width: 92%;
+        gap: 15px;
+      }
+      .menu-card-btn {
+        padding: 15px 20px;
+        font-size: 1.1rem;
+      }
+      .close-btn {
+        top: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
+      }
+
+      .floating-element {
+        font-size: 2rem !important;
+        opacity: 0.6;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 2rem;
+      }
+      .menu-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>🌸 ChatBot FAQ — baza pod kwiaciarnię Irys</h1>
-  <p class="sub">15 pytań zbudowanych z treści strony kwiaciarni (godziny, dostawa, śluby, wiązanki, płatności).
-  Kliknij dymek 💬 w prawym dolnym rogu i zapytaj jak klient.</p>
 
-  <div class="card">
-    <b>Test — spróbuj zapytać bota:</b>
-    <ul>
-      <li>„do której jesteście otwarci?”</li>
-      <li>„robicie wiązanki na pogrzeb?”</li>
-      <li>„dowoziecie kwiaty w Ostrowie?”</li>
-      <li>„ile kosztuje bukiet ślubny?”</li>
-      <li>„jaka pogoda na Marsie?” → szczerze: „Nie znam odpowiedzi…” (wymaganie nr 1)</li>
-    </ul>
+  <!-- STAŁY PRZYCISK MENU -->
+  <button class="menu-btn" onclick="toggleMenu()">MENU</button>
+
+  <!-- OVERLAY MENU -->
+  <div class="menu-overlay" id="menuOverlay">
+    <button class="close-btn" onclick="toggleMenu()">✕</button>
+
+    <!-- ELEMENTY ANIMOWANE W TLE -->
+    <div class="floating-element bee-1">🐝</div>
+    <div class="floating-element bee-2">🐝</div>
+    <div class="floating-element flower-1">🌺</div>
+    <div class="floating-element flower-2">🌸</div>
+    <div class="floating-element flower-3">🌻</div>
+    <div class="floating-element flower-4">🌷</div>
+
+    <div class="pollen-particle p1"></div>
+    <div class="pollen-particle p2"></div>
+    <div class="pollen-particle p3"></div>
+
+    <!-- TREŚĆ OVERLAYA -->
+    <div class="menu-title">Nawigacja</div>
+    <div class="menu-links">
+      <button class="menu-card-btn" onclick="scrollToSection('home-container')">
+        <span class="btn-text">🌿 STRONA GŁÓWNA</span>
+        <span class="btn-num">01</span>
+      </button>
+      <button class="menu-card-btn" onclick="scrollToSection('opinie')">
+        <span class="btn-text">🌸 OPINIE</span>
+        <span class="btn-num">02</span>
+      </button>
+      <button class="menu-card-btn" onclick="scrollToSection('kontakt')">
+        <span class="btn-text">🌻 KONTAKT</span>
+        <span class="btn-num">03</span>
+      </button>
+    </div>
   </div>
 
-  <div class="card">
-    <b>Baza FAQ klienta (edytowalna w panelu):</b>
-    <code class="big">https://cdn.jsdelivr.net/gh/uuhyy666/naprawa-stron@ed0a4ee/faq-irys.json</code>
-    <p class="muted">Edycja pytań bez dotykania strony: <a href="chatbot-panel.html">chatbot-panel.html</a></p>
-  </div>
+  <!-- SEKCJA HOME -->
+  <section id="home-container">
+    <header>
+      <h1>Kwiaciarnia IRYS</h1>
+    </header>
+    <div class="home-description">
+      <p>Witamy w Kwiaciarni IRYS! Tworzymy wyjątkowe bukiety i kompozycje kwiatowe z pasją oraz dbałością o każdy detal. Niezależnie od okazji, pomagamy wyrazić najpiękniejsze uczucia za pomocą świeżych, pięknych kwiatów.</p>
+    </div>
+  </section>
 
-  <div class="card">
-    <b>Osadzenie na stronie kwiaciarni — 1 linijka:</b>
-    <code class="big">&lt;script src="https://cdn.jsdelivr.net/gh/uuhyy666/naprawa-stron@ed0a4ee/chatbot.js" data-faq="https://cdn.jsdelivr.net/gh/uuhyy666/naprawa-stron@ed0a4ee/faq-irys.json"&gt;&lt;/script&gt;</code>
-    <p class="muted">Wklejasz przed &lt;/body&gt; — zero wtyczek, zero builderów, działa na zwykłym HTML-u.</p>
-  </div>
+  <!-- SEKCJA OPINIE -->
+  <section id="opinie">
+    <div class="opinie-header">
+      <h2>Co mówią nasi Klienci</h2>
+      <p>Poznaj opinie osób, które zaufały naszej pasji do kwiatów</p>
+    </div>
 
-  <div class="card">
-    <b>Dla kolejnych klientów (odsprzedaż):</b>
-    <p class="muted">Ten sam widget, osobny plik bazy per klient: <code>faq-&lt;klient&gt;.json</code>.
-    Jedna zmiana w data-faq i bot odpowiada w języku innej branży.</p>
-  </div>
-</div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="card-flower-avatar fa-1"></div>
+        <div class="stars">★★★★★</div>
+        <div class="review-text-content">"Zawsze pięknie, zawsze profesjonalnie, zawsze z miłością do kwiatów"</div>
+        <div class="reviewer-name">AGA DAGA</div>
+      </div>
 
-<!-- WŁAŚCIWY WIDGET — 1 linijka, baza FAQ kwiaciarni Irys -->
-<script src="https://cdn.jsdelivr.net/gh/uuhyy666/naprawa-stron@ed0a4ee/chatbot.js" data-faq="https://cdn.jsdelivr.net/gh/uuhyy666/naprawa-stron@ed0a4ee/faq-irys.json"></script>
+      <div class="review-card">
+        <div class="card-flower-avatar fa-2"></div>
+        <div class="stars">★★★★★</div>
+        <div class="review-text-content">"Poczta kwiatowa na czas i piękne kwiaty."</div>
+        <div class="reviewer-name">RENATA KAŁUŻNA</div>
+      </div>
+
+      <div class="review-card">
+        <div class="card-flower-avatar fa-3"></div>
+        <div class="stars">★★★★★</div>
+        <div class="review-text-content">"Najlepsza kwiaciarnia w Ostrowie, polecam każdemu na wszystkie okazje, piękne bukiety warte swojej ceny"</div>
+        <div class="reviewer-name">MICHAŁ SIKORA</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEKCJA KONTAKT -->
+  <section id="kontakt">
+    <div class="garden-box">
+      <h2>Ogród Kontaktowy</h2>
+      <p><strong>Adres:</strong> Tadeusza Kościuszki 23b, 63-400 Ostrów Wielkopolski</p>
+      <p><strong>Telefon:</strong> 62 736 57 07</p>
+      <p><strong>E-mail:</strong> kwiaciarnia.irys@op.pl</p>
+      <p><strong>Godziny otwarcia:</strong><br>
+      Pon - Pt: 8:00 - 19:00<br>
+      Sob: 8:00 - 16:00<br>
+      Niedz: 10:00 - 14:00</p>
+    </div>
+  </section>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('menuOverlay');
+      menu.classList.toggle('active');
+    }
+
+    function scrollToSection(sectionId) {
+      toggleMenu();
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  </script>
+
+
+<script>!(function(){const s=document.createElement('style');s.innerHTML=`:root{--primary-color:#374151;--primary-hover:#1f2937;--bg-color:#f8fafc;--chat-bg:#ffffff;--text-main:#1e293b;--text-muted:#64748b;--border-color:#e2e8f0;--shadow-drop:0 10px 25px -5px rgba(55,65,81,0.2);--font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}.fati-chat-toggle-btn{position:fixed;bottom:20px;right:20px;width:78px;height:78px;background-color:var(--primary-color);color:white;border:none;border-radius:50%;cursor:pointer;box-shadow:var(--shadow-drop);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:1000;transition:transform 0.3s}.fati-chat-toggle-btn:hover{background-color:var(--primary-hover);transform:scale(1.08)}.fati-chat-container{position:fixed;bottom:110px;right:20px;width:320px;height:440px;background-color:var(--chat-bg);border-radius:16px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);display:none;flex-direction:column;overflow:hidden;z-index:999;font-family:var(--font-family)}.fati-chat-container.open{display:flex}.fati-chat-header{background:#374151;color:white;padding:12px 16px;display:flex;align-items:center;gap:8px}.fati-chat-messages{flex:1;padding:14px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:#f8fafc;font-size:13px}.fati-message{max-width:85%;padding:10px 14px;border-radius:12px;line-height:1.4}.fati-message.bot{background:white;color:var(--text-main);border:1px solid var(--border-color);align-self:flex-start}.fati-message.user{background:#374151;color:white;align-self:flex-end}.fati-chat-input-area{padding:10px;background:white;border-top:1px solid var(--border-color);display:flex;gap:8px}.fati-chat-input-area input{flex:1;padding:8px;border:1px solid var(--border-color);border-radius:6px;outline:none;font-size:13px}.fati-send-btn{background:#374151;color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer}`;document.head.appendChild(s);const c=document.createElement('div');c.innerHTML=`<div class="fati-chat-container" id="fatiChatContainer"><div class="fati-chat-header"><div style="font-weight:bold;font-size:14px;">fati AI Asystent</div></div><div class="fati-chat-messages" id="fatiMessages"><div class="fati-message bot">✨ Cześć! Analizuję tę stronę...</div></div><div class="fati-chat-input-area"><input type="text" id="fatiUserInput" placeholder="Napisz wiadomość..." onkeypress="if(event.key==='Enter')fatiSendMessage()"><button class="fati-send-btn" onclick="fatiSendMessage()">Wyślij</button></div></div><button class="fati-chat-toggle-btn" onclick="fatiToggleChat()"><span style="font-size:11px;font-weight:bold;">fati AI</span></button>`;document.body.appendChild(c);let cc="";const b="http://64.176.69.196:8000";async function init(){try{const r=await fetch(`${b}/analyze-website`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:window.location.href})});const d=await r.json();if(r.ok){cc=d.company_context;document.getElementById('fatiMessages').innerHTML+=`<div class="fati-message bot">Gotowy do działania! W czym pomóc?</div>`;}}catch(e){}}init();window.fatiToggleChat=()=>document.getElementById('fatiChatContainer').classList.toggle('open');window.fatiSendMessage=async()=>{const i=document.getElementById('fatiUserInput'),t=i.value.trim();if(!t)return;const m=document.getElementById('fatiMessages');m.innerHTML+=`<div class="fati-message user">${t}</div>`;i.value='';m.scrollTop=m.scrollHeight;try{const r=await fetch(`${b}/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({company_context:cc,question:t})}),d=await r.json();m.innerHTML+=r.ok?`<div class="fati-message bot">${d.reply}</div>`:`<div class="fati-message bot">Błąd odpowiedzi.</div>`;}catch(e){m.innerHTML+=`<div class="fati-message bot">Błąd serwera.</div>`;}m.scrollTop=m.scrollHeight;};})();</script>
+<div style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#2e7d32;color:#fff;font:600 13px Segoe UI,sans-serif;text-align:center;padding:6px 10px">PODGLĄD DEMO: Twoja strona IRYS + chatbot FAQ (kopia demonstracyjna — wdrożenie u Ciebie to 1 linijka kodu)</div><script src="https://cdn.jsdelivr.net/gh/uuhyy666/naprawa-stron@5f6dff1/chatbot-irys.js"></script>
 </body>
 </html>
