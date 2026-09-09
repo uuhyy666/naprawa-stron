@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stópka mailowa — demo (Outlook / Thunderbird / Apple Mail)</title>
+<style>
+  body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background: #f4f5f7; margin: 0; padding: 24px 12px; }
+  .opakowanie { max-width: 680px; margin: 0 auto; }
+  .info { background: #fff; border: 1px solid #e2e4e8; border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; font-size: 14px; color: #333; line-height: 1.55; }
+  .info h1 { font-size: 18px; margin: 0 0 8px; }
+  .kropka { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; }
+  table.podglad { border-collapse: collapse; }
+  /* Poniżej wyłącznie styl inline — dokładnie tak wygląda kod stópki w mailu */
+</style>
+</head>
+<body>
+<div class="opakowanie">
+  <div class="info">
+    <h1>Demo: stópka mailowa zakodowana pod zlecenie (wariant 1 z 7)</h1>
+    <p><span class="kropka" style="background:#2e7d32"></span>Układ <strong>typu table, inline CSS</strong> — renderuje się identycznie w Outlook (Windows), Thunderbird (Windows) oraz Apple Mail / Outlook (macOS). Zero flexbox, zero float, zero zewnętrznego arkusza.</p>
+    <p><span class="kropka" style="background:#2e7d32"></span>Bezpieczne czcionki: Georgia (serif) / Tahoma (sans), kolory i rozmiary zgodne z założeniami.</p>
+    <p><span class="kropka" style="background:#2e7d32"></span>Ikony społecznościowe podlinkowane, grafiki z serwera zewnętrznego z wymiarami wpisanymi w atrybuty (Outlook tego wymaga).</p>
+    <p><span class="kropka" style="background:#f2a600"></span>W wersji produkcyjnej: logo i awatar klienta, adres URL grafik z jego serwera, warianty dla zespołu (imię/stanowisko/telefon podmieniane), plik <code>.html</code> + instrukcja wdrożenia dla każdej aplikacji.</p>
+    <p style="margin-bottom:0"><span class="kropka" style="background:#2e7d32"></span>Poniżej działający podgląd — kod źródłowy tej strony to gotowy szkielet produkcyjny.</p>
+  </div>
+
+  <!-- ====== START STÓPKI (kod produkcyjny — wszystko inline) ====== -->
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="width:600px; max-width:100%; margin:0 auto; background:#ffffff; border-top:3px solid #1a3a5c; font-family:Georgia, 'Times New Roman', serif;">
+    <tr>
+      <td style="padding:18px 24px 6px 24px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="padding-right:16px; vertical-align:top;">
+              <img src="https://uuhyy666.github.io/naprawa-stron/stopka-awatar.png" alt="" width="64" height="64" style="display:block; width:64px; height:64px; border-radius:32px; border:2px solid #1a3a5c;">
+            </td>
+            <td style="vertical-align:top; font-family:Georgia, 'Times New Roman', serif;">
+              <div style="font-size:16px; color:#1a3a5c; font-weight:bold;">Anna Kowalska</div>
+              <div style="font-size:13px; color:#5a6572; padding-top:2px;">Project Manager</div>
+              <div style="font-size:13px; color:#5a6572;">Firma Przykładowa Sp. z o.o.</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:12px 24px 4px 24px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="font-family:Tahoma, Arial, sans-serif; font-size:12px; color:#5a6572; padding-right:18px;">
+              <a href="tel:+48600100200" style="color:#1a3a5c; text-decoration:none;">+48 600 100 200</a>
+            </td>
+            <td style="font-family:Tahoma, Arial, sans-serif; font-size:12px; color:#5a6572; padding-right:18px;">
+              <a href="mailto:anna@firma-przykladowa.pl" style="color:#1a3a5c; text-decoration:none;">anna@firma-przykladowa.pl</a>
+            </td>
+            <td style="font-family:Tahoma, Arial, sans-serif; font-size:12px; color:#5a6572;">
+              <a href="https://www.firma-przykladowa.pl" style="color:#1a3a5c; text-decoration:none;">www.firma-przykladowa.pl</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:10px 24px 2px 24px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="padding-right:10px;"><a href="https://www.linkedin.com"><img src="https://uuhyy666.github.io/naprawa-stron/stopka-ikona-li.png" alt="LinkedIn" width="24" height="24" style="display:block; width:24px; height:24px;"></a></td>
+            <td style="padding-right:10px;"><a href="https://www.facebook.com"><img src="https://uuhyy666.github.io/naprawa-stron/stopka-ikona-fb.png" alt="Facebook" width="24" height="24" style="display:block; width:24px; height:24px;"></a></td>
+            <td><a href="https://www.instagram.com"><img src="https://uuhyy666.github.io/naprawa-stron/stopka-ikona-ig.png" alt="Instagram" width="24" height="24" style="display:block; width:24px; height:24px;"></a></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:14px 24px 18px 24px; border-top:1px solid #e2e4e8;">
+        <div style="font-family:Tahoma, Arial, sans-serif; font-size:11px; color:#9aa3ad; line-height:1.5;">
+          Firma Przykładowa Sp. z o.o. · ul. Przykładowa 1, 00-001 Warszawa · NIP 000-000-00-00<br>
+          Ta wiadomość zawiera informacje przeznaczone wyłącznie dla adresata. Jeśli otrzymałeś ją pomyłkowo, prosimy o zwrot do nadawcy.
+        </div>
+      </td>
+    </tr>
+  </table>
+  <!-- ====== KONIEC STÓPKI ====== -->
+
+</div>
+</body>
+</html>
