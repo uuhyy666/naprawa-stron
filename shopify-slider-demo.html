@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slider wideo + wersja językowa — demo (zlecenie 143652)</title>
+<style>
+  :root { --accent:#c8952d; --bg:#111; --fg:#f5f1e8; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--fg); font:16px/1.6 Georgia, serif; }
+  header { padding:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+  header h1 { font-size:18px; font-weight:normal; letter-spacing:2px; text-transform:uppercase; }
+  .lang-switch { display:flex; gap:6px; }
+  .lang-switch button { background:none; border:1px solid var(--fg); color:var(--fg); padding:6px 14px; cursor:pointer; font:14px/1 Georgia, serif; border-radius:3px; }
+  .lang-switch button.active { background:var(--accent); border-color:var(--accent); color:#111; }
+  /* ——— slider wideo: czysty CSS + 20 linii JS, zero bibliotek, zero zależności Shopify ——— */
+  .slider { position:relative; height:56vh; min-height:320px; overflow:hidden; background:#000; }
+  .slide { position:absolute; inset:0; opacity:0; transition:opacity .8s ease; }
+  .slide.active { opacity:1; }
+  .slide video, .slide .ph { width:100%; height:100%; object-fit:cover; display:block; }
+  .slide .ph { background:linear-gradient(135deg,#2b2118,#6b4f2a 50%,#c8952d); display:flex; align-items:center; justify-content:center; font-size:14px; letter-spacing:3px; text-transform:uppercase; opacity:.9; }
+  .slide-caption { position:absolute; left:0; right:0; bottom:0; padding:28px; background:linear-gradient(transparent, rgba(0,0,0,.75)); font-size:22px; }
+  .slider-nav { position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,0,0,.5); color:#fff; border:0; width:44px; height:44px; cursor:pointer; font-size:20px; border-radius:50%; }
+  .slider-nav.prev { left:14px; } .slider-nav.next { right:14px; }
+  .dots { position:absolute; bottom:12px; right:16px; display:flex; gap:8px; }
+  .dots span { width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,.4); cursor:pointer; }
+  .dots span.active { background:var(--accent); }
+  .note { max-width:760px; margin:40px auto; padding:0 24px 60px; color:#bbb; font:14px/1.7 system-ui, sans-serif; }
+  .note code { background:#222; padding:2px 6px; border-radius:3px; color:#e8c887; }
+</style>
+</head>
+<body>
+<header>
+  <h1 data-i18n="brand">Perca — meble premium</h1>
+  <div class="lang-switch">
+    <button id="btn-pl" class="active" onclick="setLang('pl')">PL</button>
+    <button id="btn-en" onclick="setLang('en')">EN</button>
+  </div>
+</header>
+
+<div class="slider" id="slider">
+  <div class="slide active">
+    <video muted loop playsinline autoplay poster="">
+      <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+    </video>
+    <div class="slide-caption" data-i18n="s1">Stolarstwo rzemieślnicze od 1987 roku</div>
+  </div>
+  <div class="slide">
+    <div class="ph">video 2 — placeholder (produkt)</div>
+    <div class="slide-caption" data-i18n="s2">Dąb, orzech,_lite — na wymiar</div>
+  </div>
+  <div class="slide">
+    <div class="ph" style="background:linear-gradient(135deg,#1a2620,#3d5a4a 60%,#8fae9b)">video 3 — placeholder (warsztat)</div>
+    <div class="slide-caption" data-i18n="s3">Dowolny film z Twojej biblioteki — bez dodatkowych aplikacji</div>
+  </div>
+  <button class="slider-nav prev" onclick="go(-1)" aria-label="poprzedni">&#10094;</button>
+  <button class="slider-nav next" onclick="go(1)" aria-label="następny">&#10095;</button>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="note">
+  <p><strong data-i18n="noteTitle">Co to jest:</strong> <span data-i18n="noteBody">demo dwóch zmian z listy zlecenia — slider wideo (autoplay muted, przyciski, kropki, płynne przejścia) oraz przełącznik wersji językowej PL/EN. Wszystko na czystym HTML/CSS/JS: w Shopify wystarczy wkleić sekcję do pliku szablonu (np. <code>sections/slider-video.liquid</code>) i znacznik <code>data-i18n</code> obsłuży tłumaczenia przez plik JSON.</span></p>
+</div>
+
+<script>
+// ——— slider ———
+const slides = document.querySelectorAll('.slide');
+let cur = 0, timer = setInterval(() => go(1), 6000);
+function go(d) {
+  slides[cur].classList.remove('active');
+  cur = (cur + d + slides.length) % slides.length;
+  slides[cur].classList.add('active');
+  renderDots();
+  clearInterval(timer); timer = setInterval(() => go(1), 6000);
+}
+const dots = document.getElementById('dots');
+slides.forEach((_, i) => {
+  const s = document.createElement('span');
+  s.onclick = () => { slides[cur].classList.remove('active'); cur = i; slides[cur].classList.add('active'); renderDots(); };
+  dots.appendChild(s);
+});
+function renderDots() { dots.querySelectorAll('span').forEach((s, i) => s.classList.toggle('active', i === cur)); }
+renderDots();
+
+// ——— wersja językowa: jeden atrybut data-i18n + słownik ———
+const I18N = {
+  pl: { brand:'Perca — meble premium', s1:'Stolarstwo rzemieślnicze od 1987 roku', s2:'Dąb, orzech, jesion — na wymiar', s3:'Dowolny film z Twojej biblioteki — bez dodatkowych aplikacji', noteTitle:'Co to jest:', noteBody:'demo dwóch zmian z listy zlecenia — slider wideo (autoplay muted, przyciski, kropki, płynne przejścia) oraz przełącznik wersji językowej PL/EN. Wszystko na czystym HTML/CSS/JS: w Shopify wystarczy wkleić sekcję do pliku szablonu (np. sections/slider-video.liquid) i znacznik data-i18n obsłuży tłumaczenia przez plik JSON.' },
+  en: { brand:'Perca — premium furniture', s1:'Craft woodworking since 1987', s2:'Oak, walnut, ash — made to measure', s3:'Any video from your library — no extra apps', noteTitle:'What this is:', noteBody:'a demo of two items from the job list — a video slider (muted autoplay, arrows, dots, smooth transitions) and a PL/EN language switcher. Pure HTML/CSS/JS: in Shopify you paste the section into a template file (e.g. sections/slider-video.liquid) and the data-i18n attribute handles translations from a JSON file.' }
+};
+function setLang(l) {
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = I18N[l][el.dataset.i18n] || el.textContent; });
+  document.documentElement.lang = l;
+  document.getElementById('btn-pl').classList.toggle('active', l === 'pl');
+  document.getElementById('btn-en').classList.toggle('active', l === 'en');
+}
+</script>
+</body>
+</html>
