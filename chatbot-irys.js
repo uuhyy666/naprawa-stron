@@ -39,7 +39,7 @@
       "a": "Komponujemy kwiaty na każdą okazję — urodziny, imieniny, rocznice, śluby, chrzciny, a także wiązanki okolicznościowe. Zadzwoń: 62 736 57 07, doradzimy dobór kwiatów."
     },
     {
-      "q": "dostawa, dowóz, dowoziecie, dowozić, dostarczenie, przesyłka, pocztą, kwiaty na adres, dowieźć, dostarczyć, na adres, przynieść, pod dom, kurier",
+      "q": "dostawa, dostawe, dostawę, dowozicie, dowozić, dostarczacie, dostarczycie, dowóz, dowoziecie, dowozić, dostarczenie, przesyłka, pocztą, kwiaty na adres, dowieźć, dostarczyć, na adres, przynieść, pod dom, kurier",
       "a": "Prowadzimy pocztę kwiatową — kwiaty dowozimy pod wskazany adres. Zadzwoń: 62 736 57 07, ustalimy termin i szczegóły dostawy."
     },
     {
