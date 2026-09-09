@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChatBot FAQ — demo pod kwiaciarnię Irys (Ostrów Wlkp.)</title>
+<style>
+  body{font-family:system-ui,sans-serif;margin:0;background:#f4f6f8;color:#1a202c;padding:48px 20px}
+  .wrap{max-width:720px;margin:0 auto}
+  h1{font-size:26px;margin-bottom:4px}
+  .sub{color:#4a5568;font-size:15px;margin-bottom:24px}
+  .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:16px}
+  b{display:block;margin-bottom:6px}
+  code{background:#edf2f7;padding:2px 6px;border-radius:4px;font-size:13px;word-break:break-all}
+  .big{font-size:14px;padding:12px 10px;display:block;word-break:break-all;white-space:pre-wrap}
+  ul{margin:8px 0;padding-left:20px;line-height:1.7}
+  .muted{color:#718096;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🌸 ChatBot FAQ — baza pod kwiaciarnię Irys</h1>
+  <p class="sub">15 pytań zbudowanych z treści strony kwiaciarni (godziny, dostawa, śluby, wiązanki, płatności).
+  Kliknij dymek 💬 w prawym dolnym rogu i zapytaj jak klient.</p>
+
+  <div class="card">
+    <b>Test — spróbuj zapytać bota:</b>
+    <ul>
+      <li>„do której jesteście otwarci?”</li>
+      <li>„robicie wiązanki na pogrzeb?”</li>
+      <li>„dowoziecie kwiaty w Ostrowie?”</li>
+      <li>„ile kosztuje bukiet ślubny?”</li>
+      <li>„jaka pogoda na Marsie?” → szczerze: „Nie znam odpowiedzi…” (wymaganie nr 1)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <b>Baza FAQ klienta (edytowalna w panelu):</b>
+    <code class="big">https://cdn.jsdelivr.net/gh/uuhyy666/naprawa-stron@master/faq-irys.json</code>
+    <p class="muted">Edycja pytań bez dotykania strony: <a href="chatbot-panel.html">chatbot-panel.html</a></p>
+  </div>
+
+  <div class="card">
+    <b>Osadzenie na stronie kwiaciarni — 1 linijka:</b>
+    <code class="big">&lt;script src="https://cdn.jsdelivr.net/gh/uuhyy666/naprawa-stron@master/chatbot.js" data-faq="https://cdn.jsdelivr.net/gh/uuhyy666/naprawa-stron@master/faq-irys.json"&gt;&lt;/script&gt;</code>
+    <p class="muted">Wklejasz przed &lt;/body&gt; — zero wtyczek, zero builderów, działa na zwykłym HTML-u.</p>
+  </div>
+
+  <div class="card">
+    <b>Dla kolejnych klientów (odsprzedaż):</b>
+    <p class="muted">Ten sam widget, osobny plik bazy per klient: <code>faq-&lt;klient&gt;.json</code>.
+    Jedna zmiana w data-faq i bot odpowiada w języku innej branży.</p>
+  </div>
+</div>
+
+<!-- WŁAŚCIWY WIDGET — 1 linijka, baza FAQ kwiaciarni Irys -->
+<script src="https://cdn.jsdelivr.net/gh/uuhyy666/naprawa-stron@master/chatbot.js" data-faq="https://cdn.jsdelivr.net/gh/uuhyy666/naprawa-stron@master/faq-irys.json"></script>
+</body>
+</html>
