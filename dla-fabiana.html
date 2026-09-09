@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot FAQ — model partnerski (dla Ciebie, Fabian)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; color: #2d3748; background: #f7f9fc; line-height: 1.6; }
+    header { background: linear-gradient(135deg, #2b6cb0, #1a4971); color: #fff; padding: 50px 20px; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 10px; }
+    header p { max-width: 720px; margin: 0 auto; opacity: .9; }
+    section { max-width: 920px; margin: 0 auto; padding: 36px 20px; }
+    h2 { color: #2b6cb0; margin-bottom: 14px; font-size: 1.4rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .card { background: #fff; border-radius: 12px; padding: 22px; box-shadow: 0 2px 10px rgba(0,0,0,.07); }
+    .card h3 { margin-bottom: 8px; color: #1a4971; }
+    a.btn { display: inline-block; margin-top: 10px; background: #2b6cb0; color: #fff; text-decoration: none; padding: 9px 16px; border-radius: 8px; font-size: .95rem; }
+    a.btn:hover { background: #1a4971; }
+    .step { display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start; }
+    .step .num { flex: 0 0 34px; height: 34px; border-radius: 50%; background: #2b6cb0; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+    code, pre { font-family: Consolas, monospace; font-size: .85rem; }
+    pre { background: #1a202c; color: #a0d8ef; padding: 14px; border-radius: 8px; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,.07); }
+    th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #e2e8f0; font-size: .95rem; }
+    th { background: #eef4fb; color: #1a4971; }
+    .note { background: #fff3cd; border: 1px solid #ffeeba; border-radius: 10px; padding: 12px 16px; font-size: .9rem; color: #856404; }
+    footer { text-align: center; padding: 26px 20px; color: #a0aec0; font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Chatbot FAQ dla Twoich klientów — jak to działa</h1>
+    <p>Strona partnerska dla Ciebie: pokazuje model multi-klient na żywo, z dwoma działającymi przykładami z różnych branż. Wyślij ją klientowi albo podeślij sam link — reszta mówi się sama.</p>
+  </header>
+
+  <section>
+    <h2>Dwa klienci, dwa boty, jeden model</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>🌸 Kwiaciarnia Irys</h3>
+        <p>Bot z bazą wpisana pod stronę kwiaciarni: godziny, dostawa, adres, wiązanki, płatności.</p>
+        <a class="btn" href="irys-demo.html">Zobacz demo Irys →</a>
+      </div>
+      <div class="card">
+        <h3>💇 Salon fryzjerski</h3>
+        <p>Ten sam silnik, inna baza: cennik, rezerwacje, koloryzacje, kontakt. Zero zmian wdrożeniowych.</p>
+        <a class="btn" href="salon-demo.html">Zobacz demo salonu →</a>
+      </div>
+    </div>
+    <p style="margin-top:14px">Oba boty to <strong>dokładnie jedna linijka kodu</strong> na stronie klienta — różni się tylko nazwa pliku z bazą:</p>
+    <pre>&lt;script src="https://cdn.jsdelivr.net/gh/uuhyy666/naprawa-stron@master/chatbot-irys.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/gh/uuhyy666/naprawa-stron@master/chatbot-salon.js"&gt;&lt;/script&gt;</pre>
+  </section>
+
+  <section>
+    <h2>Jak wygląda wdrożenie kolejnego klienta</h2>
+    <div class="step"><div class="num">1</div><div><strong>Ty dostarczasz URL strony klienta.</strong> Nic więcej nie trzeba — żadnych dostępów, żadnych haseł.</div></div>
+    <div class="step"><div class="num">2</div><div><strong>Ja buduję bazę FAQ z treści jego strony</strong> (godziny, ceny, usługi, kontakt, ~20 min) i publikuję plik <code>chatbot-nazwaklienta.js</code>.</div></div>
+    <div class="step"><div class="num">3</div><div><strong>Ty wklejasz jedną linijkę</strong> u klienta. Bot działa od razu, na każdym hostingu, na WordPressie i w zwykłym HTML-u.</div></div>
+    <div class="step"><div class="num">4</div><div><strong>Zmiany tekstów?</strong> Klient pisze do Ciebie, Ty do mnie — poprawka w pliku i na stronie klienta robi się sama (CDN). Bez dotykania jego strony ponownie.</div></div>
+  </section>
+
+  <section>
+    <h2>Cennik partnerski</h2>
+    <table>
+      <tr><th>Pozycja</th><th>Cena</th><th>Co dostajesz</th></tr>
+      <tr><td>Wdrożenie #1 (Irys)</td><td>200 zł</td><td>Baza FAQ + panel edycji + jedna linijka wdrożenia</td></tr>
+      <tr><td>Kolejne wdrożenia</td><td>100 zł / klient</td><td>Baza pod jego stronę + plik + linijka (ten sam schemat)</td></tr>
+      <tr><td>Poprawki tekstów</td><td>w cenie</td><td>Zmiany odpowiedzi bez dotykania strony klienta</td></tr>
+    </table>
+    <p style="margin-top:14px" class="note">Przykładowa matematyka: 10 klientów = 200 zł + 9 × 100 zł = <strong>1100 zł</strong> wartości u Ciebie przy ~15 min pracy na klienta po Twojej stronie.</p>
+  </section>
+
+  <section>
+    <h2>Co może klient usłyszeć od bota?</h2>
+    <p>Bot odpowiada <strong>tylko z bazy tego klienta</strong> — jego godziny, jego cennik, jego telefon. Na pytanie, którego nie zna, pisze wprost, że nie zna odpowiedzi i kieruje do kontaktu (zgodnie z Twoim wymaganiem nr 1). Wszystkie pytania bez odpowiedzi lądują w skrzynce panelu — widać, czego klientom brakuje.</p>
+    <p style="margin-top:10px">Panel edycji (hasło znasz): <a href="chatbot-panel.html">chatbot-panel.html</a></p>
+  </section>
+
+  <footer>Strona partnerska · chatbot FAQ 24/7 · demo Irys + demo salon · 2026</footer>
+</body>
+</html>
