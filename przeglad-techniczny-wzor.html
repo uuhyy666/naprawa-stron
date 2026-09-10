@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Przegląd techniczny platformy — raport wzorcowy</title>
+<style>
+  :root{--ink:#15171c;--muted:#666c78;--line:#e4e6ea;--kryt:#c0392b;--wys:#d97706;--sred:#b8a600;--nisk:#4b7bec;--ok:#0f8a5f;}
+  *{box-sizing:border-box;}
+  body{margin:0;font:16px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Georgia,serif;color:var(--ink);background:#fff;}
+  .wrap{max-width:840px;margin:0 auto;padding:48px 22px 100px;}
+  .ramka{border:2px solid #f0c36d;background:#fffaf0;border-radius:10px;padding:16px 20px;margin:0 0 34px;font-size:15px;}
+  h1{font-size:30px;margin:0 0 4px;letter-spacing:-.01em;}
+  .sub{color:var(--muted);margin:0 0 6px;}
+  .meta{color:var(--muted);font-size:14px;border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:30px;}
+  h2{font-size:21px;margin:38px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line);}
+  h3{font-size:17px;margin:26px 0 6px;}
+  table{border-collapse:collapse;width:100%;font-size:15px;margin:14px 0;}
+  th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+  th{background:#f7f8fa;font-weight:600;}
+  .tag{display:inline-block;color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em;padding:2px 9px;border-radius:99px;text-transform:uppercase;}
+  .t-kryt{background:var(--kryt);} .t-wys{background:var(--wys);} .t-sred{background:var(--sred);} .t-nisk{background:var(--nisk);} .t-ok{background:var(--ok);}
+  .ust{border-left:4px solid var(--line);padding:2px 0 2px 16px;margin:20px 0;}
+  .ust.kryt{border-color:var(--kryt);} .ust.wys{border-color:var(--wys);} .ust.sred{border-color:var(--sred);} .ust.nisk{border-color:var(--nisk);}
+  .ust h3{margin-top:0;}
+  .etyk{color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.05em;margin-top:12px;}
+  pre{background:#f7f8fa;border:1px solid var(--line);border-radius:7px;padding:12px 14px;overflow:auto;font-size:13.5px;font-family:ui-monospace,Consolas,monospace;line-height:1.5;}
+  code{background:#f2f3f6;border-radius:4px;padding:1px 5px;font-size:14px;font-family:ui-monospace,Consolas,monospace;}
+  ul,ol{padding-left:22px;} li{margin:6px 0;}
+  .wnioski{background:#f7f8fa;border-radius:10px;padding:20px 24px;margin:18px 0;}
+  footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="ramka">
+  <b>Uczciwa uwaga o tym dokumencie.</b> To nie jest raport z realnego zlecenia dla klienta — nie mam
+  w portfolio due diligence, którego treść wolno mi pokazać. To <b>raport wzorcowy</b>: napisany po to,
+  żeby pokazać strukturę, głębokość analizy i sposób opisywania ustaleń, jakich mogą Państwo ode mnie
+  oczekiwać. Ustalenia dotyczą typowej platformy Next.js + PostgreSQL + Stripe i opisują błędy,
+  które w takich systemach spotyka się najczęściej. Wolę oddać coś prawdziwie napisanego z etykietą
+  „wzór" niż podpisać się pod cudzym raportem albo udawać historię, której nie mam.
+</div>
+
+<h1>Przegląd techniczny platformy „Klient A"</h1>
+<p class="sub">Ocena bezpieczeństwa, utrzymywalności i stanu bieżącego przed etapem skalowania</p>
+<div class="meta">
+  Zakres: Next.js 14 (App Router) · PostgreSQL 15 · Stripe (Checkout + webhooki) · integracje zewnętrzne<br>
+  Tryb: wyłącznie do odczytu, bez zmian w kodzie i na produkcji · Nakład: 50 h w dwóch etapach<br>
+  Odbiorca raportu: właściciel spółki · Wersja zanonimizowana
+</div>
+
+<h2>1. Streszczenie dla właściciela</h2>
+<div class="wnioski">
+  <p><b>Czy platforma jest bezpieczna tam, gdzie są pieniądze i dane?</b><br>
+  Częściowo. Sama płatność jest poprawnie oddelegowana do Stripe Checkout — dane kart nigdy nie
+  dotykają Państwa serwera i to dobra decyzja architektoniczna. Natomiast <b>potwierdzanie płatności
+  opiera się na powrocie użytkownika do aplikacji, a nie na webhooku</b> (ustalenie K-1). W praktyce
+  oznacza to, że zamówienie może zostać opłacone i nigdy nie zrealizowane, jeśli klient zamknie kartę
+  po zapłacie. Odwrotny scenariusz — realizacja bez płatności — jest przy obecnej konfiguracji mniej
+  prawdopodobny, ale nie wykluczony.</p>
+
+  <p><b>Czy da się ją utrzymać i odtworzyć bez autorów?</b><br>
+  Dziś nie w rozsądnym czasie. Kod jest czytelny, ale <b>nie istnieje odtwarzalny opis środowiska</b>
+  (ustalenie W-2): brakuje listy wymaganych zmiennych, opisu zależności zewnętrznych i procedury
+  postawienia systemu od zera. Odtworzenie produkcji przez nowy zespół oszacowałem na 3–5 dni pracy
+  z dostępem do infrastruktury, głównie na odgadywanie konfiguracji. Po wdrożeniu rekomendacji z
+  rozdziału 5 ten czas schodzi do kilku godzin.</p>
+
+  <p><b>Jaki jest stan na dziś?</b><br>
+  Platforma jest zdrowa jak na system zbudowany szybko i działający produkcyjnie. Nie znalazłem
+  śladów włamania, wycieku danych ani rażących zaniedbań. Znalazłem 2 ustalenia krytyczne, 3 wysokie,
+  5 średnich i 6 niskich. <b>Żadne z nich nie wymaga zatrzymania działalności</b>, ale dwa krytyczne
+  powinny zostać naprawione przed zwiększeniem ruchu, bo ich koszt rośnie proporcjonalnie do liczby
+  transakcji.</p>
+</div>
+
+<h2>2. Zestawienie ustaleń</h2>
+<table>
+<tr><th>Nr</th><th>Ustalenie</th><th>Waga</th><th>Obszar</th><th>Szacowany nakład naprawy</th></tr>
+<tr><td>K-1</td><td>Realizacja zamówienia zależna od powrotu użytkownika, webhook Stripe bez obsługi idempotencji</td><td><span class="tag t-kryt">krytyczne</span></td><td>Płatności</td><td>2–3 dni</td></tr>
+<tr><td>K-2</td><td>Brak izolacji danych między kontami na poziomie zapytań (autoryzacja tylko w warstwie UI)</td><td><span class="tag t-kryt">krytyczne</span></td><td>Bezpieczeństwo</td><td>4–6 dni</td></tr>
+<tr><td>W-1</td><td>Klucze API w zmiennych środowiskowych bez rotacji i bez rozdzielenia środowisk</td><td><span class="tag t-wys">wysokie</span></td><td>Bezpieczeństwo</td><td>1 dzień</td></tr>
+<tr><td>W-2</td><td>Brak odtwarzalnego opisu środowiska i procedury wdrożenia</td><td><span class="tag t-wys">wysokie</span></td><td>Utrzymanie</td><td>2 dni</td></tr>
+<tr><td>W-3</td><td>Kopie zapasowe bazy wykonywane, ale nigdy nie testowane odtworzeniem</td><td><span class="tag t-wys">wysokie</span></td><td>Ciągłość</td><td>1 dzień</td></tr>
+<tr><td>S-1…S-5</td><td>Brak indeksów na kolumnach filtrowanych, zapytania N+1 w panelu, logi bez korelacji, brak monitoringu błędów, migracje bez wersjonowania</td><td><span class="tag t-sred">średnie</span></td><td>Wydajność, utrzymanie</td><td>5–7 dni łącznie</td></tr>
+<tr><td>N-1…N-6</td><td>Zależności z zaległymi aktualizacjami, martwy kod, brak testów ścieżki płatności, niespójne nazewnictwo, brak README, TODO w kodzie produkcyjnym</td><td><span class="tag t-nisk">niskie</span></td><td>Jakość</td><td>ciągłe</td></tr>
+</table>
+
+<h2>3. Ustalenia krytyczne — szczegółowo</h2>
+
+<div class="ust kryt">
+<h3>K-1. Realizacja zamówienia zależy od powrotu użytkownika do aplikacji</h3>
+<div class="etyk">Co znalazłem</div>
+<p>Zamówienie zmienia status na opłacone w handlerze strony powrotu (<code>/checkout/success</code>),
+po odczytaniu identyfikatora sesji Stripe z adresu. Webhook <code>checkout.session.completed</code>
+istnieje, ale zapisuje wyłącznie log — nie zmienia stanu zamówienia. Handler nie sprawdza też,
+czy dane zdarzenie było już przetwarzane.</p>
+
+<div class="etyk">Dlaczego to jest krytyczne</div>
+<p>Dwa niezależne scenariusze:</p>
+<ul>
+  <li><b>Klient płaci, ale nie wraca</b> (zamyka kartę, traci zasięg, bank przekierowuje po 3D Secure z opóźnieniem)
+  — pieniądze pobrane, zamówienie w stanie „oczekuje", klient pisze reklamację. Przy obecnym wolumenie
+  to pojedyncze przypadki miesięcznie; po dziesięciokrotnym wzroście ruchu to codzienna obsługa ręczna.</li>
+  <li><b>Stripe dostarcza zdarzenie dwukrotnie</b> — co jest normalnym, udokumentowanym zachowaniem przy ponowieniach.
+  Gdy webhook zacznie realizować zamówienia bez klucza idempotencyjnego, powstaną duplikaty.</li>
+</ul>
+
+<div class="etyk">Dowód</div>
+<pre>// app/checkout/success/page.tsx  (fragment, zanonimizowany)
+const session = await stripe.checkout.sessions.retrieve(searchParams.session_id)
+if (session.payment_status === 'paid') {
+  await db.order.update({ where: { id: session.metadata.orderId },
+                          data: { status: 'PAID' } })   // ← jedyne miejsce zmiany statusu
+}
+
+// app/api/webhooks/stripe/route.ts  (fragment)
+case 'checkout.session.completed':
+  logger.info('checkout completed', { id: event.id })   // ← brak zmiany stanu
+  break</pre>
+
+<div class="etyk">Rekomendacja</div>
+<ol>
+  <li>Przenieść zmianę stanu zamówienia do webhooka; strona powrotu ma tylko pokazywać wynik.</li>
+  <li>Dodać tabelę <code>processed_events</code> z <code>event.id</code> jako kluczem głównym i przetwarzać
+  zdarzenie w transakcji z zapisem tego identyfikatora — powtórka nie zrobi wtedy nic.</li>
+  <li>Weryfikować podpis <code>stripe-signature</code> (obecnie weryfikowany poprawnie — to zostaje bez zmian).</li>
+  <li>Dodać zadanie okresowe wychwytujące zamówienia opłacone w Stripe, a niezrealizowane u Państwa — jako siatka bezpieczeństwa.</li>
+</ol>
+</div>
+
+<div class="ust kryt">
+<h3>K-2. Izolacja danych między kontami egzekwowana w interfejsie, nie w zapytaniach</h3>
+<div class="etyk">Co znalazłem</div>
+<p>Zapytania do bazy w kilku endpointach pobierają rekord po jego identyfikatorze, a przynależność do
+konta sprawdzana jest dopiero przy renderowaniu widoku. W trzech miejscach (eksport danych, pobranie
+faktury, szczegóły zamówienia) tej weryfikacji nie ma wcale — wystarczy podmienić identyfikator w adresie.</p>
+
+<div class="etyk">Dlaczego to jest krytyczne</div>
+<p>To najprostsza do wykorzystania klasa podatności: nie wymaga narzędzi, wystarczy zmiana cyfry w URL.
+Przy danych klientów i fakturach oznacza ryzyko naruszenia ochrony danych osobowych ze wszystkimi
+tego konsekwencjami, łącznie z obowiązkiem zgłoszenia.</p>
+
+<div class="etyk">Dowód</div>
+<pre>// app/api/invoices/[id]/route.ts  (fragment, zanonimizowany)
+const invoice = await db.invoice.findUnique({ where: { id: params.id } })
+return Response.json(invoice)        // ← brak filtra po organizationId</pre>
+<p>Sprawdzone wyłącznie przez lekturę kodu; zgodnie z ustaleniami nie wykonywałem żadnych zapytań
+do środowiska produkcyjnego.</p>
+
+<div class="etyk">Rekomendacja</div>
+<ol>
+  <li>Wprowadzić jedną warstwę dostępu do danych, w której każde zapytanie obowiązkowo przyjmuje
+  kontekst konta — tak, by pominięcie filtra było błędem kompilacji, a nie przeoczeniem.</li>
+  <li>Rozważyć Row Level Security w PostgreSQL jako drugą linię obrony niezależną od kodu aplikacji.</li>
+  <li>Dopisać testy, które próbują pobrać cudzy zasób i oczekują odpowiedzi 404 — to tanie i wychwytuje regresje.</li>
+</ol>
+</div>
+
+<h2>4. Czego nie sprawdzałem</h2>
+<p>Rzetelny raport mówi też, gdzie kończy się jego zasięg:</p>
+<ul>
+  <li>Nie prowadziłem testów penetracyjnych ani skanowania — zakres był wyłącznie do odczytu.</li>
+  <li>Nie oceniałem infrastruktury chmurowej poza konfiguracją widoczną w repozytorium.</li>
+  <li>Nie analizowałem zgodności z RODO od strony prawnej — wskazuję tylko miejsca techniczne, które na nią wpływają.</li>
+  <li>Nie weryfikowałem kodu integracji zewnętrznych po stronie dostawców.</li>
+</ul>
+
+<h2>5. Plan działania w kolejności</h2>
+<table>
+<tr><th>Kiedy</th><th>Co</th><th>Dlaczego w tej kolejności</th></tr>
+<tr><td>Najbliższe 2 tygodnie</td><td>K-1, K-2</td><td>Koszt obu rośnie wprost proporcjonalnie do ruchu; naprawa przed skalowaniem jest kilkukrotnie tańsza niż po.</td></tr>
+<tr><td>Miesiąc</td><td>W-1, W-2, W-3</td><td>Zdejmują zależność od autorów systemu i ryzyko utraty danych. W-2 jest warunkiem sensownego onboardingu nowego zespołu.</td></tr>
+<tr><td>Kwartał</td><td>S-1…S-5</td><td>Wydajność i obserwowalność — potrzebne, gdy ruch rośnie, ale nie blokują dziś.</td></tr>
+<tr><td>Na bieżąco</td><td>N-1…N-6</td><td>Higiena kodu, realizowana przy okazji innych prac.</td></tr>
+</table>
+
+<h2>6. Załączniki</h2>
+<ul>
+  <li>Załącznik A — pełna lista 16 ustaleń z lokalizacjami w kodzie (osobny plik, przekazywany kanałem uzgodnionym w NDA).</li>
+  <li>Załącznik B — mapa zależności zewnętrznych i wymaganych zmiennych środowiskowych, odtworzona z kodu.</li>
+  <li>Załącznik C — zapis dwóch spotkań i lista pytań, na które odpowiedzi nie udało się ustalić bez autorów systemu.</li>
+</ul>
+
+<footer>
+  Dokument wzorcowy przygotowany przez bartekdev_pl pod zlecenie 143681. Treść ustaleń oparta na
+  najczęstszych realnych problemach platform Next.js + PostgreSQL + Stripe; nazwy, fragmenty kodu
+  i liczby są przykładowe.
+</footer>
+</div>
+</body>
+</html>
