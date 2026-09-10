@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chatbot FAQ jako wtyczka WordPress — próbka kodu</title>
+<style>
+  :root { --accent:#2563eb; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; color:#111827; background:#f8fafc; }
+  .wrap { max-width:860px; margin:0 auto; padding:48px 20px 96px; }
+  h1 { font-size:32px; line-height:1.2; margin:0 0 8px; }
+  .lead { color:#4b5563; margin:0 0 32px; }
+  h2 { font-size:20px; margin:36px 0 12px; }
+  ul { padding-left:20px; }
+  li { margin:6px 0; }
+  code, pre { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:14px; }
+  pre { background:#0f172a; color:#e2e8f0; padding:16px; border-radius:8px; overflow:auto; }
+  .card { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:20px 24px; margin:16px 0; }
+  .btn { display:inline-block; background:var(--accent); color:#fff; text-decoration:none; padding:10px 18px; border-radius:8px; font-weight:600; }
+  .meta { color:#6b7280; font-size:14px; }
+  table { border-collapse:collapse; width:100%; font-size:15px; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid #e5e7eb; vertical-align:top; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Chatbot FAQ jako wtyczka WordPress</h1>
+  <p class="lead">Próbka kodu pod ogłoszenie „Full-Stack WordPress Developer z doświadczeniem w integracjach AI”.
+  Bez buildera, bez gotowca — wtyczka napisana od zera na hookach WP.</p>
+
+  <div class="card">
+    <p><strong>Bot działa na tej stronie.</strong> Kliknij dymek w prawym dolnym rogu i zapytaj np.
+    „ile kosztuje strona?”, a potem o coś spoza bazy — zobaczysz uczciwy fallback zamiast zmyślonej odpowiedzi.</p>
+    <p><a class="btn" href="wp-chatbot-faq.php">Pobierz kod wtyczki (PHP)</a></p>
+  </div>
+
+  <h2>Co jest w środku</h2>
+  <table>
+    <tr><th>Element WP</th><th>Zastosowanie</th></tr>
+    <tr><td><code>register_post_type( 'cbfaq_entry' )</code></td><td>Baza wiedzy jako CPT — redakcja edytuje pytania w kokpicie, nie w plikach. Pola dodatkowe przez <code>register_post_meta</code>, zgodne z ACF/ACF PRO.</td></tr>
+    <tr><td><code>Settings API</code></td><td>Ekran Ustawienia → Chatbot FAQ: powitanie, treść fallbacku, kolor akcentu. Sanityzacja każdego pola (<code>sanitize_hex_color</code>, <code>sanitize_text_field</code>).</td></tr>
+    <tr><td><code>wp_enqueue_script</code> + <code>wp_localize_script</code></td><td>Skrypt ładowany z wersją (cache busting), baza wiedzy podana inline — zero dodatkowych requestów na froncie.</td></tr>
+    <tr><td><code>register_rest_route</code></td><td>Endpoint <code>/cbfaq/v1/miss</code>: pytania bez odpowiedzi lądują w logu, z którego powstają kolejne wpisy FAQ.</td></tr>
+    <tr><td><code>register_block_type</code> + shortcode</td><td>Blok Gutenberga „Chatbot FAQ (inline)” do wstawienia bota w treść, obok wersji pływającej.</td></tr>
+    <tr><td><code>set_transient</code> / <code>save_post_*</code></td><td>Baza cache’owana na godzinę i unieważniana przy zapisie wpisu — bez narzutu na Core Web Vitals.</td></tr>
+  </table>
+
+  <h2>Wydajność i zgodność</h2>
+  <ul>
+    <li>Front to jeden plik JS ładowany w stopce, bez jQuery i bez zależności zewnętrznych.</li>
+    <li>Baza w <code>wp_localize_script</code> — brak blokującego fetcha przy pierwszym malowaniu (LCP/INP bez zmian).</li>
+    <li>Współpracuje z cache stron (WP Rocket / LiteSpeed): stan rozmowy trzymany po stronie przeglądarki.</li>
+    <li>Bez ciasteczek śledzących — nie wymaga zgody w Consent Mode v2.</li>
+  </ul>
+
+  <h2>Osadzenie poza WordPressem</h2>
+  <p>Ten sam silnik działa jako jedna linijka na dowolnej stronie HTML:</p>
+  <pre>&lt;script src="https://uuhyy666.github.io/naprawa-stron/chatbot.js" data-faq="faq.json"&gt;&lt;/script&gt;</pre>
+
+  <h2>Wdrożone i działające</h2>
+  <ul>
+    <li><a href="irys-demo.html">Kwiaciarnia Irys</a> — baza FAQ zbudowana z treści strony klienta (godziny, dostawa, adres, ceny).</li>
+    <li><a href="salon-demo.html">Salon fryzjerski</a> — ten sam silnik, inna branża.</li>
+    <li><a href="chatbot-panel.html">Panel edycji bazy</a> — wersja poza WP (hasło: chatbot2026).</li>
+  </ul>
+
+  <p class="meta">bartekdev_pl · próbka przygotowana pod zlecenie 144108</p>
+</div>
+
+<script src="chatbot.js" data-faq="faq.json"></script>
+</body>
+</html>
