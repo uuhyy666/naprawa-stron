@@ -79,6 +79,7 @@ footer{margin-top:40px;color:var(--mut);font-size:13px;border-top:1px solid var(
 </div>
 </header>
 
+<h2>Co naprawiam i ile to kosztuje</h2>
 <div class="grid">
 <div class="card"><h3>🐞 Naprawa błędów</h3><p>Wykrzaczone elementy, niedziałające linki, formularze, „biały ekran”, problemy po aktualizacji.</p><div class="price">od 80 zł</div></div>
 <div class="card"><h3>⚡ Przyspieszenie strony</h3><p>Strona ładuje się kilka sekund? Klienci uciekają. Optymalizuję zdjęcia, cache i kod — zwykle 2–5× szybciej.</p><div class="price">od 120 zł</div></div>
@@ -113,12 +114,12 @@ footer{margin-top:40px;color:var(--mut);font-size:13px;border-top:1px solid var(
 <div id="chat">
 <header><span class="dot"></span> Czat z programistą <small>odpowiedź w kilka minut</small></header>
 <div id="namebar">
-<input id="nameinput" placeholder="Twoje imię lub nazwa firmy" maxlength="60">
+<input id="nameinput" aria-label="Twoje imię lub nazwa firmy" placeholder="Twoje imię lub nazwa firmy" maxlength="60">
 <button id="namesave">OK</button>
 </div>
 <div id="msgs"></div>
 <form id="chatform">
-<input id="chattext" placeholder="Np. strona ładuje się 10 sekund…" autocomplete="off" maxlength="1500">
+<input id="chattext" aria-label="Treść wiadomości do programisty" placeholder="Np. strona ładuje się 10 sekund…" autocomplete="off" maxlength="1500">
 <button id="sendbtn" type="submit">➤</button>
 </form>
 </div>
