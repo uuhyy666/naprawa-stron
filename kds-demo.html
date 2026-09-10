@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KDS — ekran kuchenny, demo działające</title>
+<style>
+  :root{--bg:#0b1220;--card:#16203a;--line:#25324f;--ink:#e8eefc;--muted:#93a3c4;
+        --ok:#22c55e;--warn:#f59e0b;--late:#ef4444;--accent:#3b82f6;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;}
+  header{padding:14px 20px;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
+  h1{font-size:18px;margin:0;}
+  .sub{color:var(--muted);font-size:13px;}
+  .stations{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap;}
+  .st{padding:6px 12px;border:1px solid var(--line);border-radius:999px;cursor:pointer;font-size:13px;background:#111a2e;}
+  .st.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
+  .kpi{display:flex;gap:18px;padding:10px 20px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted);flex-wrap:wrap;}
+  .kpi b{color:var(--ink);}
+  .board{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;padding:18px 20px 60px;}
+  .tick{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--ok);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px;}
+  .tick.warn{border-top-color:var(--warn);}
+  .tick.late{border-top-color:var(--late);animation:puls 1.6s infinite;}
+  @keyframes puls{50%{box-shadow:0 0 0 3px rgba(239,68,68,.25);}}
+  .th{display:flex;justify-content:space-between;align-items:baseline;}
+  .nr{font-weight:700;font-size:17px;}
+  .typ{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);}
+  .timer{font-variant-numeric:tabular-nums;font-weight:700;}
+  .timer.warn{color:var(--warn);} .timer.late{color:var(--late);}
+  ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;}
+  li{background:#101a30;border-radius:6px;padding:7px 9px;font-size:14px;cursor:pointer;border:1px solid transparent;}
+  li.done{opacity:.45;text-decoration:line-through;border-color:var(--ok);}
+  li small{display:block;color:var(--muted);font-size:12px;text-decoration:none;}
+  .mods{color:#fca5a5;}
+  .acts{display:flex;gap:8px;margin-top:2px;}
+  button{flex:1;border:0;border-radius:7px;padding:9px;font-weight:600;cursor:pointer;font-size:13px;}
+  .b1{background:var(--accent);color:#fff;} .b2{background:#243352;color:var(--ink);}
+  .empty{color:var(--muted);padding:40px 20px;}
+  footer{padding:16px 20px 40px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);}
+  code{background:#101a30;padding:1px 5px;border-radius:4px;}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>KDS — ekran obsługi zamówień kuchennych</h1>
+    <div class="sub">Moduł do systemu POS · demo działa na żywo, liczniki idą realnie</div>
+  </div>
+  <div class="stations" id="stations"></div>
+</header>
+
+<div class="kpi" id="kpi"></div>
+<div class="board" id="board"></div>
+
+<footer>
+  Kliknij pozycję, żeby oznaczyć ją jako zrobioną; <b>Wydaj</b> zamyka bon i liczy czas przygotowania.
+  Kolor paska: zielony do <code>85%</code> normy czasowej, pomarańczowy powyżej, czerwony po przekroczeniu.
+  Nowe zamówienia dolatują automatycznie co kilkanaście sekund. bartekdev_pl · próbka pod zlecenie 144120
+</footer>
+
+<script>
+const STANOWISKA = ['wszystkie','grill','zimna kuchnia','frytkownica','bar','napoje'];
+const NORMA = { 'na miejscu': 12*60, 'na wynos': 8*60, 'dostawa': 10*60 }; // sekundy
+
+const MENU = [
+  { n:'Burger Classic',      st:'grill',          czas:7,  mods:['bez cebuli','+ bekon'] },
+  { n:'Burger Vege',         st:'grill',          czas:7,  mods:['sos ostry osobno'] },
+  { n:'Frytki duże',         st:'frytkownica',    czas:4,  mods:['+ ser'] },
+  { n:'Krążki cebulowe',     st:'frytkownica',    czas:5,  mods:[] },
+  { n:'Sałatka Cezar',       st:'zimna kuchnia',  czas:5,  mods:['bez grzanek'] },
+  { n:'Carpaccio',           st:'zimna kuchnia',  czas:6,  mods:[] },
+  { n:'Lemoniada',           st:'napoje',         czas:2,  mods:['bez lodu'] },
+  { n:'Espresso',            st:'napoje',         czas:2,  mods:[] },
+  { n:'Aperol',              st:'bar',            czas:3,  mods:['mniej słodki'] },
+  { n:'Piwo lane 0,5',       st:'bar',            czas:1,  mods:[] }
+];
+const TYPY = ['na miejscu','na wynos','dostawa'];
+
+let nrKolejny = 118;
+const bony = [];
+let filtr = 'wszystkie';
+
+function losowyBon(wiekSek){
+  const typ = TYPY[Math.floor(Math.random()*TYPY.length)];
+  const ile = 1 + Math.floor(Math.random()*3);
+  const poz = [];
+  for(let i=0;i<ile;i++){
+    const m = MENU[Math.floor(Math.random()*MENU.length)];
+    poz.push({
+      nazwa:m.n, st:m.st, ilosc:1+Math.floor(Math.random()*2),
+      mod: m.mods.length && Math.random()<0.5 ? m.mods[Math.floor(Math.random()*m.mods.length)] : null,
+      zrobione:false
+    });
+  }
+  return { nr:++nrKolejny, typ, stolik: typ==='na miejscu' ? 'stolik '+(1+Math.floor(Math.random()*14)) : (typ==='dostawa'?'kurier':'odbiór osobisty'),
+           start: Date.now() - wiekSek*1000, poz, wydany:false, czasRealizacji:null };
+}
+
+[420, 260, 140, 60, 20].forEach(w=>bony.push(losowyBon(w)));
+
+function sek(b){ return Math.floor((Date.now()-b.start)/1000); }
+function mmss(s){ const m=Math.floor(s/60), r=s%60; return m+':'+String(r).padStart(2,'0'); }
+function stan(b){ const n=NORMA[b.typ]; const s=sek(b); return s>n ? 'late' : (s > n*0.85 ? 'warn' : ''); }
+
+function render(){
+  document.getElementById('stations').innerHTML = STANOWISKA.map(s=>
+    `<div class="st ${filtr===s?'on':''}" data-st="${s}">${s}</div>`).join('');
+
+  const czynne = bony.filter(b=>!b.wydany);
+  const widoczne = czynne.filter(b=> filtr==='wszystkie' || b.poz.some(p=>p.st===filtr));
+  const wydane = bony.filter(b=>b.wydany);
+  const sredni = wydane.length ? Math.round(wydane.reduce((a,b)=>a+b.czasRealizacji,0)/wydane.length) : null;
+
+  document.getElementById('kpi').innerHTML =
+    `<div>Na ekranie: <b>${czynne.length}</b></div>
+     <div>Po normie czasu: <b style="color:${czynne.filter(b=>stan(b)==='late').length?'#ef4444':'inherit'}">${czynne.filter(b=>stan(b)==='late').length}</b></div>
+     <div>Wydane w tej sesji: <b>${wydane.length}</b></div>
+     <div>Średni czas przygotowania: <b>${sredni!==null?mmss(sredni):'—'}</b></div>
+     <div>Filtr stanowiska: <b>${filtr}</b></div>`;
+
+  document.getElementById('board').innerHTML = widoczne.length ? widoczne.map(b=>{
+    const s = stan(b);
+    const poz = b.poz.filter(p=> filtr==='wszystkie' || p.st===filtr);
+    return `<div class="tick ${s}">
+      <div class="th">
+        <div><span class="nr">#${b.nr}</span> <span class="typ">${b.typ} · ${b.stolik}</span></div>
+        <div class="timer ${s}">${mmss(sek(b))}</div>
+      </div>
+      <ul>${poz.map(p=>{
+        const idx=b.poz.indexOf(p);
+        return `<li class="${p.zrobione?'done':''}" data-b="${b.nr}" data-p="${idx}">
+          ${p.ilosc}× ${p.nazwa}
+          <small>${p.st}${p.mod?` · <span class="mods">${p.mod}</span>`:''}</small></li>`;
+      }).join('')}</ul>
+      <div class="acts">
+        <button class="b1" data-wydaj="${b.nr}">Wydaj</button>
+        <button class="b2" data-bump="${b.nr}">Odłóż na koniec</button>
+      </div>
+    </div>`;
+  }).join('') : '<div class="empty">Brak zamówień dla tego stanowiska.</div>';
+}
+
+document.addEventListener('click', e=>{
+  const st=e.target.closest('[data-st]'), li=e.target.closest('[data-b]'),
+        w=e.target.closest('[data-wydaj]'), bp=e.target.closest('[data-bump]');
+  if(st){ filtr=st.dataset.st; }
+  else if(li){ const b=bony.find(x=>x.nr==li.dataset.b); b.poz[li.dataset.p].zrobione=!b.poz[li.dataset.p].zrobione; }
+  else if(w){ const b=bony.find(x=>x.nr==w.dataset.wydaj); b.wydany=true; b.czasRealizacji=sek(b); }
+  else if(bp){ const i=bony.findIndex(x=>x.nr==bp.dataset.bump); bony.push(bony.splice(i,1)[0]); }
+  else return;
+  render();
+});
+
+setInterval(render, 1000);
+setInterval(()=>{ if(bony.filter(b=>!b.wydany).length < 9){ bony.push(losowyBon(0)); render(); } }, 16000);
+render();
+</script>
+</body>
+</html>
