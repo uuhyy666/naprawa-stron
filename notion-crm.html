@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRM w Notion — gotowa struktura do zaimportowania</title>
+<style>
+  body{margin:0;font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:#191919;background:#fff;}
+  .wrap{max-width:840px;margin:0 auto;padding:48px 20px 90px;}
+  h1{font-size:31px;margin:0 0 6px;letter-spacing:-.02em;}
+  .lead{color:#6b6b6b;margin:0 0 30px;}
+  h2{font-size:20px;margin:34px 0 10px;border-bottom:1px solid #ececec;padding-bottom:6px;}
+  ul,ol{padding-left:22px;} li{margin:6px 0;}
+  code{background:#f5f5f4;border-radius:4px;padding:1px 6px;font-size:14px;font-family:ui-monospace,Consolas,monospace;}
+  table{border-collapse:collapse;width:100%;font-size:15px;margin:10px 0 4px;}
+  th,td{border:1px solid #ececec;padding:7px 10px;text-align:left;vertical-align:top;}
+  th{background:#fafafa;font-weight:600;}
+  .files{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 6px;}
+  .files a{display:inline-block;border:1px solid #ddd;border-radius:8px;padding:9px 14px;text-decoration:none;color:#191919;font-size:15px;}
+  .files a:hover{background:#fafafa;}
+  .kropka{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle;}
+  .note{background:#fbf8f1;border:1px solid #f0e6d2;border-radius:8px;padding:14px 16px;margin:20px 0;font-size:15px;}
+  footer{color:#8b8b8b;font-size:13px;margin-top:40px;border-top:1px solid #ececec;padding-top:14px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>CRM w Notion — gotowa struktura</h1>
+<p class="lead">Cztery powiązane bazy, widoki sprzedażowe i automatyzacje. Pliki poniżej importuje się
+do Notion bez żadnego kodu — po imporcie CRM jest wypełniony przykładowymi danymi, więc od razu widać,
+jak działa. Próbka pod zlecenie 143750.</p>
+
+<h2>Pliki do zaimportowania</h2>
+<div class="files">
+  <a href="notion-crm/01-firmy.csv">01-firmy.csv</a>
+  <a href="notion-crm/02-kontakty.csv">02-kontakty.csv</a>
+  <a href="notion-crm/03-szanse.csv">03-szanse.csv</a>
+  <a href="notion-crm/04-zadania.csv">04-zadania.csv</a>
+</div>
+
+<h2>Import w 4 krokach</h2>
+<ol>
+  <li>W Notion: <code>Import</code> → <code>CSV</code> → wskaż <code>01-firmy.csv</code>. Powtórz dla pozostałych plików (kolejność ma znaczenie: firmy, kontakty, szanse, zadania).</li>
+  <li>W bazie <b>Kontakty</b> zamień typ kolumny <code>Firma</code> na <code>Relation</code> → wskaż bazę Firmy. Notion dopasuje wpisy po nazwie.</li>
+  <li>To samo w <b>Szansach</b> (kolumny <code>Firma</code>) i w <b>Zadaniach</b> (<code>Szansa</code>, <code>Firma</code>).</li>
+  <li>W bazie Firmy dodaj kolumnę <code>Rollup</code>: relacja Szanse → pole Wartość → <code>Sum</code>. To daje wartość klienta liczoną automatycznie.</li>
+</ol>
+
+<h2>Struktura</h2>
+
+<h3>Firmy</h3>
+<table>
+<tr><th>Pole</th><th>Typ</th><th>Po co</th></tr>
+<tr><td>Status</td><td>Select: Lead / Szansa / Klient / Utracony</td><td>Sekcje tablicy; jeden rzut oka na portfel</td></tr>
+<tr><td>Branża, Miasto</td><td>Select</td><td>Filtry i segmentacja kampanii</td></tr>
+<tr><td>NIP</td><td>Text</td><td>Klucz do faktur i do sprawdzenia w białej liście VAT</td></tr>
+<tr><td>Opiekun</td><td>Person</td><td>Kto odpowiada; podstawa widoku „moje firmy”</td></tr>
+<tr><td>Źródło</td><td>Select</td><td>Skąd przyszedł klient — po pół roku pokazuje, który kanał ma sens</td></tr>
+<tr><td>Wartość roczna</td><td>Rollup (suma z Szans)</td><td>Liczy się sama, nie trzeba pamiętać o aktualizacji</td></tr>
+</table>
+
+<h3>Kontakty</h3>
+<p>Osoby przypisane do firm, z rolą w decyzji (Decydent / Wpływowy / Użytkownik) i preferowanym kanałem.
+Rola w decyzji jest tu najważniejsza — bez niej handlowiec rozmawia miesiącami z kimś, kto nie podpisuje.</p>
+
+<h3>Szanse</h3>
+<table>
+<tr><th>Etap</th><th>Domyślne prawdopodobieństwo</th></tr>
+<tr><td><span class="kropka" style="background:#9b9a97"></span>Kwalifikacja</td><td>20%</td></tr>
+<tr><td><span class="kropka" style="background:#d9730d"></span>Oferta wysłana</td><td>50%</td></tr>
+<tr><td><span class="kropka" style="background:#dfab01"></span>Negocjacje</td><td>75%</td></tr>
+<tr><td><span class="kropka" style="background:#0f7b6c"></span>Wygrana</td><td>100%</td></tr>
+<tr><td><span class="kropka" style="background:#e03e3e"></span>Przegrana</td><td>0%</td></tr>
+</table>
+<p>Pole <code>Powód wygranej/przegranej</code> jest obowiązkowe przy zamknięciu — to jedyne miejsce w CRM,
+z którego po kwartale da się wyciągnąć wniosek, dlaczego deale przepadają.</p>
+
+<h3>Zadania</h3>
+<p>Każda otwarta szansa ma mieć dokładnie jeden następny krok z terminem. Widok <b>Po terminie</b>
+(filtr: Termin &lt; dziś, Status ≠ Zrobione) to codzienna lista handlowca.</p>
+
+<h2>Widoki, które warto od razu założyć</h2>
+<ul>
+  <li><b>Lejek</b> — tablica Szans po etapie, karty pokazują wartość i firmę.</li>
+  <li><b>Prognoza</b> — tabela z formułą <code>prop("Wartość") * prop("Prawdopodobieństwo") / 100</code>, grupowana po miesiącu zamknięcia.</li>
+  <li><b>Bez ruchu 14 dni</b> — filtr na dacie ostatniego kontaktu; tu widać deale, które po cichu umierają.</li>
+  <li><b>Moje na dziś</b> — zadania przypisane do mnie z terminem ≤ dziś.</li>
+  <li><b>Skuteczność źródeł</b> — Firmy grupowane po źródle, z sumą wygranych szans.</li>
+</ul>
+
+<h2>Automatyzacje (wbudowane w Notion, bez zewnętrznych narzędzi)</h2>
+<ul>
+  <li>Zmiana etapu szansy na <i>Wygrana</i> → status firmy zmienia się na <i>Klient</i>.</li>
+  <li>Utworzenie szansy → automatycznie powstaje zadanie „Pierwszy kontakt” z terminem +2 dni.</li>
+  <li>Zadanie po terminie → powiadomienie dla opiekuna.</li>
+</ul>
+
+<div class="note">
+  <b>Poza Notion, jeśli będzie potrzeba:</b> mam działający webhook, który wrzuca zdarzenia z zewnętrznych
+  systemów prosto do bazy Notion (<a href="webhook2notion.js">webhook2notion.js</a>) — tym samym sposobem
+  wpina się formularz ze strony, telefonię albo skrzynkę e-mail, żeby leady wpadały do CRM bez przepisywania ręcznie.
+</div>
+
+<footer>bartekdev_pl · struktura przygotowana pod zlecenie 143750 · pliki CSV gotowe do importu, dane przykładowe do podmiany</footer>
+</div>
+</body>
+</html>
