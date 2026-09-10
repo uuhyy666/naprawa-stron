@@ -1,0 +1,70 @@
+{
+  "wygenerowano": "2026-09-10T12:41:06.667Z",
+  "pobranych": 3,
+  "nowych": 3,
+  "zmienionych": 0,
+  "rekordy": [
+    {
+      "nazwa": "CD PROJEKT RED SPÓŁKA AKCYJNA",
+      "nip": "7342867148",
+      "regon": "49270733300000",
+      "krs": "0000006865",
+      "forma_prawna": "SPÓŁKA AKCYJNA",
+      "adres": {
+        "ulica": "JAGIELLOŃSKA 74",
+        "miejscowosc": "WARSZAWA",
+        "kod": "03-301",
+        "kraj": "POLSKA"
+      },
+      "adres_tekst": "JAGIELLOŃSKA 74, 03-301 WARSZAWA",
+      "pkd_glowne": {
+        "opis": "DZIAŁALNOŚĆ W ZAKRESIE PROGRAMOWANIA GIER KOMPUTEROWYCH",
+        "kodDzial": "62",
+        "kodKlasa": "10",
+        "kodPodklasa": "A"
+      },
+      "status_vat": "Czynny",
+      "data_rejestracji": "06.04.2001",
+      "zrodla": [
+        "KRS",
+        "MF-wykaz-VAT"
+      ],
+      "pobrano": "2026-09-10T12:41:04.715Z",
+      "hash": "0aade78e988e"
+    },
+    {
+      "nazwa": "MINISTERSTWO FINANSÓW",
+      "nip": "5260250274",
+      "regon": "000002217",
+      "krs": null,
+      "forma_prawna": null,
+      "adres": null,
+      "adres_tekst": "ŚWIĘTOKRZYSKA 12, 00-916 WARSZAWA",
+      "pkd_glowne": null,
+      "status_vat": "Czynny",
+      "data_rejestracji": null,
+      "zrodla": [
+        "MF-wykaz-VAT"
+      ],
+      "pobrano": "2026-09-10T12:41:05.502Z",
+      "hash": "2261a36e9753"
+    },
+    {
+      "nazwa": "GŁÓWNY URZĄD STATYSTYCZNY",
+      "nip": "5261040828",
+      "regon": "000331501",
+      "krs": null,
+      "forma_prawna": null,
+      "adres": null,
+      "adres_tekst": "ALEJA NIEPODLAGŁOŚCI 208, 00-925 WARSZAWA",
+      "pkd_glowne": null,
+      "status_vat": "Czynny",
+      "data_rejestracji": null,
+      "zrodla": [
+        "MF-wykaz-VAT"
+      ],
+      "pobrano": "2026-09-10T12:41:06.313Z",
+      "hash": "729fdd4a2b56"
+    }
+  ]
+}
