@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assessment z logiką warunkową i raportem — demo</title>
+<style>
+  :root{--ink:#1b1b1f;--muted:#6b7280;--line:#e6e6ec;--accent:#6d5bd0;--accent-soft:#efecfb;--bg:#faf9fc;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;}
+  .wrap{max-width:720px;margin:0 auto;padding:40px 20px 80px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:0 1px 2px rgba(16,16,40,.04);}
+  h1{font-size:26px;margin:0 0 6px;letter-spacing:-.01em;}
+  .lead{color:var(--muted);margin:0 0 24px;font-size:15px;}
+  .pasek{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:22px;}
+  .pasek i{display:block;height:100%;background:var(--accent);transition:width .3s;}
+  .krok{color:var(--muted);font-size:13px;margin-bottom:8px;}
+  h2{font-size:20px;margin:0 0 4px;line-height:1.35;}
+  .pod{color:var(--muted);font-size:14px;margin:0 0 18px;}
+  .opcje{display:flex;flex-direction:column;gap:10px;}
+  .opt{border:1px solid var(--line);border-radius:11px;padding:13px 15px;cursor:pointer;background:#fff;text-align:left;font:inherit;}
+  .opt:hover{border-color:var(--accent);background:var(--accent-soft);}
+  .opt.sel{border-color:var(--accent);background:var(--accent-soft);font-weight:600;}
+  textarea{width:100%;border:1px solid var(--line);border-radius:11px;padding:12px;font:inherit;min-height:92px;resize:vertical;}
+  .nav{display:flex;gap:10px;margin-top:22px;}
+  button.b{border:0;border-radius:10px;padding:11px 20px;font-weight:600;cursor:pointer;font-size:15px;}
+  .prim{background:var(--accent);color:#fff;}
+  .prim[disabled]{opacity:.4;cursor:not-allowed;}
+  .sec{background:#f1f0f6;color:var(--ink);}
+  /* wynik */
+  .wynik h3{margin:24px 0 8px;font-size:17px;}
+  .wymiar{margin:14px 0;}
+  .wymiar .top{display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px;}
+  .bar{height:9px;background:var(--line);border-radius:99px;overflow:hidden;}
+  .bar i{display:block;height:100%;border-radius:99px;}
+  .blok{background:var(--accent-soft);border-radius:12px;padding:16px 18px;margin:16px 0;}
+  .blok b{display:block;margin-bottom:4px;}
+  ul{padding-left:20px;margin:8px 0;} li{margin:5px 0;}
+  .cytat{border-left:3px solid var(--accent);padding-left:12px;color:var(--muted);font-style:italic;margin:10px 0;}
+  .stopka-demo{margin-top:26px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;}
+  .tech{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 26px;margin-top:22px;font-size:15px;}
+  .tech h3{margin:0 0 10px;font-size:16px;}
+  code{background:#f4f3f8;border-radius:4px;padding:1px 5px;font-size:13px;font-family:ui-monospace,Consolas,monospace;}
+  @media print{
+    body{background:#fff;} .tech,.nav,.stopka-demo{display:none;}
+    .card{border:0;box-shadow:none;padding:0;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="card" id="app"></div>
+
+<div class="tech">
+  <h3>Co to demo pokazuje (próbka pod zlecenie 143310)</h3>
+  <ul>
+    <li><b>Logika warunkowa</b> — pytanie 6 pojawia się tylko wtedy, gdy wcześniej wskazano, że praca kłóci się z wartościami; ścieżka użytkownika nie jest liniowa.</li>
+    <li><b>Scoring na czterech wymiarach</b> — każda odpowiedź ma wagi, wynik liczy się na bieżąco i normalizuje do procentów.</li>
+    <li><b>Raport personalizowany</b> — nagłówek profilu, interpretacja per wymiar, rekomendacje dobierane regułami, cytat z odpowiedzi otwartej wpleciony w treść.</li>
+    <li><b>Eksport do PDF</b> — przycisk „Pobierz raport PDF" (arkusz druku bez elementów interfejsu). W wersji produkcyjnej to samo generuje się po stronie serwera i idzie mailem.</li>
+    <li><b>Treści w osobnym pliku</b> — pytania, wagi i teksty interpretacji siedzą w jednym obiekcie <code>KONFIG</code> na górze skryptu; zmiana pytania czy progu to edycja danych, nie kodu. W wersji dla klienta ten sam plik obsługuje panel, więc zmiany robi się bez programisty.</li>
+    <li><b>Kolejne narzędzia w tym samym ekosystemie</b> — nowy assessment to nowy plik konfiguracji, silnik zostaje ten sam.</li>
+  </ul>
+</div>
+
+</div>
+
+<script>
+/* ====== KONFIGURACJA — w wersji dla klienta edytowalna z panelu, bez dotykania kodu ====== */
+const KONFIG = {
+  tytul: 'Mapa Tożsamości Zawodowej',
+  opis: 'Przykładowe narzędzie diagnostyczne — 7 pytań, ok. 3 minuty. Demo techniczne: metodologia i treści pochodzą od klienta.',
+  wymiary: {
+    kierunek:  { nazwa: 'Poczucie kierunku',        kolor: '#6d5bd0' },
+    wartosci:  { nazwa: 'Zgodność z wartościami',   kolor: '#0f9d76' },
+    sprawczosc:{ nazwa: 'Poczucie sprawczości',     kolor: '#d98324' },
+    energia:   { nazwa: 'Energia i regeneracja',    kolor: '#c9438f' }
+  },
+  pytania: [
+    { id:'q1', tekst:'Gdy myślisz o swojej pracy za trzy lata, co widzisz?',
+      pod:'Wybierz odpowiedź najbliższą temu, co czujesz dziś.',
+      opcje:[
+        { t:'Wyraźny obraz — wiem, dokąd zmierzam', w:{kierunek:3} },
+        { t:'Ogólny kierunek, bez szczegółów',      w:{kierunek:2} },
+        { t:'Kilka sprzecznych scenariuszy',        w:{kierunek:1} },
+        { t:'Pustkę — nie potrafię tego sobie wyobrazić', w:{kierunek:0} }
+      ] },
+    { id:'q2', tekst:'Jak często Twoja praca wymaga od Ciebie działania wbrew temu, co uważasz za słuszne?',
+      opcje:[
+        { t:'Praktycznie nigdy',       w:{wartosci:3} },
+        { t:'Sporadycznie',            w:{wartosci:2} },
+        { t:'Regularnie, w drobiazgach', w:{wartosci:1} },
+        { t:'Często i w istotnych sprawach', w:{wartosci:0}, flaga:'konflikt' }
+      ] },
+    { id:'q3', tekst:'W jakim stopniu decydujesz o tym, czym się zajmujesz w ciągu dnia?',
+      opcje:[
+        { t:'Sam/a ustalam priorytety',      w:{sprawczosc:3} },
+        { t:'Mam wpływ, ale w ramach narzuconych celów', w:{sprawczosc:2} },
+        { t:'Niewielki — dostaję zadania',   w:{sprawczosc:1} },
+        { t:'Żaden, reaguję na bieżące pilne sprawy', w:{sprawczosc:0} }
+      ] },
+    { id:'q4', tekst:'Jak się czujesz w niedzielę wieczorem?',
+      opcje:[
+        { t:'Spokojnie, czasem z ciekawością', w:{energia:3} },
+        { t:'Neutralnie',                      w:{energia:2} },
+        { t:'Z lekkim ściskiem',               w:{energia:1} },
+        { t:'Z wyraźnym napięciem lub lękiem', w:{energia:0} }
+      ] },
+    { id:'q5', tekst:'Co ostatnio dało Ci w pracy poczucie sensu?',
+      typ:'tekst',
+      pod:'Jedno–dwa zdania. Ten fragment pojawi się w Twoim raporcie.' },
+    { id:'q6', tekst:'Kiedy praca kłóci się z Twoimi wartościami, co zwykle robisz?',
+      warunek:'konflikt',
+      pod:'To pytanie pojawiło się, bo wcześniej wskazałeś/aś realny konflikt wartości.',
+      opcje:[
+        { t:'Nazywam problem i próbuję zmienić zasady gry', w:{sprawczosc:2, wartosci:1} },
+        { t:'Dostosowuję się i odkładam temat',             w:{wartosci:0} },
+        { t:'Wycofuję się i ograniczam zaangażowanie',      w:{energia:0, wartosci:0} }
+      ] },
+    { id:'q7', tekst:'Gdybyś miał/a zmienić jedną rzecz w swojej pracy, byłaby to:',
+      opcje:[
+        { t:'Cel — po co to robię',        w:{kierunek:1, wartosci:1} },
+        { t:'Zakres — czym się zajmuję',   w:{kierunek:1, sprawczosc:1} },
+        { t:'Tempo — ile tego jest',       w:{energia:1, sprawczosc:1} },
+        { t:'Ludzie — z kim pracuję',      w:{energia:1, wartosci:1} }
+      ] }
+  ],
+  interpretacje: {
+    wysoki: 'To Twój zasób. Warto świadomie na nim opierać kolejne decyzje zawodowe.',
+    sredni: 'Obszar stabilny, ale wrażliwy na obciążenie — łatwo go stracić przy dłuższym przeciążeniu.',
+    niski:  'Tu jest największa przestrzeń do pracy. Zmiana w tym obszarze da najwięcej odczuwalnej różnicy.'
+  },
+  rekomendacje: {
+    kierunek:  'Zapisz trzy scenariusze na najbliższe trzy lata i przy każdym jedno zdanie: co musiałoby być prawdą, żeby ten scenariusz się wydarzył.',
+    wartosci:  'Wypisz sytuacje z ostatniego miesiąca, w których poczułeś/aś rozdźwięk. Poszukaj wzorca — zwykle chodzi o jedną, powtarzalną zasadę.',
+    sprawczosc:'Wskaż jedną decyzję w tygodniu, którą możesz podjąć bez pytania kogokolwiek o zgodę, i podejmij ją.',
+    energia:   'Sprawdź, po których zadaniach masz więcej energii niż przed nimi. To one, a nie odpoczynek, najszybciej odbudowują zasoby.'
+  }
+};
+
+/* ====== SILNIK — ten sam dla każdego narzędzia w ekosystemie ====== */
+const stan = { i:0, odp:{}, flagi:new Set(), tekst:'' };
+const app = document.getElementById('app');
+
+function widoczne(){ return KONFIG.pytania.filter(p => !p.warunek || stan.flagi.has(p.warunek)); }
+
+function wyniki(){
+  const sum={}, max={};
+  for(const k in KONFIG.wymiary){ sum[k]=0; max[k]=0; }
+  for(const p of widoczne()){
+    if(!p.opcje) continue;
+    const najw={};
+    p.opcje.forEach(o=>{ for(const k in (o.w||{})) najw[k]=Math.max(najw[k]||0, o.w[k]); });
+    for(const k in najw) max[k]+=najw[k];
+    const wyb = stan.odp[p.id];
+    if(wyb!=null){ const w=p.opcje[wyb].w||{}; for(const k in w) sum[k]+=w[k]; }
+  }
+  const out={};
+  for(const k in KONFIG.wymiary) out[k] = max[k] ? Math.round(sum[k]/max[k]*100) : 0;
+  return out;
+}
+
+function render(){
+  const lista = widoczne();
+  if(stan.i >= lista.length) return raport();
+  const p = lista[stan.i];
+  const post = Math.round(stan.i/lista.length*100);
+  app.innerHTML = `
+    ${stan.i===0 ? `<h1>${KONFIG.tytul}</h1><p class="lead">${KONFIG.opis}</p>` : ''}
+    <div class="pasek"><i style="width:${post}%"></i></div>
+    <div class="krok">Pytanie ${stan.i+1} z ${lista.length}</div>
+    <h2>${p.tekst}</h2>
+    ${p.pod ? `<p class="pod">${p.pod}</p>` : ''}
+    ${p.typ==='tekst'
+      ? `<textarea id="txt" placeholder="Napisz kilka słów…">${stan.tekst}</textarea>`
+      : `<div class="opcje">${p.opcje.map((o,i)=>`<button class="opt ${stan.odp[p.id]===i?'sel':''}" data-i="${i}">${o.t}</button>`).join('')}</div>`}
+    <div class="nav">
+      ${stan.i>0 ? '<button class="b sec" id="wstecz">Wstecz</button>' : ''}
+      <button class="b prim" id="dalej" ${p.typ!=='tekst' && stan.odp[p.id]==null ? 'disabled':''}>
+        ${stan.i===lista.length-1 ? 'Pokaż wynik' : 'Dalej'}
+      </button>
+    </div>`;
+
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const idx=+b.dataset.i;
+    stan.odp[p.id]=idx;
+    const f=p.opcje[idx].flaga;
+    // flagi sterują logiką warunkową; przy zmianie odpowiedzi trzeba je przeliczyć
+    stan.flagi.delete('konflikt');
+    for(const q of KONFIG.pytania){ const w=stan.odp[q.id]; if(q.opcje && w!=null && q.opcje[w].flaga) stan.flagi.add(q.opcje[w].flaga); }
+    if(f) stan.flagi.add(f);
+    render();
+  });
+  const t=app.querySelector('#txt'); if(t) t.oninput=e=>stan.tekst=e.target.value;
+  const d=app.querySelector('#dalej'); if(d) d.onclick=()=>{ stan.i++; render(); };
+  const w=app.querySelector('#wstecz'); if(w) w.onclick=()=>{ stan.i--; render(); };
+}
+
+function poziom(v){ return v>=67?'wysoki':(v>=34?'sredni':'niski'); }
+
+function raport(){
+  const r = wyniki();
+  const posort = Object.keys(r).sort((a,b)=>r[b]-r[a]);
+  const mocny = posort[0], slaby = posort[posort.length-1];
+  const profil = r[mocny]-r[slaby] < 20
+    ? 'Profil wyrównany — żaden obszar nie dominuje'
+    : `Profil oparty na obszarze: ${KONFIG.wymiary[mocny].nazwa.toLowerCase()}`;
+
+  app.innerHTML = `
+  <div class="wynik">
+    <h1>${KONFIG.tytul} — Twój raport</h1>
+    <p class="lead">${profil}. Wynik wygenerowany ${new Date().toLocaleDateString('pl-PL')}.</p>
+
+    <h3>Wymiary</h3>
+    ${Object.keys(KONFIG.wymiary).map(k=>`
+      <div class="wymiar">
+        <div class="top"><span>${KONFIG.wymiary[k].nazwa}</span><b>${r[k]}%</b></div>
+        <div class="bar"><i style="width:${r[k]}%;background:${KONFIG.wymiary[k].kolor}"></i></div>
+        <div class="pod" style="margin:6px 0 0">${KONFIG.interpretacje[poziom(r[k])]}</div>
+      </div>`).join('')}
+
+    <div class="blok">
+      <b>Najmocniejszy obszar: ${KONFIG.wymiary[mocny].nazwa}</b>
+      ${KONFIG.rekomendacje[mocny]}
+    </div>
+    <div class="blok" style="background:#fdf1e7">
+      <b>Obszar do pracy: ${KONFIG.wymiary[slaby].nazwa}</b>
+      ${KONFIG.rekomendacje[slaby]}
+    </div>
+
+    ${stan.tekst.trim() ? `<h3>Twoje słowa o sensie pracy</h3><div class="cytat">„${stan.tekst.trim()}"</div>
+      <p class="pod">W wersji produkcyjnej ten fragment wraca do użytkownika po kilku tygodniach jako punkt odniesienia — to zwykle najmocniejszy element takiego narzędzia.</p>` : ''}
+
+    ${stan.flagi.has('konflikt') ? `<div class="blok" style="background:#fdecef"><b>Sygnał do uwagi</b>
+      Wskazałeś/aś realny konflikt wartości w pracy. Ten wynik warto omówić z kimś z zewnątrz — sam raport tego nie rozstrzygnie.</div>` : ''}
+
+    <div class="nav">
+      <button class="b prim" onclick="window.print()">Pobierz raport PDF</button>
+      <button class="b sec" onclick="location.reload()">Zacznij od nowa</button>
+    </div>
+    <div class="stopka-demo">
+      Demo techniczne. Treści, metodologia i interpretacje pochodzą od właściciela narzędzia —
+      tutaj są wypełniaczem pokazującym, jak działa silnik. bartekdev_pl
+    </div>
+  </div>`;
+}
+
+render();
+</script>
+</body>
+</html>
