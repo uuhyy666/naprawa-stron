@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Żelki dla dzieci — demo strony marki (próbka pod zlecenie 144176)</title>
+<meta name="description" content="Demo strony informacyjno-wizerunkowej marki suplementów dla dzieci: 3 produkty, wersje językowe, FAQ, gdzie kupić, baner cookies.">
+<style>
+  :root{
+    --ink:#1f2430; --muted:#6b7280; --line:#e8e6ef; --bg:#fffdf9;
+    --mint:#57c4a3; --berry:#f2789f; --sun:#f7b32b; --deep:#2b3a55;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:16px/1.65 "Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Arial,sans-serif;}
+  a{color:var(--deep);}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px;}
+
+  header{position:sticky;top:0;background:rgba(255,253,249,.94);backdrop-filter:blur(8px);
+         border-bottom:1px solid var(--line);z-index:50;}
+  .nav{display:flex;align-items:center;gap:18px;padding:12px 0;}
+  .logo{font-weight:800;font-size:19px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px;}
+  .logo span{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--sun),var(--berry));display:inline-block;}
+  nav.menu{display:flex;gap:16px;margin-left:auto;flex-wrap:wrap;}
+  nav.menu a{text-decoration:none;color:var(--ink);font-size:15px;padding:6px 2px;border-bottom:2px solid transparent;}
+  nav.menu a:hover,nav.menu a:focus-visible{border-color:var(--mint);}
+  .lang{display:flex;gap:4px;border:1px solid var(--line);border-radius:999px;padding:3px;}
+  .lang button{border:0;background:transparent;padding:5px 10px;border-radius:999px;cursor:pointer;font:inherit;font-size:13px;font-weight:600;color:var(--muted);}
+  .lang button[aria-pressed="true"]{background:var(--deep);color:#fff;}
+  .burger{display:none;border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 11px;cursor:pointer;font-size:15px;}
+
+  .hero{padding:56px 0 40px;display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;}
+  .hero h1{font-size:42px;line-height:1.1;margin:0 0 14px;letter-spacing:-.02em;}
+  .hero p{font-size:18px;color:var(--muted);margin:0 0 22px;}
+  .btn{display:inline-block;background:var(--deep);color:#fff;text-decoration:none;padding:13px 24px;border-radius:999px;font-weight:700;}
+  .btn.sec{background:#fff;color:var(--deep);border:2px solid var(--deep);margin-left:8px;}
+  .jars{display:flex;gap:14px;justify-content:center;}
+  .jar{width:96px;height:132px;border-radius:22px;display:grid;place-items:center;color:#fff;font-weight:800;
+       text-align:center;font-size:14px;line-height:1.25;box-shadow:0 12px 28px rgba(43,58,85,.14);padding:10px;}
+
+  section{padding:44px 0;border-top:1px solid var(--line);}
+  h2{font-size:27px;margin:0 0 6px;letter-spacing:-.01em;}
+  .lead{color:var(--muted);margin:0 0 24px;}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:10px;}
+  .card h3{margin:0;font-size:19px;}
+  .pill{align-self:flex-start;font-size:12px;font-weight:700;padding:4px 11px;border-radius:999px;color:#fff;}
+  .card ul{margin:4px 0 0;padding-left:18px;color:var(--muted);font-size:15px;}
+  .card .cta{margin-top:auto;display:flex;gap:8px;flex-wrap:wrap;}
+  .mini{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-size:14px;cursor:pointer;font-weight:600;}
+
+  details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:10px;}
+  details summary{cursor:pointer;font-weight:600;}
+  details p{color:var(--muted);margin:10px 0 0;}
+
+  .sklepy{display:flex;gap:12px;flex-wrap:wrap;}
+  .sklep{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 20px;text-decoration:none;font-weight:700;color:var(--ink);}
+  .sklep small{display:block;font-weight:400;color:var(--muted);font-size:13px;}
+
+  form{display:grid;gap:12px;max-width:520px;}
+  label{font-size:14px;font-weight:600;}
+  input,textarea{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:12px;font:inherit;background:#fff;}
+  .zgoda{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);font-weight:400;}
+  .zgoda input{width:auto;margin-top:3px;}
+  button.send{background:var(--mint);color:#08322a;border:0;border-radius:999px;padding:13px 24px;font-weight:800;cursor:pointer;font-size:15px;justify-self:start;}
+
+  footer{border-top:1px solid var(--line);padding:26px 0 60px;color:var(--muted);font-size:14px;}
+  footer a{color:var(--muted);margin-right:14px;}
+
+  /* modal karty produktu */
+  dialog{border:0;border-radius:20px;padding:0;max-width:620px;width:92%;box-shadow:0 30px 70px rgba(20,25,40,.28);}
+  dialog::backdrop{background:rgba(31,36,48,.5);}
+  .modal-in{padding:26px 28px 24px;}
+  .modal-in h3{margin:0 0 4px;font-size:23px;}
+  .zamknij{position:absolute;top:14px;right:16px;border:0;background:#f1f0f6;border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:16px;}
+  table.sklad{width:100%;border-collapse:collapse;font-size:14px;margin-top:12px;}
+  table.sklad th,table.sklad td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;}
+  table.sklad th{color:var(--muted);font-weight:600;}
+
+  /* cookies */
+  .cookies{position:fixed;left:16px;right:16px;bottom:16px;background:#fff;border:1px solid var(--line);
+           border-radius:18px;padding:18px 20px;box-shadow:0 18px 44px rgba(20,25,40,.18);z-index:100;display:none;}
+  .cookies.show{display:block;}
+  .cookies h4{margin:0 0 6px;font-size:16px;}
+  .cookies p{margin:0 0 12px;font-size:14px;color:var(--muted);}
+  .cookies .row{display:flex;gap:10px;flex-wrap:wrap;}
+  .cookies button{border-radius:999px;padding:10px 18px;border:1px solid var(--line);background:#fff;cursor:pointer;font-weight:700;font-size:14px;}
+  .cookies button.pri{background:var(--deep);color:#fff;border-color:var(--deep);}
+
+  .notka{background:#fff8ec;border:1px solid #f6dfae;border-radius:14px;padding:16px 20px;font-size:15px;}
+
+  @media(max-width:860px){
+    .hero{grid-template-columns:1fr;padding-top:32px;}
+    .hero h1{font-size:32px;}
+    .grid{grid-template-columns:1fr;}
+    nav.menu{display:none;width:100%;flex-direction:column;gap:6px;}
+    nav.menu.open{display:flex;}
+    .burger{display:block;margin-left:auto;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo"><span aria-hidden="true"></span> MISIO<b style="color:var(--berry)">VIT</b></div>
+    <button class="burger" aria-expanded="false" aria-controls="menu" id="burger">☰ Menu</button>
+    <nav class="menu" id="menu" aria-label="Główne">
+      <a href="#o-marce" data-i18n="nav_about">O marce</a>
+      <a href="#produkty" data-i18n="nav_products">Produkty</a>
+      <a href="#dla-dzieci" data-i18n="nav_kids">Dla dzieci</a>
+      <a href="#gdzie-kupic" data-i18n="nav_where">Gdzie kupić</a>
+      <a href="#faq">FAQ</a>
+      <a href="#kontakt" data-i18n="nav_contact">Kontakt</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Wybór języka">
+      <button data-lang="pl" aria-pressed="true">PL</button>
+      <button data-lang="en" aria-pressed="false">EN</button>
+      <button data-lang="de" aria-pressed="false">DE</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="hero">
+    <div>
+      <h1 data-i18n="hero_h1">Witaminy w żelkach, które dzieci lubią brać</h1>
+      <p data-i18n="hero_p">Trzy proste produkty, opracowane z dietetykiem dziecięcym. Bez sztucznych barwników, bez cukru dodanego, z jasnym składem na froncie opakowania.</p>
+      <a class="btn" href="#produkty" data-i18n="hero_cta">Zobacz produkty</a>
+      <a class="btn sec" href="#gdzie-kupic" data-i18n="hero_cta2">Gdzie kupić</a>
+    </div>
+    <div class="jars" aria-hidden="true">
+      <div class="jar" style="background:linear-gradient(160deg,var(--sun),#f59e42)">D3<br>+K2</div>
+      <div class="jar" style="background:linear-gradient(160deg,var(--berry),#e0568a)">Odporność</div>
+      <div class="jar" style="background:linear-gradient(160deg,var(--mint),#3aa789)">Omega‑3</div>
+    </div>
+  </div>
+
+  <section id="o-marce">
+    <h2 data-i18n="about_h">O marce</h2>
+    <p class="lead" data-i18n="about_p">Powstaliśmy, bo rodzice mają dość zgadywania, co jest w słoiczku. Każdy nasz produkt ma pełen skład, dawkowanie według wieku i informację, czego w nim nie ma.</p>
+  </section>
+
+  <section id="produkty">
+    <h2 data-i18n="prod_h">Produkty</h2>
+    <p class="lead" data-i18n="prod_p">Trzy pozycje na start. Kliknij „Szczegóły", żeby zobaczyć skład i dawkowanie.</p>
+    <div class="grid" id="produkty-grid"></div>
+  </section>
+
+  <section id="dla-dzieci">
+    <h2 data-i18n="kids_h">Materiały dla dzieci</h2>
+    <p class="lead" data-i18n="kids_p">Trzy zakładki edukacyjne — do druku i do zabawy, bez logowania i bez zbierania danych dziecka.</p>
+    <div class="grid">
+      <div class="card"><span class="pill" style="background:var(--sun)" data-i18n="kids_1_tag">kolorowanka</span><h3 data-i18n="kids_1_h">Skąd się bierze witamina D?</h3><p style="color:var(--muted);margin:0" data-i18n="kids_1_p">Historyjka obrazkowa o słońcu, spacerze i tym, dlaczego zimą potrzebujemy wsparcia.</p></div>
+      <div class="card"><span class="pill" style="background:var(--mint)" data-i18n="kids_2_tag">gra</span><h3 data-i18n="kids_2_h">Talerz pełen kolorów</h3><p style="color:var(--muted);margin:0" data-i18n="kids_2_p">Prosta gra planszowa do wydruku: składasz posiłek z pięciu kolorów warzyw i owoców.</p></div>
+      <div class="card"><span class="pill" style="background:var(--berry)" data-i18n="kids_3_tag">plakat</span><h3 data-i18n="kids_3_h">Mój dzienniczek witaminek</h3><p style="color:var(--muted);margin:0" data-i18n="kids_3_p">Kalendarz z naklejkami — dziecko samo zaznacza, kiedy wzięło swoją porcję.</p></div>
+    </div>
+  </section>
+
+  <section id="gdzie-kupic">
+    <h2 data-i18n="where_h">Gdzie kupić</h2>
+    <p class="lead" data-i18n="where_p">Nie prowadzimy sprzedaży na tej stronie. Produkty kupisz u naszych partnerów.</p>
+    <div class="sklepy">
+      <a class="sklep" href="#" rel="nofollow noopener">Apteka Przykładowa <small data-i18n="where_1">dostawa 24 h</small></a>
+      <a class="sklep" href="#" rel="nofollow noopener">Drogeria Demo <small data-i18n="where_2">odbiór w sklepie</small></a>
+      <a class="sklep" href="#" rel="nofollow noopener">Marketplace <small data-i18n="where_3">opinie kupujących</small></a>
+    </div>
+  </section>
+
+  <section id="faq">
+    <h2>FAQ</h2>
+    <div id="faq-lista"></div>
+  </section>
+
+  <section id="kontakt">
+    <h2 data-i18n="contact_h">Kontakt</h2>
+    <p class="lead" data-i18n="contact_p">Napisz do nas — odpowiadamy w dni robocze do 24 godzin.</p>
+    <form id="kontakt-form" novalidate>
+      <div>
+        <label for="imie" data-i18n="f_name">Imię</label>
+        <input id="imie" name="imie" autocomplete="given-name" required>
+      </div>
+      <div>
+        <label for="mail" data-i18n="f_mail">Adres e-mail</label>
+        <input id="mail" name="mail" type="email" autocomplete="email" required>
+      </div>
+      <div>
+        <label for="tresc" data-i18n="f_msg">Wiadomość</label>
+        <textarea id="tresc" name="tresc" rows="4" required></textarea>
+      </div>
+      <label class="zgoda"><input type="checkbox" id="rodo" required>
+        <span data-i18n="f_rodo">Zapoznałem się z informacją o przetwarzaniu danych i wyrażam zgodę na kontakt w sprawie mojego zapytania.</span></label>
+      <button class="send" type="submit" data-i18n="f_send">Wyślij wiadomość</button>
+      <p id="form-status" role="status" style="margin:0;font-size:14px;color:var(--mint);font-weight:700"></p>
+    </form>
+  </section>
+
+  <section>
+    <div class="notka">
+      <b>Uwaga merytoryczna, która odróżnia tę stronę od szablonu.</b> Suplement diety nie może być
+      reklamowany tak jak lek. Na stronie nie może paść ani jedno stwierdzenie sugerujące leczenie,
+      zapobieganie chorobie czy przyspieszanie zdrowienia, a oświadczenia zdrowotne wolno stosować
+      wyłącznie w brzmieniu dopuszczonym w unijnym rejestrze (rozporządzenie 1924/2006). Dlatego
+      w tekstach powyżej nie ma zdania „wzmacnia odporność" — jest nazwa produktu i skład.
+      Do tego dochodzi obowiązkowa informacja „suplement diety nie zastępuje zróżnicowanej diety",
+      zgłoszenie produktu do GIS oraz szczególna ostrożność w komunikacji kierowanej do dzieci.
+      Te rzeczy trzeba ustawić w treściach od pierwszego dnia — poprawianie ich po kontroli
+      jest znacznie droższe niż napisanie od razu poprawnie.
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <a href="#" data-i18n="foot_1">Regulamin</a>
+  <a href="#" data-i18n="foot_2">Polityka prywatności</a>
+  <a href="#" data-i18n="foot_3">Polityka cookies</a>
+  <span id="cookie-reset" style="cursor:pointer;text-decoration:underline" data-i18n="foot_4">Ustawienia cookies</span>
+  <p style="margin:14px 0 0" data-i18n="foot_note">Demo techniczne przygotowane pod zlecenie 144176. Marka, produkty i treści są fikcyjne. bartekdev_pl</p>
+</footer>
+
+<dialog id="modal">
+  <button class="zamknij" id="modal-x" aria-label="Zamknij">✕</button>
+  <div class="modal-in" id="modal-in"></div>
+</dialog>
+
+<div class="cookies" id="cookies" role="dialog" aria-live="polite" aria-label="Zgoda na pliki cookie">
+  <h4 data-i18n="ck_h">Pliki cookie</h4>
+  <p data-i18n="ck_p">Używamy plików niezbędnych do działania strony. Statystyki włączymy tylko za Twoją zgodą — możesz ją później zmienić w stopce.</p>
+  <div class="row">
+    <button class="pri" data-ck="all" data-i18n="ck_all">Akceptuję wszystkie</button>
+    <button data-ck="essential" data-i18n="ck_ess">Tylko niezbędne</button>
+  </div>
+</div>
+
+<script>
+/* ---------- dane produktów i FAQ (w wersji dla klienta: z CMS) ---------- */
+const PRODUKTY = [
+  { id:'d3k2', kolor:'var(--sun)', tag:{pl:'3+ lat',en:'ages 3+',de:'ab 3 Jahren'},
+    nazwa:{pl:'Żelki D3 + K2',en:'D3 + K2 gummies',de:'D3 + K2 Fruchtgummis'},
+    opis:{pl:'Witamina D3 z lanoliny i K2 MK-7, smak malinowy.',en:'Vitamin D3 and K2 MK-7, raspberry flavour.',de:'Vitamin D3 und K2 MK-7, Himbeergeschmack.'},
+    punkty:{pl:['bez cukru dodanego','bez sztucznych barwników','60 żelków = 60 dni'],
+            en:['no added sugar','no artificial colours','60 gummies = 60 days'],
+            de:['ohne Zuckerzusatz','ohne künstliche Farbstoffe','60 Stück = 60 Tage']},
+    sklad:[['Witamina D3','10 µg (200% RWS)'],['Witamina K2 MK-7','20 µg'],['Substancja słodząca','maltitol'],['Barwnik','koncentrat z buraka']] },
+  { id:'odpornosc', kolor:'var(--berry)', tag:{pl:'4+ lat',en:'ages 4+',de:'ab 4 Jahren'},
+    nazwa:{pl:'Żelki z czarnym bzem',en:'Elderberry gummies',de:'Holunder-Fruchtgummis'},
+    opis:{pl:'Ekstrakt z owoców czarnego bzu z witaminą C.',en:'Elderberry fruit extract with vitamin C.',de:'Holunderbeerextrakt mit Vitamin C.'},
+    punkty:{pl:['ekstrakt standaryzowany','smak jeżynowy','bez żelatyny wieprzowej'],
+            en:['standardised extract','blackberry flavour','no pork gelatine'],
+            de:['standardisierter Extrakt','Brombeergeschmack','ohne Schweinegelatine']},
+    sklad:[['Ekstrakt z czarnego bzu','150 mg'],['Witamina C','40 mg (50% RWS)'],['Pektyna','—']] },
+  { id:'omega', kolor:'var(--mint)', tag:{pl:'3+ lat',en:'ages 3+',de:'ab 3 Jahren'},
+    nazwa:{pl:'Żelki Omega-3',en:'Omega-3 gummies',de:'Omega-3 Fruchtgummis'},
+    opis:{pl:'Kwasy DHA i EPA z alg, bez rybiego posmaku.',en:'DHA and EPA from algae, no fishy aftertaste.',de:'DHA und EPA aus Algen, ohne Fischgeschmack.'},
+    punkty:{pl:['źródło roślinne (algi)','smak cytrynowy','odpowiednie dla wegetarian'],
+            en:['plant source (algae)','lemon flavour','suitable for vegetarians'],
+            de:['pflanzliche Quelle (Algen)','Zitronengeschmack','für Vegetarier geeignet']},
+    sklad:[['DHA','100 mg'],['EPA','50 mg'],['Olej z alg','—']] }
+];
+
+const FAQ = [
+  { q:{pl:'Od jakiego wieku można podawać?',en:'From what age can they be given?',de:'Ab welchem Alter?'},
+    a:{pl:'Każdy produkt ma podany wiek na karcie produktowej — od 3 lub 4 lat. Przy dzieciach poniżej 3. roku życia zawsze pytaj lekarza lub farmaceutę.',
+       en:'Each product states the age on its card — from 3 or 4 years. For children under 3, always ask a doctor or pharmacist.',
+       de:'Das Alter steht auf jeder Produktkarte — ab 3 oder 4 Jahren. Bei Kindern unter 3 Jahren immer den Arzt fragen.'} },
+  { q:{pl:'Czy żelki zawierają cukier?',en:'Do the gummies contain sugar?',de:'Enthalten die Fruchtgummis Zucker?'},
+    a:{pl:'Nie dodajemy cukru. Słodycz pochodzi z maltitolu, co jest zaznaczone w składzie na każdej karcie.',
+       en:'No added sugar. Sweetness comes from maltitol, listed in the ingredients on every card.',
+       de:'Kein Zuckerzusatz. Die Süße stammt aus Maltit, in jeder Zutatenliste angegeben.'} },
+  { q:{pl:'Gdzie kupię produkty?',en:'Where can I buy?',de:'Wo kann ich kaufen?'},
+    a:{pl:'U partnerów wymienionych w sekcji „Gdzie kupić". Nie prowadzimy sprzedaży bezpośredniej na tej stronie.',
+       en:'From the partners listed in the “Where to buy” section. We do not sell directly on this site.',
+       de:'Bei den Partnern im Abschnitt „Wo kaufen". Wir verkaufen nicht direkt über diese Seite.'} },
+  { q:{pl:'Czy to zastąpi zdrową dietę?',en:'Do they replace a healthy diet?',de:'Ersetzen sie eine gesunde Ernährung?'},
+    a:{pl:'Nie. Suplement diety nie zastępuje zróżnicowanej diety ani zdrowego trybu życia — to obowiązkowa informacja i traktujemy ją poważnie.',
+       en:'No. A food supplement does not replace a varied diet or a healthy lifestyle — this notice is mandatory and we mean it.',
+       de:'Nein. Ein Nahrungsergänzungsmittel ersetzt keine ausgewogene Ernährung — dieser Hinweis ist Pflicht.'} }
+];
+
+const I18N = {
+  pl:{}, // polski = treść w HTML
+  en:{ nav_about:'About', nav_products:'Products', nav_kids:'For kids', nav_where:'Where to buy', nav_contact:'Contact',
+       hero_h1:'Vitamin gummies children actually want to take',
+       hero_p:'Three simple products developed with a paediatric dietitian. No artificial colours, no added sugar, full ingredient list on the front.',
+       hero_cta:'See products', hero_cta2:'Where to buy',
+       about_h:'About the brand', about_p:'We started because parents are tired of guessing what is in the jar. Every product shows the full composition, age-based dosage and what it does not contain.',
+       prod_h:'Products', prod_p:'Three items to start with. Click “Details” for composition and dosage.',
+       kids_h:'Materials for kids', kids_p:'Three educational sections — printable, no login, no data collected from children.',
+       kids_1_tag:'colouring', kids_1_h:'Where does vitamin D come from?', kids_1_p:'A picture story about the sun, a walk and why winter needs support.',
+       kids_2_tag:'game', kids_2_h:'A plate full of colours', kids_2_p:'A printable board game: build a meal from five colours of fruit and vegetables.',
+       kids_3_tag:'poster', kids_3_h:'My vitamin diary', kids_3_p:'A sticker calendar — the child marks each day they took their portion.',
+       where_h:'Where to buy', where_p:'We do not sell on this site. You can buy from our partners.',
+       where_1:'24 h delivery', where_2:'in-store pickup', where_3:'buyer reviews',
+       contact_h:'Contact', contact_p:'Write to us — we reply within 24 hours on working days.',
+       f_name:'First name', f_mail:'E-mail address', f_msg:'Message',
+       f_rodo:'I have read the data processing notice and agree to be contacted about my enquiry.', f_send:'Send message',
+       foot_1:'Terms', foot_2:'Privacy policy', foot_3:'Cookie policy', foot_4:'Cookie settings',
+       foot_note:'Technical demo prepared for job 144176. Brand, products and content are fictional. bartekdev_pl',
+       ck_h:'Cookies', ck_p:'We use cookies necessary for the site to work. Analytics only with your consent — you can change it later in the footer.',
+       ck_all:'Accept all', ck_ess:'Essential only' },
+  de:{ nav_about:'Über uns', nav_products:'Produkte', nav_kids:'Für Kinder', nav_where:'Wo kaufen', nav_contact:'Kontakt',
+       hero_h1:'Vitamin-Fruchtgummis, die Kinder gern nehmen',
+       hero_p:'Drei einfache Produkte, entwickelt mit einer Kinderernährungsberaterin. Ohne künstliche Farbstoffe, ohne Zuckerzusatz, volle Zutatenliste auf der Vorderseite.',
+       hero_cta:'Produkte ansehen', hero_cta2:'Wo kaufen',
+       about_h:'Über die Marke', about_p:'Wir sind gestartet, weil Eltern es satt haben zu raten, was im Glas ist. Jedes Produkt zeigt die volle Zusammensetzung, die Dosierung nach Alter und was nicht enthalten ist.',
+       prod_h:'Produkte', prod_p:'Drei Produkte zum Start. Klicken Sie auf „Details" für Zusammensetzung und Dosierung.',
+       kids_h:'Material für Kinder', kids_p:'Drei Lernbereiche — zum Ausdrucken, ohne Login, ohne Datenerfassung bei Kindern.',
+       kids_1_tag:'Ausmalbild', kids_1_h:'Woher kommt Vitamin D?', kids_1_p:'Eine Bildgeschichte über Sonne, Spaziergang und den Winter.',
+       kids_2_tag:'Spiel', kids_2_h:'Ein Teller voller Farben', kids_2_p:'Ein Brettspiel zum Ausdrucken: eine Mahlzeit aus fünf Farben zusammenstellen.',
+       kids_3_tag:'Poster', kids_3_h:'Mein Vitamin-Tagebuch', kids_3_p:'Ein Aufkleberkalender — das Kind markiert selbst jeden Tag.',
+       where_h:'Wo kaufen', where_p:'Wir verkaufen nicht über diese Seite. Erhältlich bei unseren Partnern.',
+       where_1:'Lieferung in 24 h', where_2:'Abholung im Geschäft', where_3:'Käuferbewertungen',
+       contact_h:'Kontakt', contact_p:'Schreiben Sie uns — Antwort an Werktagen innerhalb von 24 Stunden.',
+       f_name:'Vorname', f_mail:'E-Mail-Adresse', f_msg:'Nachricht',
+       f_rodo:'Ich habe die Datenschutzhinweise gelesen und stimme der Kontaktaufnahme zu.', f_send:'Nachricht senden',
+       foot_1:'AGB', foot_2:'Datenschutz', foot_3:'Cookie-Richtlinie', foot_4:'Cookie-Einstellungen',
+       foot_note:'Technische Demo für Auftrag 144176. Marke, Produkte und Inhalte sind fiktiv. bartekdev_pl',
+       ck_h:'Cookies', ck_p:'Wir verwenden notwendige Cookies. Statistiken nur mit Ihrer Zustimmung — später im Footer änderbar.',
+       ck_all:'Alle akzeptieren', ck_ess:'Nur notwendige' }
+};
+
+let jezyk = 'pl';
+const oryginaly = {};
+document.querySelectorAll('[data-i18n]').forEach(el => oryginaly[el.dataset.i18n] = el.textContent);
+
+function rysujProdukty(){
+  document.getElementById('produkty-grid').innerHTML = PRODUKTY.map(p=>`
+    <article class="card">
+      <span class="pill" style="background:${p.kolor}">${p.tag[jezyk]}</span>
+      <h3>${p.nazwa[jezyk]}</h3>
+      <p style="color:var(--muted);margin:0">${p.opis[jezyk]}</p>
+      <ul>${p.punkty[jezyk].map(x=>`<li>${x}</li>`).join('')}</ul>
+      <div class="cta">
+        <button class="mini" data-prod="${p.id}">${jezyk==='pl'?'Szczegóły':(jezyk==='en'?'Details':'Details')}</button>
+        <a class="mini" href="#gdzie-kupic" style="text-decoration:none">${jezyk==='pl'?'Gdzie kupić':(jezyk==='en'?'Where to buy':'Wo kaufen')}</a>
+      </div>
+    </article>`).join('');
+}
+
+function rysujFaq(){
+  document.getElementById('faq-lista').innerHTML = FAQ.map(f=>`
+    <details><summary>${f.q[jezyk]}</summary><p>${f.a[jezyk]}</p></details>`).join('');
+}
+
+function ustawJezyk(l){
+  jezyk = l;
+  document.documentElement.lang = l;
+  document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.lang===l)));
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k = el.dataset.i18n;
+    el.textContent = (l==='pl') ? oryginaly[k] : (I18N[l][k] || oryginaly[k]);
+  });
+  rysujProdukty(); rysujFaq();
+}
+
+document.querySelector('.lang').addEventListener('click', e=>{
+  const b = e.target.closest('[data-lang]'); if(b) ustawJezyk(b.dataset.lang);
+});
+
+/* karta produktu w modalu */
+const modal = document.getElementById('modal');
+document.addEventListener('click', e=>{
+  const b = e.target.closest('[data-prod]'); if(!b) return;
+  const p = PRODUKTY.find(x=>x.id===b.dataset.prod);
+  document.getElementById('modal-in').innerHTML = `
+    <span class="pill" style="background:${p.kolor}">${p.tag[jezyk]}</span>
+    <h3>${p.nazwa[jezyk]}</h3>
+    <p style="color:var(--muted)">${p.opis[jezyk]}</p>
+    <table class="sklad"><thead><tr><th>${jezyk==='de'?'Zutat':(jezyk==='en'?'Ingredient':'Składnik')}</th><th>${jezyk==='de'?'Menge':(jezyk==='en'?'Amount':'Zawartość')}</th></tr></thead>
+    <tbody>${p.sklad.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</tbody></table>
+    <p style="font-size:13px;color:var(--muted);margin-top:14px">${
+      jezyk==='de' ? 'Nahrungsergänzungsmittel ersetzen keine ausgewogene Ernährung und gesunde Lebensweise.' :
+      jezyk==='en' ? 'A food supplement does not replace a varied diet and a healthy lifestyle.' :
+      'Suplement diety nie zastępuje zróżnicowanej diety i zdrowego trybu życia.'}</p>`;
+  modal.showModal();
+});
+document.getElementById('modal-x').onclick = ()=> modal.close();
+
+/* formularz — walidacja po stronie klienta, bez wysyłki w demo */
+document.getElementById('kontakt-form').addEventListener('submit', e=>{
+  e.preventDefault();
+  const f = e.target, st = document.getElementById('form-status');
+  if(!f.checkValidity()){ f.reportValidity(); return; }
+  st.textContent = jezyk==='de' ? 'Danke! (Demo — es wird nichts gesendet.)'
+                 : jezyk==='en' ? 'Thank you! (Demo — nothing is actually sent.)'
+                 : 'Dziękujemy! (To demo — wiadomość nie jest nigdzie wysyłana.)';
+  f.reset();
+});
+
+/* cookies — zgoda zapisywana lokalnie, statystyki dopiero po zgodzie */
+const ck = document.getElementById('cookies');
+function pokazCookies(){ ck.classList.add('show'); }
+if(!localStorage.getItem('ck_zgoda')) pokazCookies();
+ck.addEventListener('click', e=>{
+  const b = e.target.closest('[data-ck]'); if(!b) return;
+  localStorage.setItem('ck_zgoda', b.dataset.ck);
+  ck.classList.remove('show');
+  if(b.dataset.ck === 'all') console.log('[demo] zgoda na statystyki — tutaj ładowałby się skrypt analityczny');
+});
+document.getElementById('cookie-reset').onclick = ()=>{ localStorage.removeItem('ck_zgoda'); pokazCookies(); };
+
+/* menu mobilne */
+const burger = document.getElementById('burger');
+burger.onclick = ()=>{ const m=document.getElementById('menu'); const o=m.classList.toggle('open'); burger.setAttribute('aria-expanded', String(o)); };
+
+rysujProdukty(); rysujFaq();
+</script>
+</body>
+</html>
