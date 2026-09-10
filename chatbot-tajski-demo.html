@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bot sprzedażowy po tajsku — demo scenariusza Messenger</title>
+<style>
+  body{margin:0;font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:#111827;background:#f8fafc;}
+  .wrap{max-width:820px;margin:0 auto;padding:44px 20px 90px;}
+  h1{font-size:29px;margin:0 0 6px;}
+  .lead{color:#4b5563;margin:0 0 26px;}
+  h2{font-size:19px;margin:32px 0 10px;}
+  .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px 22px;margin:14px 0;}
+  ol,ul{padding-left:20px;} li{margin:7px 0;}
+  .th{font-size:17px;}
+  .krok{display:grid;grid-template-columns:26px 1fr;gap:12px;margin:14px 0;}
+  .num{width:26px;height:26px;border-radius:50%;background:#111827;color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;}
+  .bot,.user{padding:9px 13px;border-radius:14px;margin:6px 0;max-width:86%;}
+  .bot{background:#eef2ff;}
+  .user{background:#111827;color:#fff;margin-left:auto;}
+  .pl{color:#6b7280;font-size:13px;margin:2px 0 10px;}
+  .uwaga{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:14px 18px;margin:22px 0;}
+  footer{color:#6b7280;font-size:13px;margin-top:36px;border-top:1px solid #e5e7eb;padding-top:14px;}
+  a{color:#1d4ed8;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Bot sprzedażowy po tajsku — scenariusz i działający silnik</h1>
+<p class="lead">Próbka pod zlecenie 143323: bot w Messengerze odpowiada po tajsku na pytania o kurs
+angielskiego i doprowadza do płatności PromptPay. Poniżej pełny scenariusz rozmowy oraz ten sam bot
+uruchomiony na żywo — dymek w prawym dolnym rogu, można z nim pogadać po tajsku już teraz.</p>
+
+<div class="card">
+  <b>Sprawdź na żywo:</b> kliknij dymek 💬 i wpisz np. <span class="th">ราคาเท่าไหร่</span> (ile kosztuje),
+  <span class="th">จ่ายเงินยังไง</span> (jak zapłacić) albo <span class="th">สมัครยังไง</span> (jak się zapisać).
+  Zapytaj też o coś spoza zakresu — bot przyzna, że nie wie, i poprosi o kontakt, zamiast zmyślać.
+</div>
+
+<h2>Scenariusz sprzedażowy: od pytania do zapłaty</h2>
+
+<div class="krok"><div class="num">1</div><div>
+  <b>Powitanie i kwalifikacja.</b> Bot pyta, co interesuje rozmówcę: cena, terminy czy sposób zapisu.
+  <div class="bot th">สวัสดีค่ะ ยินดีต้อนรับสู่คอร์สภาษาอังกฤษออนไลน์สำหรับคนไทยค่ะ อยากทราบเรื่องไหนคะ ราคา ตารางเรียน หรือวิธีสมัคร</div>
+  <div class="pl">Dzień dobry, witamy w kursie angielskiego online dla Tajów. Co Panią/Pana interesuje: cena, terminy czy sposób zapisu?</div>
+</div></div>
+
+<div class="krok"><div class="num">2</div><div>
+  <b>Odpowiedź na pytanie o cenę — z opcją wejścia małym krokiem.</b>
+  <div class="user th">ราคาเท่าไหร่คะ</div>
+  <div class="bot th">คอร์สเต็ม 12 สัปดาห์ ราคา 2,900 บาท ชำระครั้งเดียว ไม่มีค่าใช้จ่ายแอบแฝง ถ้าอยากลองก่อน มีคอร์สทดลอง 2 สัปดาห์ 590 บาทค่ะ</div>
+  <div class="pl">Kurs pełny 12 tygodni: 2 900 THB, jednorazowo, bez ukrytych kosztów. Kto woli spróbować — kurs próbny 2 tygodnie za 590 THB.</div>
+</div></div>
+
+<div class="krok"><div class="num">3</div><div>
+  <b>Zbicie obaw.</b> Zwrot kosztów w 14 dni, nauczyciele native z certyfikatem, test poziomujący, certyfikat na koniec —
+  bot ma te odpowiedzi gotowe, bo to pytania, które padają przed każdą decyzją o zakupie.
+</div></div>
+
+<div class="krok"><div class="num">4</div><div>
+  <b>Przejście do płatności PromptPay.</b>
+  <div class="user th">จ่ายเงินยังไงคะ</div>
+  <div class="bot th">ชำระผ่าน PromptPay ได้เลยค่ะ กดลิงก์ที่ระบบส่งให้ สแกน QR ในแอปธนาคาร แล้วระบบจะยืนยันอัตโนมัติ</div>
+  <div class="pl">Płatność przez PromptPay: link → skan kodu QR w aplikacji bankowej → automatyczne potwierdzenie.
+  W Messengerze to przycisk „ชำระเงิน / Zapłać" pod wiadomością, nie goły link — konwersja jest wyraźnie wyższa.</div>
+</div></div>
+
+<div class="krok"><div class="num">5</div><div>
+  <b>Potwierdzenie i dostęp.</b> Po opłaceniu webhook bramki wysyła wiadomość z dostępem do kursu,
+  a rozmowa zostaje oznaczona jako sprzedaż. Nieopłacone koszyki dostają jedno przypomnienie po 24 h.
+</div></div>
+
+<h2>Jak to wygląda technicznie</h2>
+<ul>
+  <li>Aplikacja Facebook + strona (Page) → webhook <code>messages</code> i <code>messaging_postbacks</code>, token strony, weryfikacja podpisu żądań.</li>
+  <li>Warstwa odpowiedzi: najpierw dopasowanie do bazy pytań (tanie, powtarzalne, bez halucynacji), model dopiero dla pytań nietypowych.</li>
+  <li>Przyciski szybkich odpowiedzi po tajsku zamiast wpisywania z klawiatury — mniej tarcia na telefonie.</li>
+  <li>Płatność: PromptPay przez bramkę obsługującą wypłatę do banku w Polsce (np. Omise/2C2P — do potwierdzenia, która przyjmie polskiego odbiorcę), webhook potwierdzenia i automatyczna wiadomość z dostępem.</li>
+  <li>Panel do edycji odpowiedzi bez programisty — te same treści zmienia się w jednym miejscu.</li>
+  <li>Przekazanie rozmowy do człowieka, gdy klient prosi o kontakt lub bot dwa razy nie zna odpowiedzi.</li>
+</ul>
+
+<div class="uwaga">
+  <b>Uczciwie o tajskim.</b> Teksty powyżej napisałem tak, żeby brzmiały naturalnie i uprzejmie
+  (z końcówką <span class="th">ค่ะ</span>), ale nie jestem native speakerem. W wycenie zakładam
+  jedną korektę przez Taja przed uruchomieniem — to koszt kilkudziesięciu złotych, a decyduje o zaufaniu
+  w pierwszym zdaniu, dokładnie jak napisano w zleceniu. Nie będę udawał, że AI załatwia to bez sprawdzenia.
+</div>
+
+<h2>Ten sam silnik działa też na stronie WWW</h2>
+<p>Bot poniżej to ta sama baza pytań osadzona jedną linijką kodu — na stronie kursu może stać obok wersji
+messengerowej i zbierać pytania osób, które nie chcą pisać na Facebooku.
+Inne wdrożenia: <a href="irys-demo.html">kwiaciarnia</a>, <a href="salon-demo.html">salon fryzjerski</a>,
+<a href="wp-chatbot-faq.html">wtyczka WordPress</a>.</p>
+
+<footer>bartekdev_pl · demo przygotowane pod zlecenie 143323 · baza pytań: <a href="faq-th.json">faq-th.json</a></footer>
+</div>
+
+<script>
+  window.ChatBotConfig = { title: 'แชทกับเรา', hello: 'สวัสดีค่ะ ถามได้เลยค่ะ 😊' };
+</script>
+<script src="chatbot.js" data-faq="faq-th.json"></script>
+</body>
+</html>
