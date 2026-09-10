@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>arixo.pl — pomiar strony głównej, 10.09.2026</title>
+<style>
+  body{margin:0;font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:#14161a;background:#fbfbfc;}
+  .wrap{max-width:800px;margin:0 auto;padding:44px 20px 90px;}
+  h1{font-size:27px;margin:0 0 4px;}
+  .sub{color:#666e7a;margin:0 0 8px;}
+  .meta{color:#666e7a;font-size:14px;border-bottom:2px solid #14161a;padding-bottom:14px;margin-bottom:28px;}
+  h2{font-size:19px;margin:32px 0 10px;padding-bottom:5px;border-bottom:1px solid #e5e7ea;}
+  table{border-collapse:collapse;width:100%;font-size:15px;margin:12px 0;}
+  th,td{border:1px solid #e5e7ea;padding:8px 11px;text-align:left;vertical-align:top;}
+  th{background:#f5f6f8;font-weight:600;}
+  .zle{color:#c0392b;font-weight:600;}
+  .ok{color:#0f8a5f;font-weight:600;}
+  .uwaga{color:#b8860b;font-weight:600;}
+  ul{padding-left:21px;} li{margin:6px 0;}
+  .box{background:#fff;border:1px solid #e5e7ea;border-radius:11px;padding:18px 22px;margin:16px 0;}
+  code{background:#f2f3f6;border-radius:4px;padding:1px 5px;font-size:14px;font-family:ui-monospace,Consolas,monospace;}
+  footer{margin-top:40px;padding-top:14px;border-top:1px solid #e5e7ea;color:#666e7a;font-size:13px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>arixo.pl — pomiar strony głównej</h1>
+<p class="sub">Zrobiony przed złożeniem oferty, na żywej stronie, nie z domysłów</p>
+<div class="meta">Data pomiaru: 10.09.2026, godz. 16:58 · Metoda: pomiar w przeglądarce (Performance API + analiza DOM) · Platforma: WebWave</div>
+
+<div class="box">
+  <b>Krótko:</b> strona ładuje się szybko (dokument gotowy w 0,5 s) i ma poprawny opis meta —
+  to dobry punkt wyjścia. Ale ma <b>zero nagłówków H1</b>, <b>18 z 34 obrazków bez tekstu alternatywnego</b>
+  i waży <b>4,9 MB</b>, z czego jeden obrazek to 2,1 MB. Wszystkie trzy rzeczy dotykają dokładnie tego,
+  o co pytacie w zleceniu: SEO, profesjonalizacja wyglądu i wymiana grafik.
+</div>
+
+<h2>Wyniki pomiaru</h2>
+<table>
+<tr><th>Co mierzone</th><th>Wynik</th><th>Ocena</th></tr>
+<tr><td>Dokument gotowy (DOMContentLoaded)</td><td>498 ms</td><td class="ok">dobrze</td></tr>
+<tr><td>Pełne załadowanie (load)</td><td>501 ms</td><td class="ok">dobrze</td></tr>
+<tr><td>Tytuł strony</td><td>ARIXO Advisory – Twój doradca w Transformacji Energetycznej</td><td class="ok">dobrze</td></tr>
+<tr><td>Opis meta</td><td>obecny, 131 znaków</td><td class="ok">dobrze</td></tr>
+<tr><td>Język dokumentu</td><td><code>lang="pl"</code></td><td class="ok">dobrze</td></tr>
+<tr><td><b>Nagłówki H1</b></td><td><b>0</b> (są 34 nagłówki H2)</td><td class="zle">do naprawy</td></tr>
+<tr><td><b>Obrazki bez atrybutu alt</b></td><td><b>18 z 34</b></td><td class="zle">do naprawy</td></tr>
+<tr><td><b>Leniwe ładowanie obrazków</b></td><td><b>0 z 34</b> ma <code>loading="lazy"</code></td><td class="uwaga">do poprawy</td></tr>
+<tr><td><b>Waga strony</b></td><td><b>4,9 MB</b> w 52 zasobach</td><td class="zle">do naprawy</td></tr>
+<tr><td>Największy pojedynczy plik</td><td>obrazek <b>2 132 kB</b> (drugi: 821 kB)</td><td class="zle">do naprawy</td></tr>
+</table>
+
+<h2>Co to znaczy w praktyce</h2>
+
+<h3>1. Brak H1 — najtańsza poprawka SEO, jaką macie do zrobienia</h3>
+<p>Strona główna nie ma ani jednego nagłówka pierwszego poziomu. Dla wyszukiwarki H1 to zdanie
+odpowiadające na pytanie „o czym jest ta strona". Bez niego robot musi zgadywać z tytułu i treści,
+a 34 nagłówki H2 bez nadrzędnego H1 tworzą płaską strukturę bez hierarchii. Przy Waszym zleceniu
+jest to podwójnie istotne, bo sami piszecie o wzmocnieniu SEO przez właściwą architekturę informacji —
+architektura zaczyna się od H1 na każdej podstronie.</p>
+<p>W WebWave da się to ustawić bez zmiany wyglądu: nagłówek wizualnie zostaje taki sam, zmienia się
+tylko poziom znacznika. Czas: kilkanaście minut na stronę główną.</p>
+
+<h3>2. 18 obrazków bez opisu alternatywnego</h3>
+<p>Ponad połowa grafik nie ma tekstu alternatywnego. Trzy skutki: czytnik ekranu pomija te elementy
+(dostępność), wyszukiwarka grafik nie wie, co przedstawiają (utracony ruch), a przy wolnym łączu
+użytkownik widzi puste miejsce zamiast opisu. Przy wymianie grafik, którą i tak planujecie,
+uzupełnienie altów to praca „przy okazji", a nie osobny projekt.</p>
+
+<h3>3. 4,9 MB i obrazek ważący 2,1 MB</h3>
+<p>Sam czas ładowania wygląda dobrze, bo mierzyłem na szybkim łączu — ale 2,1 MB w jednym pliku
+to na telefonie w terenie kilka sekund różnicy i realny koszt transferu. Ten sam obrazek
+w formacie WebP przy zachowaniu jakości waży zwykle 150–300 kB. Do tego zero obrazków ma włączone
+leniwe ładowanie, więc przeglądarka pobiera wszystkie 34, także te daleko poza ekranem.</p>
+<p>Efekt po poprawce: strona główna schodzi realnie poniżej 1,5 MB bez żadnej zmiany w wyglądzie.</p>
+
+<h2>Czego nie sprawdzałem</h2>
+<ul>
+  <li>Podstron poza stroną główną — pomiar dotyczy wyłącznie <code>arixo.pl</code>.</li>
+  <li>Pozycji w wynikach wyszukiwania i danych z Search Console (brak dostępu).</li>
+  <li>Panelu WebWave od środka — część rzeczy widocznych w kodzie może mieć w panelu prostsze rozwiązanie.</li>
+  <li>Waszej spisanej listy błędów, o której wspominacie w zleceniu — chętnie ją zobaczę i wycenię.</li>
+</ul>
+
+<footer>
+  Pomiar wykonany przez bartekdev_pl 10.09.2026 na potrzeby oferty do zlecenia 142085.
+  Metoda możliwa do powtórzenia: Performance API przeglądarki + analiza drzewa DOM.
+</footer>
+</div>
+</body>
+</html>
