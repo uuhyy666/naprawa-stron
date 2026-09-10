@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wspólna skrzynka z AI — demo triażu wiadomości</title>
+<style>
+  :root{--bg:#f1f5f9;--card:#fff;--line:#e2e8f0;--ink:#0f172a;--muted:#64748b;--accent:#2563eb;}
+  *{box-sizing:border-box;}
+  body{margin:0;font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);}
+  header{background:#fff;border-bottom:1px solid var(--line);padding:18px 24px;}
+  header h1{margin:0;font-size:20px;}
+  header p{margin:4px 0 0;color:var(--muted);font-size:14px;}
+  .layout{display:grid;grid-template-columns:210px 1fr 340px;gap:0;min-height:calc(100vh - 78px);}
+  aside{background:#fff;border-right:1px solid var(--line);padding:16px;}
+  aside h3{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:16px 0 8px;}
+  aside h3:first-child{margin-top:0;}
+  .f{display:flex;justify-content:space-between;padding:6px 8px;border-radius:6px;cursor:pointer;font-size:14px;}
+  .f:hover{background:#f8fafc;}
+  .f.on{background:#e0e7ff;font-weight:600;}
+  .f span:last-child{color:var(--muted);}
+  main{padding:0;overflow:auto;}
+  .row{display:grid;grid-template-columns:1fr;gap:2px;padding:12px 18px;border-bottom:1px solid var(--line);cursor:pointer;background:#fff;}
+  .row:hover{background:#f8fafc;}
+  .row.sel{background:#eff6ff;}
+  .row .top{display:flex;justify-content:space-between;gap:10px;}
+  .from{font-weight:600;}
+  .subj{color:#334155;}
+  .prev{color:var(--muted);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
+  .tag{font-size:11px;padding:2px 8px;border-radius:999px;background:#e2e8f0;color:#334155;}
+  .tag.intent{background:#dbeafe;color:#1e40af;}
+  .tag.auto{background:#dcfce7;color:#166534;}
+  .tag.manual{background:#fef3c7;color:#92400e;}
+  .tag.brand{background:#f1f5f9;color:#475569;}
+  .tag.done{background:#e2e8f0;color:#64748b;}
+  section.detail{background:#fff;border-left:1px solid var(--line);padding:18px;overflow:auto;}
+  section.detail h2{font-size:16px;margin:0 0 4px;}
+  .meta{color:var(--muted);font-size:13px;margin-bottom:12px;}
+  .body{white-space:pre-wrap;background:#f8fafc;border:1px solid var(--line);border-radius:8px;padding:12px;font-size:14px;}
+  .draft{margin-top:14px;border:1px solid #bfdbfe;background:#eff6ff;border-radius:8px;padding:12px;white-space:pre-wrap;font-size:14px;}
+  .why{margin-top:12px;font-size:13px;color:var(--muted);}
+  .why b{color:#334155;}
+  button.act{margin-top:12px;background:var(--accent);color:#fff;border:0;border-radius:8px;padding:9px 14px;font-weight:600;cursor:pointer;}
+  .stats{display:flex;gap:14px;padding:12px 18px;background:#fff;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted);}
+  .stats b{color:var(--ink);}
+  footer{padding:18px 24px;color:var(--muted);font-size:13px;}
+  @media(max-width:960px){.layout{grid-template-columns:1fr;}aside,section.detail{border:0;border-top:1px solid var(--line);}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Wspólna skrzynka z AI — demo triażu</h1>
+  <p>Próbka pod zlecenie 144154: kilkanaście skrzynek trzech marek w jednym workspace, klasyfikacja intencji, wersje robocze odpowiedzi z bazy wiedzy, auto-archiwizacja potwierdzeń, wykrywanie leadów.</p>
+</header>
+
+<div class="stats" id="stats"></div>
+
+<div class="layout">
+  <aside>
+    <h3>Kolejki</h3>
+    <div id="queues"></div>
+    <h3>Marki</h3>
+    <div id="brands"></div>
+    <h3>Przypisane do</h3>
+    <div id="people"></div>
+  </aside>
+  <main id="list"></main>
+  <section class="detail" id="detail"><p class="meta">Wybierz wiadomość z listy.</p></section>
+</div>
+
+<footer>
+  Demo działa w przeglądarce na regułach + słownikach intencji — to warstwa deterministyczna, która w produkcji stoi przed modelem
+  (LLM dostaje tylko to, czego reguły nie rozstrzygnęły; tańsze i powtarzalne). bartekdev_pl
+</footer>
+
+<script>
+/* ---------- baza wiedzy (w produkcji: edytowalna przez klienta) ---------- */
+const KB = {
+  dostawa:   'Standardowa wysyłka to 1–2 dni robocze kurierem. Numer listu przewozowego wysyłamy automatycznie w dniu nadania.',
+  zwrot:     'Na zwrot jest 30 dni od odbioru. Wystarczy formularz zwrotu ze strony i odesłanie towaru — zwrot środków w 3 dni robocze od dostarczenia paczki.',
+  reklamacja:'Reklamacje rozpatrujemy do 14 dni. Potrzebujemy numeru zamówienia i zdjęć wady.',
+  produkt:   'Karty produktowe zawierają pełną specyfikację; dla zamówień hurtowych przygotowujemy wycenę indywidualną.',
+  faktura:   'Fakturę wystawiamy do 7 dni od zamówienia; na życzenie korygujemy dane nabywcy.'
+};
+
+/* ---------- reguły intencji ---------- */
+const RULES = [
+  { intent:'potwierdzenie automatyczne', auto:'archiwizuj', kw:['zamówienie zostało złożone','potwierdzenie zamówienia','no-reply','automatyczna odpowiedź','nie odpowiadaj na tę wiadomość'] },
+  { intent:'reklamacja',                 auto:'draft+człowiek', kw:['reklamacj','uszkodzon','wadliw','nie działa','zepsut'] },
+  { intent:'zwrot',                      auto:'draft',  kw:['zwrot','odstąpienie','oddać','zwrócić'] },
+  { intent:'pytanie o zamówienie',       auto:'draft',  kw:['gdzie jest','status zamówienia','kiedy dotrze','numer śledzenia','przesyłk'] },
+  { intent:'pytanie produktowe',         auto:'draft',  kw:['czy macie','dostępn','rozmiar','parametry','specyfikac'] },
+  { intent:'lead sprzedażowy',           auto:'człowiek', kw:['współprac','hurtow','oferta dla firm','b2b','ilości','dystrybu'] },
+  { intent:'administracyjne',            auto:'człowiek', kw:['faktur','nip','księgow','płatnoś','korekt'] }
+];
+
+/* ---------- przykładowa poczta (3 marki, kilka skrzynek) ---------- */
+const MAILS = [
+  { id:1, brand:'Marka A', box:'sklep@marka-a.pl', from:'anna.k@gmail.com', subj:'Gdzie jest moja paczka?',
+    body:'Dzień dobry,\nzłożyłam zamówienie 41822 w poniedziałek i nadal nie mam informacji o wysyłce. Kiedy dotrze?\nPozdrawiam' },
+  { id:2, brand:'Marka A', box:'sklep@marka-a.pl', from:'no-reply@platnosci.pl', subj:'Zamówienie zostało złożone — 41911',
+    body:'To jest automatyczna odpowiedź. Zamówienie zostało złożone. Nie odpowiadaj na tę wiadomość.' },
+  { id:3, brand:'Marka B', box:'kontakt@marka-b.pl', from:'biuro@hurtownia-nord.pl', subj:'Współpraca B2B — zapytanie hurtowe',
+    body:'Dzień dobry,\njesteśmy dystrybutorem z Trójmiasta, interesuje nas współpraca hurtowa i oferta dla firm przy ilościach 200+ szt. miesięcznie.\nProszę o kontakt.' },
+  { id:4, brand:'Marka B', box:'reklamacje@marka-b.pl', from:'p.nowak@wp.pl', subj:'Reklamacja — towar uszkodzony',
+    body:'Witam,\nzamówienie 39120 dotarło z pękniętą obudową, produkt nie działa. Załączam zdjęcia. Proszę o wymianę.' },
+  { id:5, brand:'Marka C', box:'biuro@marka-c.pl', from:'ksiegowosc@firma-xyz.pl', subj:'Prośba o korektę faktury FV/2026/08/221',
+    body:'Dzień dobry,\nna fakturze jest błędny NIP nabywcy. Proszę o korektę i przesłanie na ten adres.' },
+  { id:6, brand:'Marka C', box:'biuro@marka-c.pl', from:'tomek.w@onet.pl', subj:'Czy mogę oddać towar po 3 tygodniach?',
+    body:'Dzień dobry, kupiłem u Państwa lampę 18 dni temu. Czy mogę jeszcze zrobić zwrot?' },
+  { id:7, brand:'Marka A', box:'sklep@marka-a.pl', from:'m.zielinska@interia.pl', subj:'Czy macie ten model w rozmiarze L?',
+    body:'Dzień dobry, czy macie dostępny rozmiar L w wersji granatowej? Jakie są parametry materiału?' },
+  { id:8, brand:'Marka B', box:'kontakt@marka-b.pl', from:'newsletter@dostawca.com', subj:'Automatyczna odpowiedź: Poza biurem',
+    body:'Automatyczna odpowiedź. Jestem poza biurem do 15.09. W pilnych sprawach proszę o kontakt telefoniczny.' }
+];
+
+const PEOPLE = { 'reklamacja':'Kasia (obsługa)', 'lead sprzedażowy':'Marek (sprzedaż)', 'administracyjne':'Ewa (księgowość)' };
+
+function classify(m){
+  const hay = (m.subj+' '+m.body+' '+m.from).toLowerCase();
+  for (const r of RULES){
+    const hit = r.kw.find(k=>hay.includes(k));
+    if (hit) return { intent:r.intent, auto:r.auto, hit };
+  }
+  return { intent:'do weryfikacji', auto:'człowiek', hit:null };
+}
+
+function draftFor(intent, m){
+  const imie = 'Dzień dobry,\n\n';
+  const stopka = '\n\nPozdrawiamy,\nZespół ' + m.brand;
+  switch(intent){
+    case 'pytanie o zamówienie': return imie + KB.dostawa + '\nSprawdziliśmy Państwa zamówienie — paczka jest w drodze, numer śledzenia wysyłamy w osobnej wiadomości.' + stopka;
+    case 'zwrot':                return imie + KB.zwrot + stopka;
+    case 'reklamacja':           return imie + KB.reklamacja + '\nZgłoszenie przyjęliśmy, kolega z obsługi odezwie się z decyzją.' + stopka;
+    case 'pytanie produktowe':   return imie + KB.produkt + stopka;
+    case 'administracyjne':      return imie + KB.faktura + stopka;
+    default: return null;
+  }
+}
+
+const state = { queue:'wszystkie', brand:'wszystkie', sel:null, done:new Set() };
+
+const data = MAILS.map(m=>{
+  const c = classify(m);
+  return Object.assign({}, m, c, { draft: c.auto==='archiwizuj' ? null : draftFor(c.intent, m), owner: PEOPLE[c.intent] || 'nieprzypisane' });
+});
+data.forEach(m=>{ if(m.auto==='archiwizuj') state.done.add(m.id); });
+
+function render(){
+  const queues = ['wszystkie', ...new Set(data.map(m=>m.intent))];
+  document.getElementById('queues').innerHTML = queues.map(q=>{
+    const n = q==='wszystkie'? data.length : data.filter(m=>m.intent===q).length;
+    return `<div class="f ${state.queue===q?'on':''}" data-q="${q}"><span>${q}</span><span>${n}</span></div>`;
+  }).join('');
+
+  const brands = ['wszystkie', ...new Set(data.map(m=>m.brand))];
+  document.getElementById('brands').innerHTML = brands.map(b=>
+    `<div class="f ${state.brand===b?'on':''}" data-b="${b}"><span>${b}</span><span>${b==='wszystkie'?data.length:data.filter(m=>m.brand===b).length}</span></div>`).join('');
+
+  document.getElementById('people').innerHTML = [...new Set(data.map(m=>m.owner))].map(p=>
+    `<div class="f"><span>${p}</span><span>${data.filter(m=>m.owner===p).length}</span></div>`).join('');
+
+  const auto = data.filter(m=>m.auto!=='człowiek').length;
+  document.getElementById('stats').innerHTML =
+    `<div>Wiadomości: <b>${data.length}</b></div>
+     <div>Obsłużone bez człowieka: <b>${data.filter(m=>m.auto==='archiwizuj').length}</b></div>
+     <div>Gotowa wersja robocza: <b>${data.filter(m=>m.draft).length}</b></div>
+     <div>Do ręcznej decyzji: <b>${data.filter(m=>m.auto==='człowiek').length}</b></div>
+     <div>Odciążenie zespołu: <b>${Math.round(auto/data.length*100)}%</b> wiadomości nie startuje od pustego pola</div>`;
+
+  const list = data.filter(m=>(state.queue==='wszystkie'||m.intent===state.queue) && (state.brand==='wszystkie'||m.brand===state.brand));
+  document.getElementById('list').innerHTML = list.map(m=>`
+    <div class="row ${state.sel===m.id?'sel':''}" data-id="${m.id}">
+      <div class="top"><span class="from">${m.from}</span><span class="prev">${m.box}</span></div>
+      <div class="subj">${m.subj}</div>
+      <div class="prev">${m.body.replace(/\n/g,' ').slice(0,90)}…</div>
+      <div class="tags">
+        <span class="tag intent">${m.intent}</span>
+        <span class="tag ${m.auto==='człowiek'?'manual':'auto'}">${m.auto}</span>
+        <span class="tag brand">${m.brand}</span>
+        ${state.done.has(m.id)?'<span class="tag done">obsłużone</span>':''}
+        ${m.owner!=='nieprzypisane'?`<span class="tag">${m.owner}</span>`:''}
+      </div>
+    </div>`).join('');
+
+  const m = data.find(x=>x.id===state.sel);
+  document.getElementById('detail').innerHTML = !m ? '<p class="meta">Wybierz wiadomość z listy.</p>' : `
+    <h2>${m.subj}</h2>
+    <div class="meta">${m.from} → ${m.box} · ${m.brand}</div>
+    <div class="body">${m.body}</div>
+    ${m.draft ? `<div class="draft"><b>Wersja robocza od AI:</b>\n\n${m.draft}</div>` : ''}
+    <div class="why">
+      <b>Dlaczego tak:</b> intencja „${m.intent}”${m.hit?` — dopasowanie reguły na frazie „${m.hit}”`:' — brak dopasowania reguł, wiadomość idzie do modelu i do człowieka'}.
+      Tryb: <b>${m.auto}</b>. Właściciel: <b>${m.owner}</b>. ${state.done.has(m.id)?'Oznaczona jako obsłużona automatycznie — nie zajmuje kolejki.':''}
+    </div>
+    ${m.draft?'<button class="act">Wyślij odpowiedź</button>':''}`;
+}
+
+document.addEventListener('click', e=>{
+  const q = e.target.closest('[data-q]'), b = e.target.closest('[data-b]'), r = e.target.closest('[data-id]');
+  if(q){ state.queue = q.dataset.q; render(); }
+  else if(b){ state.brand = b.dataset.b; render(); }
+  else if(r){ state.sel = +r.dataset.id; render(); }
+  else if(e.target.classList.contains('act')){ state.done.add(state.sel); render(); }
+});
+
+render();
+</script>
+</body>
+</html>
