@@ -38,7 +38,9 @@
   function norm(s) { return ' ' + s.toLowerCase()
       .replace(/[ąàá]/g,'a').replace(/[ęèé]/g,'e').replace(/[ś]/g,'s').replace(/[óòöô]/g,'o')
       .replace(/[żźź]/g,'z').replace(/[ćç]/g,'c').replace(/[ńñ]/g,'n')
-      .replace(/[^a-z0-9 ]/g,' ') + ' '; }
+      // usuwamy tylko interpunkcję — litery spoza alfabetu łacińskiego (tajski, cyrylica) zostają,
+      // inaczej bot w takim języku nigdy nie trafi w bazę
+      .replace(/[!-\/:-@\[-`{-~„”«»–—…]/g,' ') + ' '; }
   function answer(msg) {
     var m = norm(msg);
     // Powitania i formy grzecznościowe — bot odpowiada kulturalnie, zanim poleci do FAQ
