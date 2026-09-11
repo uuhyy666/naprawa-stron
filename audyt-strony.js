@@ -46,6 +46,10 @@
     const przesłane = res.reduce((s, r) => s + (r.transferSize || 0), 0);
     const wagaCalosc = res.reduce((s, r) => s + rozmiar(r), 0);
     const zCache = przesłane === 0 && wagaCalosc > 0;
+    // Zasoby z innych domen nie ujawniają rozmiaru, jeśli serwer nie wysyła nagłówka
+    // Timing-Allow-Origin. Nie wolno ich po cichu liczyć jako zero — raport ma mówić,
+    // ilu plików nie dało się zmierzyć, zamiast zaniżać wagę strony.
+    const nieznane = res.filter(r => rozmiar(r) === 0).length;
 
     const grupy = {};
     res.forEach(r => {
@@ -67,6 +71,7 @@
       zasobow: res.length,
       waga_kb: kb(wagaCalosc),
       waga_z_cache: zCache,
+      zasoby_niezmierzone: nieznane,
       grupy_kb: Object.fromEntries(Object.entries(grupy).map(([k, v]) => [k, kb(v)])),
       najciezsze,
       lcp_ms: lcp ? Math.round(lcp.startTime) : null,
@@ -167,6 +172,8 @@
     const lista = [];
     const P = (waga, tytul, opis) => lista.push({ waga, tytul, opis });
 
+    if (w.zasoby_niezmierzone > w.zasobow * 0.3) P('niski', `${w.zasoby_niezmierzone} z ${w.zasobow} zasobów nie ujawnia swojego rozmiaru`,
+      'To pliki z innych domen bez nagłówka Timing-Allow-Origin. Podana waga strony jest więc zaniżona — do rzetelnego pomiaru użyj zakładki Sieć w narzędziach przeglądarki albo PageSpeed Insights.');
     if (w.waga_kb > 3000) P('wysoki', `Strona waży ${(w.waga_kb / 1024).toFixed(1)} MB`,
       'Największy pojedynczy zysk: konwersja zdjęć do WebP/AVIF i dopasowanie ich szerokości do miejsca, w którym są wyświetlane.');
     if (w.obrazy_przeskalowane > 0) P('wysoki', `${w.obrazy_przeskalowane} obrazków pobieranych w rozmiarze ponad 2× większym niż wyświetlany`,
@@ -229,7 +236,9 @@ ${wiersz('Dokument gotowy (DOMContentLoaded)', r.wydajnosc.dom_ms + ' ms')}
 ${wiersz('Pełne załadowanie', r.wydajnosc.load_ms + ' ms')}
 ${wiersz('Czas odpowiedzi serwera (TTFB)', r.wydajnosc.ttfb_ms + ' ms')}
 ${r.wydajnosc.lcp_ms ? wiersz('LCP (największy element)', (r.wydajnosc.lcp_ms / 1000).toFixed(2) + ' s — ' + (r.wydajnosc.lcp_element || '')) : ''}
-${wiersz('Waga strony', (r.wydajnosc.waga_kb / 1024).toFixed(2) + ' MB w ' + r.wydajnosc.zasobow + ' zasobach' + (r.wydajnosc.waga_z_cache ? ' (rozmiar po dekompresji — zasoby podane z cache przeglądarki)' : ''))}
+${wiersz('Waga strony', (r.wydajnosc.waga_kb / 1024).toFixed(2) + ' MB w ' + r.wydajnosc.zasobow + ' zasobach'
+        + (r.wydajnosc.waga_z_cache ? ' (rozmiar po dekompresji — zasoby podane z cache przeglądarki)' : '')
+        + (r.wydajnosc.zasoby_niezmierzone ? ' — uwaga: ' + r.wydajnosc.zasoby_niezmierzone + ' zasobów nie ujawnia rozmiaru (inne domeny), więc realna waga jest większa' : ''))}
 ${wiersz('Obrazki', r.wydajnosc.obrazow + ' szt., w tym leniwie ładowane: ' + r.wydajnosc.obrazy_lazy)}
 ${wiersz('Obrazki bez wymiarów (ryzyko przeskoków układu)', r.wydajnosc.obrazy_bez_wymiarow)}
 ${wiersz('Obrazki przeskalowane w przeglądarce', r.wydajnosc.obrazy_przeskalowane)}
