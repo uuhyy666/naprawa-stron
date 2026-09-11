@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>innovisense.pl — inwentaryzacja przed migracją, 11.09.2026</title>
+<style>
+  body{margin:0;font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:#14161a;background:#fbfbfc;}
+  .wrap{max-width:840px;margin:0 auto;padding:44px 20px 90px;}
+  h1{font-size:27px;margin:0 0 4px;}
+  .sub{color:#666e7a;margin:0 0 8px;}
+  .meta{color:#666e7a;font-size:14px;border-bottom:2px solid #14161a;padding-bottom:14px;margin-bottom:28px;}
+  h2{font-size:19px;margin:34px 0 10px;padding-bottom:5px;border-bottom:1px solid #e5e7ea;}
+  h3{font-size:16px;margin:22px 0 6px;}
+  table{border-collapse:collapse;width:100%;font-size:15px;margin:12px 0;}
+  th,td{border:1px solid #e5e7ea;padding:8px 11px;text-align:left;vertical-align:top;}
+  th{background:#f5f6f8;font-weight:600;}
+  .zle{color:#c0392b;font-weight:600;}
+  .ok{color:#0f8a5f;font-weight:600;}
+  .uwaga{color:#96700a;font-weight:600;}
+  ul{padding-left:21px;} li{margin:6px 0;}
+  .box{background:#fff;border:1px solid #e5e7ea;border-radius:11px;padding:18px 22px;margin:16px 0;}
+  .alarm{background:#fff4f2;border:1px solid #e8b3a8;border-radius:11px;padding:16px 20px;margin:16px 0;}
+  code{background:#f2f3f6;border-radius:4px;padding:1px 5px;font-size:13.5px;font-family:ui-monospace,Consolas,monospace;word-break:break-all;}
+  footer{margin-top:42px;padding-top:14px;border-top:1px solid #e5e7ea;color:#666e7a;font-size:13px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>innovisense.pl — inwentaryzacja przed migracją</h1>
+<p class="sub">Co faktycznie trzeba przenieść. Policzone na żywym sklepie, nie oszacowane.</p>
+<div class="meta">Data: 11.09.2026, godz. 21:36 · Metoda: mapa strony Shopera, <code>robots.txt</code>, Performance API, analiza DOM · Bez dostępu do panelu — wyłącznie dane publiczne</div>
+
+<div class="box">
+  <b>Jedno zdanie:</b> w tym sklepie jest <b>12 produktów i 1 kategoria</b>, więc migracja katalogu
+  to najmniejszy problem, jaki Państwo mają. Cała wartość i całe ryzyko siedzą w <b>blogu</b> —
+  i właśnie tam znalazłem błąd, który działa już dziś, niezależnie od migracji:
+  <b>mapa strony zwraca w kółko te same 50 adresów</b>.
+</div>
+
+<h2>1. Co jest w sklepie — policzone</h2>
+<table>
+<tr><th>Zbiór</th><th>Liczba adresów w mapie strony</th><th>Uwaga</th></tr>
+<tr><td>Produkty</td><td><b>12</b></td><td class="ok">migracja trywialna</td></tr>
+<tr><td>Kategorie</td><td><b>1</b> (<code>/suplementy-diety</code>)</td><td class="ok">migracja trywialna</td></tr>
+<tr><td>Producenci</td><td>1</td><td class="ok">—</td></tr>
+<tr><td>Strony informacyjne</td><td>9</td><td class="ok">—</td></tr>
+<tr><td><b>Blog</b></td><td><b>50 unikalnych</b> — i to jest liczba zaniżona</td><td class="zle">patrz punkt 2</td></tr>
+</table>
+<p>Numery identyfikatorów w adresach artykułów sięgają co najmniej 60, więc wpisów jest
+więcej niż 50. <b>Ile dokładnie — nie da się ustalić z zewnątrz</b> i nie będę zgadywał:
+mapa strony tego nie ujawnia (powód niżej), a listing bloga doładowuje wpisy partiami.
+Z panelu Shopera to jedno kliknięcie i pierwsze, o co poproszę.</p>
+
+<div class="alarm">
+  <h3 style="margin-top:0">2. Błąd, który macie dziś: mapa strony ignoruje numer strony</h3>
+  <p>W <code>robots.txt</code> mapa wskazana jest jako
+  <code>/console/integration/execute/name/GoogleSitemap</code>. Rozbija się ona na pięć list,
+  a lista wpisów bloga jest stronicowana przez <code>/page/N</code>.</p>
+  <p><b>Parametr <code>page</code> jest ignorowany.</b> Sprawdziłem strony 1, 2, 7 i 60 —
+  wszystkie cztery zwracają <b>identyczne 50 adresów</b>, w tej samej kolejności.
+  Robot dostaje więc ten sam zestaw w kółko, a każdy artykuł spoza pierwszej pięćdziesiątki
+  <b>nie jest zgłoszony do Google w ogóle</b>.</p>
+  <p style="margin-bottom:0">Naiwny skrypt liczący „50 adresów × liczba stron” wyprodukuje w tym miejscu
+  liczbę 3 000. Tyle właśnie pokazał mój pierwszy przebieg, zanim porównałem zawartość stron
+  między sobą. Podaję to, bo za chwilę ktoś może przysłać Państwu wycenę opartą na takiej liczbie.</p>
+</div>
+
+<h2>3. Dwa różne formaty adresów w blogu</h2>
+<p>W tej samej liście znalazłem oba warianty naraz:</p>
+<ul>
+  <li><code>/borelioza-a-wypadanie-wlosow-usuwaj-tylko-zle-bakterie</code> — czysty adres w katalogu głównym</li>
+  <li><code>/pl/blog/Czepek-z-elektrodami-i-milczace-kable-ukladu-nerwowego-Moja-walka-z-SM-czesc-XII/60</code> — adres Shopera z prefiksem języka i identyfikatorem</li>
+</ul>
+<p>Przy przenosinach każdy z tych wariantów wymaga innej reguły przekierowania.
+To jest dokładnie ten szczegół, przez który po migracji „nagle spadł ruch”.</p>
+
+<h2>4. Co to znaczy dla wyboru Shopify kontra własny CMS</h2>
+<p>Pytają Państwo o rekomendację z uzasadnieniem, więc podaję fakt, który przy Waszym profilu treści waży najwięcej:</p>
+<p><b>Shopify narzuca prefiksy w adresach.</b> Produkty muszą być pod <code>/products/…</code>,
+kategorie pod <code>/collections/…</code>, a wpisy bloga pod <code>/blogs/&lt;nazwa-bloga&gt;/…</code>.
+Nie da się tego wyłączyć. W praktyce oznacza to, że <b>zmieni się 100% Waszych adresów</b> —
+także tych kilkudziesięciu wpisów blogowych, które dziś siedzą w katalogu głównym i są
+najprawdopodobniej głównym źródłem ruchu z wyszukiwarki.</p>
+<p>Przy sklepie z tysiącem produktów to koszt, który się akceptuje, bo w zamian dostaje się
+gotową infrastrukturę. Przy <b>dwunastu produktach i blogu o tematyce zdrowotnej</b> proporcje są
+odwrotne: płacicie pełną cenę utraty adresów, a korzystacie z ułamka platformy. Do tego blog
+w Shopify jest ubogi — bez rozbudowanych kategorii i bez swobody w strukturze adresów.</p>
+<p>Rozwiązanie zachowujące adresy jeden do jednego — własny CMS albo WordPress z WooCommerce —
+pozwala przenieść wpisy pod tymi samymi adresami i w ogóle uniknąć części przekierowań.
+<b>To jest rekomendacja, nie wyrok:</b> zmieniłbym zdanie, gdyby dane z Search Console pokazały,
+że ruch z bloga jest znikomy, a Wy planujecie skok w liczbie produktów. O te dane poproszę na starcie.</p>
+
+<h2>5. Strona główna — pomiar przy okazji</h2>
+<table>
+<tr><th>Co mierzone</th><th>Wynik</th><th>Ocena</th></tr>
+<tr><td>Pełne załadowanie (load)</td><td>1 490 ms</td><td class="ok">dobrze</td></tr>
+<tr><td>Tytuł i opis meta</td><td>obecne (101 i 147 znaków)</td><td class="ok">dobrze</td></tr>
+<tr><td>Nagłówek H1</td><td>1</td><td class="ok">dobrze</td></tr>
+<tr><td><b>Waga strony</b></td><td><b>4,31 MB</b> w 62 zasobach</td><td class="zle">do poprawy</td></tr>
+<tr><td><b>Zdjęcia bez opisu alternatywnego</b></td><td><b>34 z 43</b></td><td class="zle">do poprawy</td></tr>
+<tr><td><b>Zdjęcia bez leniwego ładowania</b></td><td><b>43 z 43</b></td><td class="zle">do poprawy</td></tr>
+</table>
+<p><b>33 z 62 zasobów nie ujawnia swojego rozmiaru</b> (pliki z innych domen bez nagłówka
+<code>Timing-Allow-Origin</code>), więc realna waga jest wyższa niż zmierzone 4,31 MB.
+Piszę to wprost, zamiast podawać ładniejszą liczbę.</p>
+
+<h2>6. Czego nie sprawdzałem</h2>
+<ul>
+  <li><b>Liczby klientów i zamówień</b> — to dane z panelu, z zewnątrz niewidoczne. Od nich zależy, czy historia zamówień w ogóle da się przenieść, czy trzeba ją zarchiwizować.</li>
+  <li><b>Ruchu i pozycji</b> — bez Search Console i Analytics nie wiem, które adresy realnie zarabiają. To zmienia kolejność prac i może zmienić rekomendację.</li>
+  <li><b>Integracji</b> — płatności, kurierzy, Ceneo, Google Ads i Meta Ads są widoczne dopiero od środka.</li>
+  <li><b>Dokładnej liczby wpisów bloga</b> — patrz punkt 2. Wiem, że jest ich więcej niż 50, i nie udaję, że wiem ile.</li>
+</ul>
+
+<footer>
+  Inwentaryzację wykonał bartekdev_pl 11.09.2026 na potrzeby oferty do zlecenia 144210 na Useme.
+  Wszystko policzone z publicznie dostępnych zasobów sklepu, bez logowania i bez obciążania serwera
+  (kilkanaście zapytań). Metoda możliwa do powtórzenia.
+</footer>
+</div>
+</body>
+</html>
