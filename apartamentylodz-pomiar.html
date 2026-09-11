@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>apartamentylodz.eu — pomiar strony, 11.09.2026</title>
+<style>
+  body{margin:0;font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:#14161a;background:#fbfbfc;}
+  .wrap{max-width:820px;margin:0 auto;padding:44px 20px 90px;}
+  h1{font-size:27px;margin:0 0 4px;}
+  .sub{color:#666e7a;margin:0 0 8px;}
+  .meta{color:#666e7a;font-size:14px;border-bottom:2px solid #14161a;padding-bottom:14px;margin-bottom:28px;}
+  h2{font-size:19px;margin:34px 0 10px;padding-bottom:5px;border-bottom:1px solid #e5e7ea;}
+  h3{font-size:16px;margin:22px 0 6px;}
+  table{border-collapse:collapse;width:100%;font-size:15px;margin:12px 0;}
+  th,td{border:1px solid #e5e7ea;padding:8px 11px;text-align:left;vertical-align:top;}
+  th{background:#f5f6f8;font-weight:600;}
+  .zle{color:#c0392b;font-weight:600;}
+  .ok{color:#0f8a5f;font-weight:600;}
+  .uwaga{color:#96700a;font-weight:600;}
+  ul{padding-left:21px;} li{margin:6px 0;}
+  .box{background:#fff;border:1px solid #e5e7ea;border-radius:11px;padding:18px 22px;margin:16px 0;}
+  .alarm{background:#fff4f2;border:1px solid #e8b3a8;border-radius:11px;padding:16px 20px;margin:16px 0;}
+  code{background:#f2f3f6;border-radius:4px;padding:1px 5px;font-size:14px;font-family:ui-monospace,Consolas,monospace;}
+  footer{margin-top:42px;padding-top:14px;border-top:1px solid #e5e7ea;color:#666e7a;font-size:13px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>apartamentylodz.eu — pomiar przed złożeniem oferty</h1>
+<p class="sub">Zmierzone na żywej stronie, nie z domysłów. Osobno komputer, osobno telefon.</p>
+<div class="meta">Data: 11.09.2026, godz. 06:19 · Metoda: Performance API przeglądarki + analiza drzewa DOM · Silnik: WordPress, motyw <code>Divi Apartment v.1.0.0</code> · Zmierzone strony: główna i <code>/apartamenty</code></div>
+
+<div class="box">
+  <b>Najkrócej:</b> strona ładuje się szybko i ma poprawną wersję mobilną — to dobra baza i nie ma powodu
+  budować wszystkiego od zera. Ale podstrona, która faktycznie sprzedaje apartamenty, waży
+  <b>5,45 MB</b>, ma <b>53 zdjęcia bez jednego opisu alternatywnego i bez leniwego ładowania</b>,
+  <b>zero filtrów</b> i <b>żadna z dwóch zmierzonych stron nie ma opisu meta</b> — czyli Google
+  sam sobie dobiera tekst wyświetlany w wynikach wyszukiwania. Do tego w środku tekstu sprzedażowego
+  na stronie głównej jest link wyprowadzający gościa do konkurencyjnego serwisu z noclegami.
+</div>
+
+<h2>1. Strona główna</h2>
+<table>
+<tr><th>Co mierzone</th><th>Wynik</th><th>Ocena</th></tr>
+<tr><td>Pełne załadowanie (load)</td><td>1 783 ms (komputer) / 1 177 ms (telefon)</td><td class="ok">dobrze</td></tr>
+<tr><td>Waga strony</td><td>1,16 MB w 45 zasobach</td><td class="ok">dobrze</td></tr>
+<tr><td>Wersja mobilna</td><td>brak przewijania w poziomie przy 390 px</td><td class="ok">dobrze</td></tr>
+<tr><td>Język dokumentu</td><td><code>pl-PL</code></td><td class="ok">dobrze</td></tr>
+<tr><td>Moduł sprawdzania dostępności</td><td>jest (przyjazd, wyjazd, liczba gości)</td><td class="ok">dobrze</td></tr>
+<tr><td><b>Opis meta</b></td><td><b>brak</b></td><td class="zle">do naprawy</td></tr>
+<tr><td><b>Nagłówek H1</b></td><td><b>0</b> (są 2 nagłówki H2)</td><td class="zle">do naprawy</td></tr>
+<tr><td><b>Zdjęcia bez opisu alternatywnego</b></td><td><b>5 z 5</b></td><td class="zle">do naprawy</td></tr>
+<tr><td><b>Elementy dotykowe poniżej 44 px</b></td><td><b>8 z 12</b>, w tym numer telefonu (88 × 17 px)</td><td class="zle">do naprawy</td></tr>
+<tr><td>Zdjęcia bez leniwego ładowania</td><td>3 z 5</td><td class="uwaga">do poprawy</td></tr>
+</table>
+
+<h2>2. Podstrona /apartamenty — ta, która sprzedaje</h2>
+<table>
+<tr><th>Co mierzone</th><th>Wynik</th><th>Ocena</th></tr>
+<tr><td>Pełne załadowanie (load)</td><td>1 487 ms na szybkim łączu</td><td class="ok">dobrze</td></tr>
+<tr><td>Nagłówek H1</td><td>1</td><td class="ok">dobrze</td></tr>
+<tr><td><b>Waga strony</b></td><td><b>5,45 MB</b> w 95 zasobach</td><td class="zle">do naprawy</td></tr>
+<tr><td><b>Zdjęcia bez opisu alternatywnego</b></td><td><b>53 z 53</b></td><td class="zle">do naprawy</td></tr>
+<tr><td><b>Zdjęcia bez leniwego ładowania</b></td><td><b>53 z 53</b></td><td class="zle">do naprawy</td></tr>
+<tr><td><b>Opis meta</b></td><td><b>brak</b></td><td class="zle">do naprawy</td></tr>
+<tr><td><b>Filtry (lokalizacja, liczba osób, parking)</b></td><td><b>0</b> — żadnego pola wyboru</td><td class="zle">do zbudowania</td></tr>
+</table>
+
+<h2>3. Co to znaczy w praktyce</h2>
+
+<h3>5,45 MB i 53 zdjęcia ładowane naraz</h3>
+<p>Na szybkim łączu tego nie widać — dlatego podaję wagę, a nie tylko czas. Gość szukający noclegu
+w Łodzi z telefonu, w pociągu albo na danych komórkowych, pobiera wszystkie 53 zdjęcia od razu,
+także te kilkanaście ekranów niżej, których nigdy nie zobaczy. Samo dopisanie leniwego ładowania
+i konwersja do formatu WebP to zwykle spadek do 1–1,5 MB <b>bez żadnej zmiany w wyglądzie</b>.
+Na stronie głównej część zdjęć jest już w WebP, więc ktoś tę drogę zaczął — nie dokończył jej na
+podstronie z apartamentami.</p>
+
+<h3>Brak opisu meta na obu stronach</h3>
+<p>Opis meta to dwa zdania, które Google pokazuje pod tytułem w wynikach wyszukiwania. Bez nich
+wyszukiwarka wycina fragment treści sama — przy stronie noclegowej wypada wtedy przypadkowe zdanie
+zamiast oferty. To jedna z najtańszych poprawek, jakie tu widzę: kilkanaście minut na stronę,
+a dotyczy dokładnie tego, o co Panu chodzi — rezerwacji bezpośrednich zamiast przez Booking.</p>
+
+<h3>Zero filtrów na liście apartamentów</h3>
+<p>W zleceniu prosi Pan o proste filtry: lokalizacja, liczba osób, parking. Potwierdzam pomiarem —
+na <code>/apartamenty</code> nie ma ani jednego pola wyboru. Gość, który szuka mieszkania dla pięciu
+osób z parkingiem, musi przewinąć wszystkie oferty i sam to sprawdzić. To nie jest kwestia estetyki,
+tylko liczby osób, które dojdą do przycisku rezerwacji.</p>
+
+<h3>53 zdjęcia bez opisu alternatywnego</h3>
+<p>Trzy skutki naraz: wyszukiwarka grafik nie wie, co jest na zdjęciach (utracony ruch z Google Images,
+przy noclegach istotny), czytnik ekranu pomija te elementy, a przy wolnym łączu gość widzi puste
+prostokąty zamiast opisu. Przy okazji poprawiania zdjęć uzupełnienie opisów to praca „przy okazji”.</p>
+
+<h3>Osiem z dwunastu elementów dotykowych jest za małych</h3>
+<p>Na ekranie 390 px numer telefonu ma pole dotykowe 88 × 17 px przy zalecanych 44 × 44 px.
+Trafienie w niego kciukiem jest loterią, a to najkrótsza droga do rezerwacji bezpośredniej,
+jaką ma Pan na stronie.</p>
+
+<div class="alarm">
+  <h3 style="margin-top:0">Rzecz, której nie było w zleceniu, a jest najpilniejsza</h3>
+  <p style="margin-bottom:0">W tekście sprzedażowym na stronie głównej, w zdaniu o łódzkich noclegach, jest odnośnik
+  <b>„zobacz tu” prowadzący do zewnętrznego serwisu z noclegami w Łodzi</b> — czyli do miejsca,
+  gdzie gość zobaczy także konkurencję. Link wychodzi ze środka akapitu, który ma go przekonać
+  do rezerwacji u Pana. Jeżeli to pozostałość po wymianie linków sprzed lat, jej usunięcie
+  albo zamiana na link wewnętrzny to <b>poprawka na dwie minuty</b>, a odzyskuje ruch,
+  za który Pan już zapłacił.</p>
+</div>
+
+<h2>4. Czego w tym pomiarze nie ma</h2>
+<ul>
+  <li><b>Dwóch usług z Pana zlecenia nie ma dziś na stronie w ogóle.</b> W menu są cztery pozycje: O nas, Apartamenty, Regulamin, Kontakt. Nie ma żadnej strony o zarządzaniu najmem dla właścicieli mieszkań ani o optymalizacji Booking.com. To nie są poprawki istniejących podstron — to dwie nowe strony sprzedażowe, każda z własnym formularzem i własnym celem.</li>
+  <li>Nie sprawdzałem panelu WordPressa od środka ani tego, jak działa moduł dostępności po stronie serwera — bez dostępu widzę tylko to, co widzi gość.</li>
+  <li>Nie mierzyłem pozycji w wyszukiwarce ani danych z Search Console i Google Analytics (na stronie jest Tag Manager, więc dane historyczne prawdopodobnie są — chętnie je zobaczę, zanim cokolwiek wycenię).</li>
+  <li>Nie znam Pana obecnego channel managera ani warunków umowy z Booking.com. Na pytanie „czy da się podpiąć API smart lockerów” odpowiem dopiero po sprawdzeniu dokumentacji konkretnego producenta, a nie zanim ją zobaczę.</li>
+  <li>11–12 zasobów na każdej stronie nie ujawnia swojego rozmiaru (brak nagłówka <code>Timing-Allow-Origin</code> przy plikach z innych domen). Podana waga to wartość zmierzona, prawdziwa może być nieco wyższa.</li>
+</ul>
+
+<footer>
+  Pomiar wykonał bartekdev_pl 11.09.2026 na potrzeby oferty do zlecenia 143892 na Useme.
+  Metoda możliwa do powtórzenia w dowolnej przeglądarce: Performance API + analiza drzewa DOM.
+  Żadne dane nie były pobierane poza tym, co publicznie serwuje strona.
+</footer>
+</div>
+</body>
+</html>
