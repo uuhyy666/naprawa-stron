@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Generator opisów aukcji — Shoper / BaseLinker (demo działające)</title>
+<style>
+  :root{--tekst:#14161a;--szary:#666e7a;--linia:#e5e7ea;--tlo:#fbfbfc;--akcent:#2f6fe0;}
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--tekst);background:var(--tlo);}
+  .wrap{max-width:1080px;margin:0 auto;padding:40px 18px 80px;}
+  h1{font-size:27px;margin:0 0 4px;}
+  .sub{color:var(--szary);margin:0 0 10px;}
+  .meta{color:var(--szary);font-size:14px;border-bottom:2px solid var(--tekst);padding-bottom:14px;margin-bottom:26px;}
+  h2{font-size:19px;margin:30px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--linia);}
+  .box{background:#fff;border:1px solid var(--linia);border-radius:11px;padding:16px 20px;margin:14px 0;}
+  textarea{width:100%;min-height:150px;font:13px/1.5 ui-monospace,Consolas,monospace;border:1px solid var(--linia);border-radius:8px;padding:10px;resize:vertical;}
+  button{background:var(--akcent);color:#fff;border:0;border-radius:8px;padding:10px 18px;font-size:15px;font-weight:600;cursor:pointer;}
+  button.sek{background:#fff;color:var(--akcent);border:1px solid var(--akcent);}
+  button:focus-visible{outline:3px solid #14161a;outline-offset:2px;}
+  label{display:block;font-weight:600;margin:12px 0 4px;font-size:14px;}
+  select,input[type=text]{font:15px inherit;padding:8px 10px;border:1px solid var(--linia);border-radius:8px;background:#fff;}
+  .pasek{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0;}
+  .licz{color:var(--szary);font-size:14px;}
+  .karta{background:#fff;border:1px solid var(--linia);border-radius:11px;margin:14px 0;overflow:hidden;}
+  .karta h3{margin:0;padding:11px 16px;font-size:16px;background:#f5f6f8;border-bottom:1px solid var(--linia);}
+  .karta .tresc{padding:4px 16px 14px;}
+  .karta .kod{border-top:1px dashed var(--linia);margin-top:10px;padding-top:10px;}
+  .karta .kod textarea{min-height:110px;}
+  .opis h4{font-size:15px;margin:14px 0 6px;}
+  .opis ul{margin:6px 0;padding-left:20px;}
+  .opis table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0;}
+  .opis th,.opis td{border:1px solid var(--linia);padding:6px 9px;text-align:left;}
+  .opis th{background:#f5f6f8;width:38%;}
+  .ostrz{background:#fff8e6;border:1px solid #e8d08a;border-radius:8px;padding:10px 14px;font-size:14px;margin:10px 0;}
+  code{background:#f2f3f6;border-radius:4px;padding:1px 5px;font-size:14px;font-family:ui-monospace,Consolas,monospace;}
+  footer{margin-top:42px;padding-top:14px;border-top:1px solid var(--linia);color:var(--szary);font-size:13px;}
+  .pill{display:inline-block;background:#eef3fd;color:#1a4a9c;border-radius:999px;padding:2px 10px;font-size:13px;font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Generator opisów aukcji — Shoper / BaseLinker</h1>
+<p class="sub">Działające narzędzie, nie zrzut ekranu. Wklej dane produktów, dostaniesz gotowe opisy HTML.</p>
+<div class="meta">Zrobione 11.09.2026 na potrzeby zlecenia 144183 · bartekdev_pl · wszystko liczy się w Twojej przeglądarce, dane nigdzie nie wychodzą</div>
+
+<div class="box">
+  <b>Po co to jest.</b> W ogłoszeniu jest zdanie: „praca jest powtarzalna i monotonna”.
+  Dokładnie ta część — przepisywanie parametrów do opisu, ten sam układ sekcji, te same formatowania,
+  ta sama stopka — nie musi być robiona ręcznie. To robi poniższy generator: bierze tabelę produktów
+  (eksport z Shopera, arkusz, plik od dostawcy) i zwraca opis HTML w jednym, stałym szablonie.
+  Człowiek zostaje tam, gdzie jest potrzebny: sprawdza sens, poprawia zdanie, wybiera zdjęcia.
+</div>
+
+<h2>1. Dane wejściowe</h2>
+<p>Format: CSV z nagłówkiem, separator średnik lub przecinek (wykrywany automatycznie).
+Wymagana jest tylko kolumna <code>nazwa</code>. Wszystkie pozostałe kolumny stają się wierszami tabeli parametrów.
+Kolumny specjalne: <code>sku</code>, <code>marka</code>, <code>kategoria</code>, <code>cechy</code> (rozdzielone <code>|</code>),
+<code>zawartosc</code> (rozdzielone <code>|</code>), <code>gwarancja</code>, <code>wysylka</code>.</p>
+
+<label for="dane">Dane produktów (CSV)</label>
+<textarea id="dane" spellcheck="false"></textarea>
+
+<div class="pasek">
+  <label for="szablon" style="margin:0">Szablon:</label>
+  <select id="szablon">
+    <option value="pelny">Pełny (nagłówki + lista cech + tabela parametrów)</option>
+    <option value="zwiezly">Zwięzły (akapit + lista cech)</option>
+    <option value="tabela">Sama tabela parametrów</option>
+  </select>
+  <label for="stopka" style="margin:0">Stopka:</label>
+  <input type="text" id="stopka" size="34" value="Wysyłka w 24 h w dni robocze. Faktura VAT na życzenie.">
+  <button id="gen">Generuj opisy</button>
+  <button id="przyklad" class="sek">Wczytaj przykładowe dane</button>
+  <button id="csv" class="sek">Pobierz CSV do importu</button>
+</div>
+<p class="licz" id="licz"></p>
+
+<h2>2. Wynik</h2>
+<div id="wynik"></div>
+
+<h2>Czego to narzędzie nie robi</h2>
+<ul>
+  <li>Nie wymyśla faktów. Jeśli w danych nie ma pojemności baterii, w opisie jej nie będzie — <b>zamiast tego wypisze ostrzeżenie</b>, że kolumna jest pusta. Zmyślony parametr w opisie aukcji to reklamacja, nie oszczędność czasu.</li>
+  <li>Nie obrabia zdjęć. Kadrowanie, tło i miniaturki to osobna praca — robi się ją raz, wsadowo.</li>
+  <li>Nie zna Waszego szablonu. Powyżej są trzy przykładowe; docelowy układ odwzorowuję 1:1 z Waszej istniejącej aukcji.</li>
+  <li>Nie wysyła nic do Shopera ani BaseLinkera z tej strony. Wynik wkleja się do systemu albo importuje plikiem CSV.</li>
+</ul>
+
+<footer>
+  bartekdev_pl · narzędzie napisane 11.09.2026, cały kod wykonuje się lokalnie w przeglądarce ·
+  demo na potrzeby zlecenia „Tworzenie opisów aukcji – Shoper, BaseLinker” (144183)
+</footer>
+</div>
+
+<script>
+const PRZYKLAD = `sku;nazwa;marka;kategoria;moc;pojemnosc;material;wymiary;kolor;cechy;zawartosc;gwarancja;wysylka
+BL-1042;Czajnik elektryczny stalowy 1,7 l;Vensor;AGD drobne;2200 W;1,7 l;stal nierdzewna;22 x 16 x 24 cm;srebrny;Płaska grzałka – łatwe czyszczenie|Wskaźnik poziomu wody|Automatyczne wyłączenie po zagotowaniu|Zabezpieczenie przed pracą bez wody;czajnik|podstawa zasilająca|instrukcja PL;24 miesiące;kurier 24 h
+BL-1043;Patelnia granitowa 28 cm indukcja;Vensor;Naczynia;;;aluminium z powłoką granitową;28 cm / wys. 5 cm;czarny;Powłoka nieprzywierająca|Dno do indukcji|Uchwyt bakelitowy nie nagrzewa się|Można myć w zmywarce;patelnia;24 miesiące;kurier 24 h
+BL-1044;Zestaw noży kuchennych 6 elementów w bloku;Kuchnia+;Noże;;;stal X30Cr13 / drewno akacjowe;blok 22 x 11 x 33 cm;brąz;Ostrza kute jednoczęściowo|Blok z drewna akacjowego|Komplet do kuchni domowej;5 noży|blok;24 miesiące;kurier 24 h`;
+
+const $ = s => document.querySelector(s);
+
+/* ── CSV: wykrywamy separator i szanujemy cudzysłowy, bo w opisach bywają przecinki ── */
+function parsujCSV(txt){
+  const linie = txt.replace(/\r/g,'').split('\n').filter(l=>l.trim()!=='');
+  if(!linie.length) return {naglowki:[],wiersze:[]};
+  const sep = (linie[0].split(';').length > linie[0].split(',').length) ? ';' : ',';
+  const rozbij = l => {
+    const out=[]; let biez=''; let wCudz=false;
+    for(let i=0;i<l.length;i++){
+      const z=l[i];
+      if(z==='"'){ if(wCudz && l[i+1]==='"'){biez+='"';i++;} else wCudz=!wCudz; }
+      else if(z===sep && !wCudz){ out.push(biez); biez=''; }
+      else biez+=z;
+    }
+    out.push(biez); return out.map(s=>s.trim());
+  };
+  const naglowki = rozbij(linie[0]).map(h=>h.toLowerCase());
+  const wiersze = linie.slice(1).map(l=>{
+    const k=rozbij(l), o={};
+    naglowki.forEach((h,i)=>o[h]=(k[i]||'').trim());
+    return o;
+  });
+  return {naglowki,wiersze};
+}
+
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const ETYKIETY = {moc:'Moc',pojemnosc:'Pojemność',material:'Materiał',wymiary:'Wymiary',kolor:'Kolor',waga:'Waga',
+  ean:'Kod EAN',sku:'Symbol',marka:'Marka',gwarancja:'Gwarancja',model:'Model',zasilanie:'Zasilanie'};
+const SPECJALNE = ['nazwa','kategoria','cechy','zawartosc','wysylka','opis'];
+
+function etykieta(k){ return ETYKIETY[k] || (k.charAt(0).toUpperCase()+k.slice(1)).replace(/_/g,' '); }
+
+function zbudujOpis(p, szablon, stopka){
+  const puste = [];
+  const lista = k => (p[k]||'').split('|').map(s=>s.trim()).filter(Boolean);
+  const cechy = lista('cechy'), zawartosc = lista('zawartosc');
+
+  const parametry = Object.keys(p)
+    .filter(k => !SPECJALNE.includes(k))
+    .map(k => { if(!p[k]) { puste.push(k); return null; } return [etykieta(k), p[k]]; })
+    .filter(Boolean);
+
+  const naglowek = p.marka ? `${p.nazwa} — ${p.marka}` : p.nazwa;
+  let h = '';
+
+  if(szablon !== 'tabela'){
+    h += `<h2>${esc(naglowek)}</h2>\n`;
+    // Celowo nie odmieniamy nazw przez przypadki. Automat, który próbuje zbudować
+    // „wykonany ze stali nierdzewnej", prędzej czy później napisze „wykonany ze stal
+    // nierdzewna". Krótkie zdania z dwukropkiem są zawsze poprawne.
+    const wstep = [];
+    wstep.push(`<b>${esc(p.nazwa)}</b>` + (p.kategoria ? ` — ${esc(p.kategoria)}` : '') + '.');
+    ['material','pojemnosc','moc','wymiary','kolor'].forEach(k => {
+      if(p[k]) wstep.push(`${etykieta(k)}: ${esc(p[k])}.`);
+    });
+    h += `<p>${wstep.join(' ')}</p>\n`;
+  }
+
+  if(szablon !== 'tabela' && cechy.length){
+    h += `<h3>Najważniejsze cechy</h3>\n<ul>\n`;
+    cechy.forEach(c => h += `  <li>${esc(c)}</li>\n`);
+    h += `</ul>\n`;
+  }
+
+  if(szablon !== 'zwiezly' && parametry.length){
+    h += `<h3>Dane techniczne</h3>\n<table>\n`;
+    parametry.forEach(([k,v]) => h += `  <tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>\n`);
+    h += `</table>\n`;
+  }
+
+  if(szablon !== 'tabela' && zawartosc.length){
+    h += `<h3>Zawartość zestawu</h3>\n<ul>\n`;
+    zawartosc.forEach(z => h += `  <li>${esc(z)}</li>\n`);
+    h += `</ul>\n`;
+  }
+
+  const dopisek = [];
+  if(p.wysylka) dopisek.push(esc(p.wysylka.charAt(0).toUpperCase()+p.wysylka.slice(1)) + '.');
+  if(stopka.trim()) dopisek.push(esc(stopka.trim()));
+  if(szablon !== 'tabela' && dopisek.length) h += `<p>${dopisek.join(' ')}</p>\n`;
+
+  return {html:h, puste};
+}
+
+function generuj(){
+  const {wiersze} = parsujCSV($('#dane').value);
+  const szablon = $('#szablon').value, stopka = $('#stopka').value;
+  const cel = $('#wynik'); cel.innerHTML = '';
+
+  if(!wiersze.length){ cel.innerHTML = '<div class="ostrz">Brak danych. Kliknij „Wczytaj przykładowe dane” albo wklej własny CSV.</div>'; $('#licz').textContent=''; return; }
+  if(!('nazwa' in wiersze[0])){ cel.innerHTML = '<div class="ostrz">W nagłówku brakuje kolumny <code>nazwa</code> — bez niej nie da się zbudować opisu.</div>'; $('#licz').textContent=''; return; }
+
+  let znakow = 0, zOstrzezeniem = 0;
+  wiersze.forEach(p => {
+    if(!p.nazwa) return;
+    const {html, puste} = zbudujOpis(p, szablon, stopka);
+    znakow += html.length;
+    if(puste.length) zOstrzezeniem++;
+
+    const k = document.createElement('div');
+    k.className = 'karta';
+    k.innerHTML =
+      `<h3>${esc(p.sku ? p.sku+' — ' : '')}${esc(p.nazwa)}</h3>` +
+      `<div class="tresc">` +
+        (puste.length ? `<div class="ostrz"><b>Puste kolumny:</b> ${puste.map(esc).join(', ')}. Pominięte w opisie — generator nie wpisuje wartości, których nie dostał.</div>` : '') +
+        `<div class="opis">${html}</div>` +
+        `<div class="kod"><label>HTML do wklejenia w Shoper / BaseLinker</label><textarea spellcheck="false" readonly></textarea></div>` +
+      `</div>`;
+    k.querySelector('.kod textarea').value = html;
+    cel.appendChild(k);
+  });
+
+  $('#licz').textContent =
+    `${wiersze.length} produktów · ${znakow.toLocaleString('pl-PL')} znaków HTML wygenerowanych w tej chwili` +
+    (zOstrzezeniem ? ` · ${zOstrzezeniem} z ostrzeżeniem o brakujących danych` : ' · komplet danych');
+}
+
+function pobierzCSV(){
+  const {wiersze} = parsujCSV($('#dane').value);
+  if(!wiersze.length) return;
+  const szablon = $('#szablon').value, stopka = $('#stopka').value;
+  const cyt = s => '"' + String(s).replace(/"/g,'""') + '"';
+  const linie = ['sku;nazwa;opis'];
+  wiersze.forEach(p => { if(p.nazwa) linie.push([cyt(p.sku||''),cyt(p.nazwa),cyt(zbudujOpis(p,szablon,stopka).html)].join(';')); });
+  const blob = new Blob(['﻿'+linie.join('\n')], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'opisy-do-importu.csv'; a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+$('#gen').addEventListener('click', generuj);
+$('#csv').addEventListener('click', pobierzCSV);
+$('#przyklad').addEventListener('click', () => { $('#dane').value = PRZYKLAD; generuj(); });
+$('#szablon').addEventListener('change', generuj);
+$('#dane').value = PRZYKLAD;
+generuj();
+</script>
+</body>
+</html>
