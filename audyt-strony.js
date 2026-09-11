@@ -38,15 +38,23 @@
   function wydajnosc() {
     const nav = performance.getEntriesByType('navigation')[0] || {};
     const res = performance.getEntriesByType('resource');
-    const wagaCalosc = res.reduce((s, r) => s + (r.transferSize || 0), 0);
+
+    // transferSize wynosi 0 dla zasobów podanych z cache przeglądarki. Gdyby liczyć tylko je,
+    // raport przy odświeżeniu pokazałby wagę 0 MB i skłamał. Dlatego bierzemy rozmiar po dekompresji
+    // jako wartość zastępczą i oznaczamy to w raporcie.
+    const rozmiar = r => r.transferSize || r.encodedBodySize || r.decodedBodySize || 0;
+    const przesłane = res.reduce((s, r) => s + (r.transferSize || 0), 0);
+    const wagaCalosc = res.reduce((s, r) => s + rozmiar(r), 0);
+    const zCache = przesłane === 0 && wagaCalosc > 0;
+
     const grupy = {};
     res.forEach(r => {
       const t = r.initiatorType || 'inne';
-      grupy[t] = (grupy[t] || 0) + (r.transferSize || 0);
+      grupy[t] = (grupy[t] || 0) + rozmiar(r);
     });
     const najciezsze = res
-      .filter(r => r.transferSize > 50 * 1024)
-      .map(r => ({ url: r.name.split('/').pop().split('?')[0].slice(0, 46), kb: kb(r.transferSize), typ: r.initiatorType }))
+      .filter(r => rozmiar(r) > 50 * 1024)
+      .map(r => ({ url: r.name.split('/').pop().split('?')[0].slice(0, 46), kb: kb(rozmiar(r)), typ: r.initiatorType }))
       .sort((a, b) => b.kb - a.kb).slice(0, 8);
 
     const lcp = performance.getEntriesByType('largest-contentful-paint').slice(-1)[0];
@@ -58,6 +66,7 @@
       ttfb_ms: Math.round((nav.responseStart || 0) - (nav.requestStart || 0)),
       zasobow: res.length,
       waga_kb: kb(wagaCalosc),
+      waga_z_cache: zCache,
       grupy_kb: Object.fromEntries(Object.entries(grupy).map(([k, v]) => [k, kb(v)])),
       najciezsze,
       lcp_ms: lcp ? Math.round(lcp.startTime) : null,
@@ -220,7 +229,7 @@ ${wiersz('Dokument gotowy (DOMContentLoaded)', r.wydajnosc.dom_ms + ' ms')}
 ${wiersz('Pełne załadowanie', r.wydajnosc.load_ms + ' ms')}
 ${wiersz('Czas odpowiedzi serwera (TTFB)', r.wydajnosc.ttfb_ms + ' ms')}
 ${r.wydajnosc.lcp_ms ? wiersz('LCP (największy element)', (r.wydajnosc.lcp_ms / 1000).toFixed(2) + ' s — ' + (r.wydajnosc.lcp_element || '')) : ''}
-${wiersz('Waga strony', (r.wydajnosc.waga_kb / 1024).toFixed(2) + ' MB w ' + r.wydajnosc.zasobow + ' zasobach')}
+${wiersz('Waga strony', (r.wydajnosc.waga_kb / 1024).toFixed(2) + ' MB w ' + r.wydajnosc.zasobow + ' zasobach' + (r.wydajnosc.waga_z_cache ? ' (rozmiar po dekompresji — zasoby podane z cache przeglądarki)' : ''))}
 ${wiersz('Obrazki', r.wydajnosc.obrazow + ' szt., w tym leniwie ładowane: ' + r.wydajnosc.obrazy_lazy)}
 ${wiersz('Obrazki bez wymiarów (ryzyko przeskoków układu)', r.wydajnosc.obrazy_bez_wymiarow)}
 ${wiersz('Obrazki przeskalowane w przeglądarce', r.wydajnosc.obrazy_przeskalowane)}
