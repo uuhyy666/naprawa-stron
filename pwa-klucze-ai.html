@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PWA z funkcjami AI — jak nie wystawić klucza i jak wdrożyć tę samą aplikację 10 razy</title>
+<style>
+  :root{--tekst:#14161a;--mut:#5a6472;--linia:#e2e6ec;--akcent:#1f5fb0;--ok:#0f7a54;--zle:#c0392b;}
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--tekst);background:#fbfbfc;}
+  .wrap{max-width:840px;margin:0 auto;padding:44px 20px 90px;}
+  h1{font-size:25px;margin:0 0 4px;line-height:1.25}
+  .sub{color:var(--mut);margin:0 0 8px;}
+  .meta{color:var(--mut);font-size:14px;border-bottom:2px solid var(--tekst);padding-bottom:14px;margin-bottom:26px;}
+  h2{font-size:19px;margin:34px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--linia);}
+  h3{font-size:16px;margin:22px 0 6px;}
+  .box{background:#fff;border:1px solid var(--linia);border-radius:11px;padding:18px 22px;margin:16px 0;}
+  .alarm{background:#fff4f2;border:1px solid #e8b3a8;border-radius:11px;padding:16px 20px;margin:16px 0;}
+  .dobre{background:#f1faf5;border:1px solid #a6d9bf;border-radius:11px;padding:16px 20px;margin:16px 0;}
+  table{border-collapse:collapse;width:100%;font-size:15px;margin:12px 0;}
+  th,td{border:1px solid var(--linia);padding:8px 11px;text-align:left;vertical-align:top;}
+  th{background:#f5f6f8;font-weight:600;}
+  ul{padding-left:21px;} li{margin:6px 0;}
+  code{background:#f2f3f6;border-radius:4px;padding:1px 5px;font-size:13.5px;font-family:ui-monospace,Consolas,monospace;word-break:break-word;}
+  pre{background:#14161a;color:#e8eaf0;border-radius:10px;padding:16px 18px;overflow:auto;font:12.5px/1.55 ui-monospace,Consolas,monospace;}
+  pre .k{color:#7aa7ff} pre .s{color:#8fd694} pre .c{color:#8a93a3;font-style:italic}
+  .narzedzie{background:#fff;border:2px dashed var(--akcent);border-radius:14px;padding:22px;margin:18px 0}
+  textarea{width:100%;min-height:120px;font:13px/1.5 ui-monospace,Consolas,monospace;border:1px solid var(--linia);border-radius:8px;padding:10px;resize:vertical}
+  button{background:var(--akcent);color:#fff;border:0;border-radius:10px;padding:12px 24px;font:600 16px inherit;cursor:pointer;min-height:46px;margin-top:12px}
+  button:hover{background:#164478}
+  button:focus-visible{outline:3px solid var(--tekst);outline-offset:2px}
+  .wynik{margin-top:14px;font-size:15px}
+  .znaleziono{background:#fff4f2;border:1px solid #e8b3a8;border-radius:8px;padding:12px 15px;margin:8px 0}
+  .czysto{background:#f1faf5;border:1px solid #a6d9bf;border-radius:8px;padding:12px 15px;margin:8px 0}
+  .skip{position:absolute;left:-9999px;top:0;background:var(--akcent);color:#fff;padding:10px 18px;z-index:99}
+  .skip:focus{left:0}
+  footer{margin-top:42px;padding-top:14px;border-top:1px solid var(--linia);color:var(--mut);font-size:13px;}
+</style>
+</head>
+<body>
+<a class="skip" href="#tresc">Przejdź do treści</a>
+<main id="tresc" class="wrap">
+
+<h1>PWA z funkcjami AI: jak nie wystawić klucza i jak wdrożyć tę samą aplikację dziesięć razy</h1>
+<p class="sub">Dwie rzeczy, które decydują o kosztach i bezpieczeństwie takiego projektu</p>
+<div class="meta">Przygotował bartekdev_pl, 11.09.2026, na potrzeby zlecenia 140066 · Cały kod niżej jest kompletny i gotowy do użycia</div>
+
+<div class="alarm">
+  <h2 style="margin-top:0;border:0;padding:0">Problem numer jeden: klucz do modelu w kodzie aplikacji</h2>
+  <p>PWA to aplikacja, która w całości działa w przeglądarce użytkownika. <b>Wszystko, co jest
+  w jej kodzie, jest jawne</b> — łącznie z kluczem do modelu AI, jeśli ktoś go tam wpisze.
+  Nie chroni przed tym minifikacja, zmienna środowiskowa wstrzyknięta przy budowaniu
+  ani schowanie klucza „głębiej w kodzie”.</p>
+  <p style="margin-bottom:0">Konsekwencja jest finansowa, nie teoretyczna: znaleziony klucz
+  ktoś podepnie pod własne zapytania, a rachunek przyjdzie do organizacji.
+  Przy projekcie NGO jest to szczególnie dotkliwe, bo budżet jest z darowizn.</p>
+</div>
+
+<h2>Narzędzie: sprawdź w 10 sekund, czy kod wystawia klucz</h2>
+<p>Wklej zawartość pliku JavaScript swojej aplikacji (albo fragment kodu).
+Wszystko liczy się w Twojej przeglądarce — nic stąd nie wychodzi na żaden serwer.</p>
+
+<div class="narzedzie">
+  <label for="kod"><b>Kod do sprawdzenia</b></label>
+  <textarea id="kod" spellcheck="false"></textarea>
+  <button id="sprawdz">Sprawdź kod</button>
+  <button id="przyklad" style="background:#fff;color:var(--akcent);border:1.5px solid var(--akcent)">Wczytaj przykład</button>
+  <div class="wynik" id="wynik"></div>
+</div>
+
+<h2>Rozwiązanie: pośrednik po stronie serwera</h2>
+<p>Aplikacja nie rozmawia z modelem bezpośrednio. Rozmawia z <b>własnym punktem końcowym</b>,
+który dopiero on zna klucz. Klucz nigdy nie opuszcza serwera. Przy okazji zyskujesz trzy rzeczy,
+których bez pośrednika nie da się mieć wcale:</p>
+<ul>
+  <li><b>Limit zapytań</b> — jeden użytkownik nie wyczerpie budżetu całej organizacji.</li>
+  <li><b>Twardy limit kosztów</b> — po przekroczeniu miesięcznego progu pośrednik przestaje przepuszczać zapytania, zamiast generować rachunek.</li>
+  <li><b>Kontrola źródła</b> — zapytania przyjmowane tylko z Twoich domen, więc cudza strona nie użyje Twojego modelu.</li>
+</ul>
+
+<h3>Gotowy kod pośrednika (Cloudflare Worker — darmowy plan wystarcza)</h3>
+<pre><span class="c">// Pośrednik między aplikacją PWA a modelem AI.
+// Klucz siedzi w zmiennej środowiskowej Workera i NIGDY nie trafia do przeglądarki.
+// Wymaga jednego powiązania KV o nazwie LICZNIK (do limitów i kosztów).</span>
+
+<span class="k">const</span> DOZWOLONE_ZRODLA = [<span class="s">'https://twoja-domena.pl'</span>, <span class="s">'https://klient1.twoja-domena.pl'</span>];
+<span class="k">const</span> LIMIT_NA_UZYTKOWNIKA_DZIENNIE = <span class="s">50</span>;
+<span class="k">const</span> LIMIT_KOSZTU_MIESIAC_USD = <span class="s">20</span>;
+
+<span class="k">export default</span> {
+  <span class="k">async</span> fetch(zadanie, env) {
+    <span class="k">const</span> zrodlo = zadanie.headers.get(<span class="s">'Origin'</span>) || <span class="s">''</span>;
+    <span class="k">if</span> (!DOZWOLONE_ZRODLA.includes(zrodlo)) {
+      <span class="k">return</span> odpowiedz({ blad: <span class="s">'Niedozwolone źródło'</span> }, <span class="s">403</span>, zrodlo);
+    }
+    <span class="k">if</span> (zadanie.method === <span class="s">'OPTIONS'</span>) <span class="k">return</span> odpowiedz(<span class="k">null</span>, <span class="s">204</span>, zrodlo);
+
+    <span class="c">// Limit na użytkownika — klucz oparty o adres IP i dzień.</span>
+    <span class="k">const</span> ip = zadanie.headers.get(<span class="s">'CF-Connecting-IP'</span>) || <span class="s">'nieznane'</span>;
+    <span class="k">const</span> dzien = <span class="k">new</span> Date().toISOString().slice(<span class="s">0</span>, <span class="s">10</span>);
+    <span class="k">const</span> kluczLicznika = <span class="s">`uzycie:${ip}:${dzien}`</span>;
+    <span class="k">const</span> uzyte = Number(<span class="k">await</span> env.LICZNIK.get(kluczLicznika)) || <span class="s">0</span>;
+    <span class="k">if</span> (uzyte >= LIMIT_NA_UZYTKOWNIKA_DZIENNIE) {
+      <span class="k">return</span> odpowiedz({ blad: <span class="s">'Dzienny limit zapytań wyczerpany'</span> }, <span class="s">429</span>, zrodlo);
+    }
+
+    <span class="c">// Twardy limit kosztów całej instalacji — to on ratuje budżet NGO.</span>
+    <span class="k">const</span> miesiac = dzien.slice(<span class="s">0</span>, <span class="s">7</span>);
+    <span class="k">const</span> koszt = Number(<span class="k">await</span> env.LICZNIK.get(<span class="s">`koszt:${miesiac}`</span>)) || <span class="s">0</span>;
+    <span class="k">if</span> (koszt >= LIMIT_KOSZTU_MIESIAC_USD) {
+      <span class="k">return</span> odpowiedz({ blad: <span class="s">'Miesięczny limit kosztów osiągnięty'</span> }, <span class="s">429</span>, zrodlo);
+    }
+
+    <span class="k">const</span> dane = <span class="k">await</span> zadanie.json();
+    <span class="k">const</span> odp = <span class="k">await</span> fetch(<span class="s">'https://api.anthropic.com/v1/messages'</span>, {
+      method: <span class="s">'POST'</span>,
+      headers: {
+        <span class="s">'content-type'</span>: <span class="s">'application/json'</span>,
+        <span class="s">'x-api-key'</span>: env.KLUCZ_API,        <span class="c">// ← klucz tylko tutaj, po stronie serwera</span>
+        <span class="s">'anthropic-version'</span>: <span class="s">'2023-06-01'</span>
+      },
+      body: JSON.stringify({
+        model: <span class="s">'claude-sonnet-5'</span>,
+        max_tokens: <span class="s">1024</span>,
+        messages: dane.messages          <span class="c">// przekazujemy tylko to, co potrzebne</span>
+      })
+    });
+
+    <span class="k">const</span> wynik = <span class="k">await</span> odp.json();
+    <span class="k">const</span> zuzycie = wynik.usage || {};
+    <span class="k">const</span> przyrost = szacunkowyKoszt(zuzycie);
+    <span class="c">// Liczniki aktualizujemy PO udanym zapytaniu, żeby błąd modelu nie zjadał limitu użytkownika.</span>
+    <span class="k">await</span> env.LICZNIK.put(kluczLicznika, String(uzyte + <span class="s">1</span>), { expirationTtl: <span class="s">172800</span> });
+    <span class="k">await</span> env.LICZNIK.put(<span class="s">`koszt:${miesiac}`</span>, String(koszt + przyrost));
+
+    <span class="k">return</span> odpowiedz(wynik, odp.status, zrodlo);
+  }
+};
+
+<span class="k">function</span> szacunkowyKoszt(u) {
+  <span class="c">// Stawki wpisujemy jawnie i w jednym miejscu — żeby dało się je poprawić,
+  // gdy cennik się zmieni, zamiast szukać mnożników po całym kodzie.</span>
+  <span class="k">const</span> zaMlnWejscie = <span class="s">3</span>, zaMlnWyjscie = <span class="s">15</span>;
+  <span class="k">return</span> ((u.input_tokens || <span class="s">0</span>) * zaMlnWejscie + (u.output_tokens || <span class="s">0</span>) * zaMlnWyjscie) / <span class="s">1e6</span>;
+}
+
+<span class="k">function</span> odpowiedz(dane, status, zrodlo) {
+  <span class="k">return new</span> Response(dane ? JSON.stringify(dane) : <span class="k">null</span>, {
+    status,
+    headers: {
+      <span class="s">'content-type'</span>: <span class="s">'application/json'</span>,
+      <span class="s">'Access-Control-Allow-Origin'</span>: zrodlo,
+      <span class="s">'Access-Control-Allow-Headers'</span>: <span class="s">'content-type'</span>
+    }
+  });
+}</pre>
+
+<h2>Problem numer dwa: ta sama aplikacja wdrażana dziesięć razy</h2>
+<p>W opisie zlecenia jest zdanie: „instalujemy ją 10 razy, czyli ten sam produkt — 10 razy,
+dla klientów testowych”. To miejsce, w którym projekt albo zostanie utrzymywalny, albo zamieni się
+w dziesięć osobnych aplikacji, których nikt już nie ogarnie.</p>
+
+<table>
+<tr><th>Podejście</th><th>Poprawka błędu u 10 klientów</th><th>Ryzyko</th></tr>
+<tr>
+  <td><b>Dziesięć kopii kodu</b><br><span style="color:var(--mut);font-size:14px">najczęstszy odruch</span></td>
+  <td>Dziesięć razy to samo, ręcznie. Prędzej czy później któraś kopia zostanie pominięta.</td>
+  <td class="zle">wysokie</td>
+</tr>
+<tr>
+  <td><b>Jeden kod, dziesięć konfiguracji</b><br><span style="color:var(--mut);font-size:14px">rekomendowane</span></td>
+  <td>Jedna poprawka, jedno wdrożenie, wszyscy mają ją naraz.</td>
+  <td class="ok">niskie</td>
+</tr>
+</table>
+
+<p>W praktyce: jedno repozytorium, a różnice między klientami (nazwa, logo, kolory, treści,
+adres pośrednika AI) siedzą w pliku konfiguracyjnym wczytywanym przy starcie —
+<code>/config.json</code> osobny dla każdej instalacji. Personalizacja, którą przygotowuje
+zleceniodawca, sprowadza się wtedy do wypełnienia jednego pliku, bez dotykania kodu.</p>
+
+<div class="dobre">
+  <b>Skutek praktyczny:</b> dziesiąta instalacja zajmuje kilkanaście minut zamiast całego dnia,
+  a poprawka bezpieczeństwa dociera do wszystkich dziesięciu tego samego popołudnia.
+  Przy aplikacji finansowanej z darowizn to jest różnica między projektem, który da się utrzymać,
+  a takim, który po roku trzeba pisać od nowa.
+</div>
+
+<h2>Czego tu nie ma i czego nie wiem</h2>
+<ul>
+  <li><b>Nie widziałem tej aplikacji</b> — działam na podstawie opisu zlecenia. Powyższe to wzorce, nie diagnoza konkretnego kodu. Po podpisaniu NDA i zajrzeniu do repozytorium część rzeczy na pewno okaże się inna.</li>
+  <li><b>Nie znam docelowego hostingu.</b> Kod pośrednika pokazałem na Cloudflare Workers, bo darmowy plan wystarcza na start i nie wymaga utrzymywania serwera. Na zwykłym hostingu z PHP robi się to samo, tylko inaczej.</li>
+  <li><b>Nie znam skali ruchu ani modelu</b>, więc podane limity (50 zapytań na osobę dziennie, 20 USD miesięcznie) to wartości przykładowe do ustalenia, a nie rekomendacja.</li>
+  <li><b>Narzędzie wyżej nie jest audytem bezpieczeństwa.</b> Szuka wzorców wyglądających jak klucze i zwraca uwagę na typowe błędy. Brak trafień nie znaczy „bezpieczne” — znaczy tylko, że tych konkretnych wzorców nie ma.</li>
+</ul>
+
+<footer>
+  bartekdev_pl · 11.09.2026 · przygotowane do zlecenia 140066 na Useme.
+  Kod pośrednika i narzędzie do sprawdzania kodu są kompletne — można ich użyć bez mojego udziału.
+</footer>
+</main>
+
+<script>
+const PRZYKLAD = `// Fragment typowej aplikacji PWA z funkcją AI
+const API_KEY = "sk-ant-api03-9fK2mQ7xZ0pLvN4tR8wYbC1dEgH5jS6uA3iO";
+
+async function zapytajModel(tekst) {
+  const r = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "x-api-key": API_KEY, "content-type": "application/json" },
+    body: JSON.stringify({ model: "claude-sonnet-5", max_tokens: 500,
+      messages: [{ role: "user", content: tekst }] })
+  });
+  return r.json();
+}`;
+
+// Wzorce celowo dobrane pod klucze, które realnie wyciekają z aplikacji front-endowych.
+// Każdy ma opis, bo samo "znaleziono dopasowanie" nic nie mówi osobie nietechnicznej.
+const WZORCE = [
+  {re:/sk-ant-api\d{2}-[A-Za-z0-9_\-]{20,}/g, opis:'Klucz API Anthropic'},
+  {re:/sk-[A-Za-z0-9]{32,}/g,                 opis:'Klucz API w formacie OpenAI'},
+  {re:/AIza[0-9A-Za-z_\-]{35}/g,              opis:'Klucz API Google'},
+  {re:/AKIA[0-9A-Z]{16}/g,                    opis:'Klucz dostępu AWS'},
+  {re:/xox[baprs]-[0-9A-Za-z\-]{10,}/g,       opis:'Token Slack'},
+  {re:/gh[pousr]_[A-Za-z0-9]{36,}/g,          opis:'Token GitHub'},
+  // Cudzysłowy wokół nazwy muszą być opcjonalne: w JS najczęstszy zapis to apiKey: "..."
+  // bez cudzysłowów, i pierwsza wersja tego wzorca po prostu go nie łapała.
+  {re:/["']?(?:api[_-]?key|apikey|secret|token|password|haslo|klucz)["']?\s*[:=]\s*["'][^"']{12,}["']/gi,
+                                              opis:'Zmienna wyglądająca na sekret z wpisaną wartością'}
+];
+
+const ZAPYTANIA_WPROST = [
+  {re:/https?:\/\/api\.(anthropic|openai)\.com/gi, opis:'Zapytanie z przeglądarki prosto do dostawcy modelu — powinno iść przez własnego pośrednika'}
+];
+
+function zamaskuj(s){
+  if (s.length <= 12) return s.slice(0,3) + '…';
+  return s.slice(0,8) + '…' + s.slice(-4);
+}
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+document.getElementById('przyklad').addEventListener('click', () => {
+  document.getElementById('kod').value = PRZYKLAD;
+  document.getElementById('sprawdz').click();
+});
+
+document.getElementById('sprawdz').addEventListener('click', () => {
+  const kod = document.getElementById('kod').value;
+  const cel = document.getElementById('wynik');
+  if (!kod.trim()) {
+    cel.innerHTML = '<div class="czysto">Pole jest puste. Wklej kod albo kliknij „Wczytaj przykład”.</div>';
+    return;
+  }
+  let html = '', znalezione = 0;
+
+  WZORCE.forEach(w => {
+    const trafienia = [...new Set(kod.match(w.re) || [])];
+    trafienia.forEach(t => {
+      znalezione++;
+      html += '<div class="znaleziono"><b>' + esc(w.opis) + '</b><br>' +
+              'znaleziono: <code>' + esc(zamaskuj(t)) + '</code><br>' +
+              '<span style="font-size:14px">Ten ciąg jest w kodzie wysyłanym do przeglądarki, ' +
+              'czyli widzi go każdy użytkownik aplikacji.</span></div>';
+    });
+  });
+
+  ZAPYTANIA_WPROST.forEach(w => {
+    if ((kod.match(w.re) || []).length) {
+      znalezione++;
+      html += '<div class="znaleziono"><b>' + esc(w.opis) + '</b></div>';
+    }
+  });
+
+  if (!znalezione) {
+    html = '<div class="czysto"><b>Nie znalazłem znanych wzorców kluczy w tym fragmencie.</b><br>' +
+           '<span style="font-size:14px">To nie jest zaświadczenie o bezpieczeństwie — ' +
+           'znaczy tylko tyle, że tych konkretnych wzorców tu nie ma. ' +
+           'Klucz może siedzieć w innym pliku, w konfiguracji budowania albo w pliku service workera.</span></div>';
+  } else {
+    html = '<div class="znaleziono" style="font-weight:600">Znaleziono ' + znalezione +
+           ' rzecz' + (znalezione === 1 ? '' : 'y') + ' do sprawdzenia:</div>' + html;
+  }
+  cel.innerHTML = html;
+});
+</script>
+</body>
+</html>
