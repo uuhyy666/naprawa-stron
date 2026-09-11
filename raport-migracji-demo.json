@@ -1,0 +1,60 @@
+{
+  "wygenerowano": "2026-09-11T01:38:22.427Z",
+  "klucz": "sku",
+  "pola": [
+    "nazwa",
+    "cena",
+    "stan",
+    "kategoria"
+  ],
+  "tolerancja": 0,
+  "liczby": {
+    "zrodlo": 6,
+    "cel": 6,
+    "zgodne": 3,
+    "rozne": 2,
+    "brakujace_w_celu": 1,
+    "nadmiarowe_w_celu": 1,
+    "duplikaty_zrodlo": 0,
+    "duplikaty_cel": 0
+  },
+  "brakujace": [
+    {
+      "klucz": "FL-003",
+      "nazwa": "Wiązanka pogrzebowa"
+    }
+  ],
+  "nadmiarowe": [
+    {
+      "klucz": "FL-099"
+    }
+  ],
+  "rozne": [
+    {
+      "klucz": "FL-002",
+      "roznice": [
+        {
+          "pole": "cena",
+          "zrodlo": "249,00",
+          "cel": "269,00"
+        }
+      ]
+    },
+    {
+      "klucz": "FL-004",
+      "roznice": [
+        {
+          "pole": "kategoria",
+          "zrodlo": "Rośliny",
+          "cel": "Rosliny"
+        }
+      ]
+    }
+  ],
+  "duplikaty": {
+    "zrodlo": [],
+    "cel": []
+  },
+  "hash_zrodla": "804f6cc12a7d",
+  "hash_celu": "d05daddb6a0c"
+}
