@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>laplando.pl — stan konfiguracji poczty przed migracją do Google Workspace</title>
+<style>
+  :root{--tekst:#14161a;--mut:#5a6472;--linia:#e2e6ec;--akcent:#1f5fb0;--ok:#0f7a54;--zle:#c0392b;--uwaga:#96700a;}
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--tekst);background:#fbfbfc;}
+  .wrap{max-width:820px;margin:0 auto;padding:44px 20px 90px;}
+  h1{font-size:24px;margin:0 0 4px;line-height:1.28}
+  .sub{color:var(--mut);margin:0 0 8px;}
+  .meta{color:var(--mut);font-size:14px;border-bottom:2px solid var(--tekst);padding-bottom:14px;margin-bottom:26px;}
+  h2{font-size:19px;margin:34px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--linia);}
+  h3{font-size:16px;margin:22px 0 6px;}
+  .box{background:#fff;border:1px solid var(--linia);border-radius:11px;padding:18px 22px;margin:16px 0;}
+  .alarm{background:#fff4f2;border:1px solid #e8b3a8;border-radius:11px;padding:16px 20px;margin:16px 0;}
+  .dobre{background:#f1faf5;border:1px solid #a6d9bf;border-radius:11px;padding:16px 20px;margin:16px 0;}
+  table{border-collapse:collapse;width:100%;font-size:14.5px;margin:12px 0;}
+  th,td{border:1px solid var(--linia);padding:8px 11px;text-align:left;vertical-align:top;}
+  th{background:#f5f6f8;font-weight:600;}
+  .zle{color:var(--zle);font-weight:600}.ok{color:var(--ok);font-weight:600}.uw{color:var(--uwaga);font-weight:600}
+  ul,ol{padding-left:21px;} li{margin:7px 0;}
+  code{background:#f2f3f6;border-radius:4px;padding:1px 5px;font-size:13.5px;font-family:ui-monospace,Consolas,monospace;word-break:break-word;}
+  .skip{position:absolute;left:-9999px;top:0;background:var(--akcent);color:#fff;padding:10px 18px;z-index:99}
+  .skip:focus{left:0}
+  footer{margin-top:42px;padding-top:14px;border-top:1px solid var(--linia);color:var(--mut);font-size:13px;}
+</style>
+</head>
+<body>
+<a class="skip" href="#tresc">Przejdź do treści</a>
+<main id="tresc" class="wrap">
+
+<h1>laplando.pl — co dziś jest w DNS i co się stanie przy przejściu na Google Workspace</h1>
+<p class="sub">Sprawdzone na publicznych rekordach domeny, przed złożeniem oferty</p>
+<div class="meta">Data: 11.09.2026, godz. 23:57 · Metoda: zapytania DNS przez DNS-over-HTTPS (Cloudflare) · Wyłącznie dane publiczne, bez żadnych dostępów</div>
+
+<div class="alarm">
+  <h2 style="margin-top:0;border:0;padding:0">Najważniejsze: Wasz SPF kończy się na <code>-all</code></h2>
+  <p>Obecny rekord to:</p>
+  <p><code>v=spf1 a include:_spf.sky-shop.pl mx -all</code></p>
+  <p><b><code>-all</code> to twarde odrzucenie.</b> Oznacza: „każdy serwer spoza tej listy podszywa się
+  pod nas, odrzuć wiadomość”. Jest to ustawienie prawidłowe i chroni Was przed podszywaniem —
+  ale ma jedną konsekwencję przy migracji.</p>
+  <p style="margin-bottom:0"><b>W dniu, w którym zaczniecie wysyłać pocztę przez Google, a SPF nadal
+  będzie wyglądał tak jak teraz, Wasze wiadomości zaczną być odrzucane.</b> Nie trafią do spamu —
+  zostaną zwrócone nadawcy. Przy skrzynce do obsługi klientów sklepu to znaczy: klienci nie dostają
+  odpowiedzi, a Wy dowiadujecie się o tym od nich.</p>
+</div>
+
+<h2>Co dokładnie jest dziś w DNS</h2>
+<table>
+<tr><th>Rekord</th><th>Wartość</th><th>Ocena</th></tr>
+<tr><td><b>MX</b></td><td><code>0 mail.sky-shop.pl.</code></td><td class="uw">jeden serwer, brak zapasowego</td></tr>
+<tr><td><b>SPF</b></td><td><code>v=spf1 a include:_spf.sky-shop.pl mx -all</code></td><td class="zle">do zmiany przed migracją</td></tr>
+<tr><td><b>DKIM</b></td><td>selektor <code>default</code> istnieje (klucz Sky-Shopu)</td><td class="uw">brak selektora <code>google</code></td></tr>
+<tr><td><b>DMARC</b></td><td><code>v=DMARC1; p=none;</code></td><td class="zle">brak adresu na raporty</td></tr>
+<tr><td>Rekordy A</td><td><code>188.114.96.11</code>, <code>188.114.97.11</code></td><td class="ok">DNS obsługiwany przez Cloudflare</td></tr>
+</table>
+
+<h3>Trzy rzeczy, które z tego wynikają</h3>
+<ol>
+  <li><b>SPF trzeba uzupełnić PRZED przełączeniem MX, nie po.</b> Dopisanie <code>include:_spf.google.com</code> jest nieszkodliwe, dopóki poczta chodzi przez Sky-Shop — a bez tego pierwsza wiadomość wysłana z Gmaila zostanie odrzucona.</li>
+  <li><b>Wasz DMARC nie ma adresu na raporty</b> (<code>rua=</code>). Rekord istnieje, ale nikt nigdy nie dostaje informacji, kto i jak podszywa się pod domenę. Efektywnie płacicie za mechanizm, który milczy. Dodanie adresu raportowego to jedna linijka i nie zmienia niczego w działaniu poczty.</li>
+  <li><b>W SPF są mechanizmy <code>a</code> i <code>mx</code></b>, które upoważniają do wysyłki adres serwera WWW. Przy stronie stojącej za Cloudflare to nadmiarowe uprawnienie, które warto usunąć przy okazji porządków — ale dopiero po sprawdzeniu, czy sklep nie wysyła stamtąd powiadomień transakcyjnych. Tego z zewnątrz nie widać i nie zgaduję.</li>
+</ol>
+
+<h2>Odpowiedź na Państwa drugie pytanie: wspólna skrzynka dla dwóch osób</h2>
+<p>Trzy realne warianty. Wybrałbym pierwszy.</p>
+<table>
+<tr><th>Wariant</th><th>Widać, kto odpowiedział</th><th>Chroni przed podwójną odpowiedzią</th><th>Koszt</th></tr>
+<tr>
+  <td><b>Google Groups — skrzynka zespołowa</b><br><span style="color:var(--mut);font-size:13.5px">rekomendowany</span></td>
+  <td class="ok">tak</td>
+  <td class="ok">tak — przypisanie wątku do osoby</td>
+  <td class="ok">w cenie Workspace</td>
+</tr>
+<tr>
+  <td>Delegowanie skrzynki</td>
+  <td class="uw">częściowo</td>
+  <td class="zle">nie</td>
+  <td class="ok">w cenie Workspace</td>
+</tr>
+<tr>
+  <td>Zewnętrzny helpdesk</td>
+  <td class="ok">tak</td>
+  <td class="ok">tak</td>
+  <td class="zle">osobny abonament za każdą osobę</td>
+</tr>
+</table>
+
+<div class="dobre">
+  <p style="margin-top:0"><b>Jak to działa w praktyce:</b> <code>kontakt@laplando.pl</code> przestaje być
+  skrzynką z jednym hasłem, a staje się grupą. Każdy pracownik loguje się na swoje konto i widzi
+  wspólną korespondencję w jednym miejscu. Przy wątku klika „przypisz do mnie” — od tej chwili
+  druga osoba widzi, że ktoś już się tym zajmuje, i nie odpisze równolegle. Wątki da się oznaczać
+  jako załatwione albo jako duplikat, więc widać, co zostało do zrobienia.</p>
+  <p style="margin-bottom:0">Odpowiedzi wychodzą z adresu <code>kontakt@laplando.pl</code>, więc klient
+  nadal widzi firmę, a nie prywatny adres pracownika. W środku, w nagłówkach, zostaje ślad,
+  kto faktycznie odpisał.</p>
+</div>
+
+<p><b>Uczciwie o wadach tego wariantu:</b> skrzynka zespołowa w Google Groups nie pokazuje na żywo,
+że ktoś właśnie pisze odpowiedź — chroni przed dublowaniem dopiero wtedy, gdy ktoś przypisze wątek
+do siebie. To kwestia nawyku dwóch osób, nie technologii. Przy dwóch osobach wystarcza.
+Przy sześciu zacząłbym rozmawiać o helpdesku.</p>
+
+<h2>Kolejność prac, w której poczta nie przestaje działać</h2>
+<ol>
+  <li>Założenie Workspace, weryfikacja domeny, konta dla pracowników. <b>Poczta nadal chodzi przez Sky-Shop.</b></li>
+  <li>Dopisanie do SPF <code>include:_spf.google.com</code> i publikacja DKIM Google (selektor <code>google</code>). Nadal nic się nie zmienia dla użytkowników.</li>
+  <li>Przeniesienie zawartości skrzynki narzędziem migracyjnym Google — starych wiadomości i kontaktów, przy działającej starej poczcie.</li>
+  <li><b>Dopiero teraz</b> przełączenie MX na Google. Od tego momentu nowa poczta przychodzi do Gmaila.</li>
+  <li>Dogranie: stopka HTML, automatyczna odpowiedź, grupa zespołowa, uprawnienia.</li>
+  <li>Testy dostarczalności w obie strony i porządki w SPF: usunięcie wpisów Sky-Shopu, gdy potwierdzimy, że nic już stamtąd nie wysyła.</li>
+  <li>Uzupełnienie DMARC o adres raportowy i dopiero po okresie obserwacji ewentualne zaostrzenie polityki.</li>
+</ol>
+<p>Punkt 6 jest tym, który najczęściej się pomija — i dlatego pół roku po migracji w SPF domeny wiszą
+wpisy po dostawcy, z którego nikt już nie korzysta.</p>
+
+<h2>Czego nie sprawdziłem i czego nie wiem</h2>
+<ul>
+  <li><b>Nie mam żadnych dostępów</b> i nie prosiłem o nie. Wszystko powyżej pochodzi z publicznych rekordów DNS.</li>
+  <li>Nie wiem, ile wiadomości jest w skrzynce ani od jak dawna — to decyduje o czasie migracji i nie da się tego zobaczyć z zewnątrz.</li>
+  <li>Nie wiem, czy sklep wysyła powiadomienia transakcyjne z tej domeny i którym serwerem. To pytanie zadam jako pierwsze, bo od niego zależy, czy wolno usunąć <code>a</code> i <code>mx</code> ze SPF.</li>
+  <li>Nie wiem, czy domena jest już w Google Workspace u innego dostawcy ani czy istnieje starsze konto. Weryfikacja domeny potrafi się o to potknąć.</li>
+</ul>
+
+<footer>
+  Sprawdził bartekdev_pl, 11.09.2026, na potrzeby zlecenia 142747 na Useme.
+  Zapytania DNS można powtórzyć dowolnym publicznym narzędziem — wszystkie te rekordy są jawne.
+</footer>
+</main>
+</body>
+</html>
