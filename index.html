@@ -23,7 +23,7 @@ h1 em{color:var(--acc2);font-style:normal}
 .badge b{color:var(--ok)}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:28px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
-.card h3{font-size:15px;margin-bottom:6px}
+.card h3,.card h4{font-size:15px;margin-bottom:6px}
 .card p{color:var(--mut);font-size:14px}
 .price{font-size:20px;font-weight:700;color:var(--ok);margin-top:8px}
 h2{margin-top:40px;font-size:22px}
@@ -34,6 +34,10 @@ ul.faq{list-style:none;margin-top:14px;display:grid;gap:8px}
 ul.faq li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 15px;font-size:14.5px;color:var(--mut)}
 ul.faq b{color:var(--txt)}
 a{color:var(--acc2)}
+.grupa{margin-top:26px;font-size:15px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+.lead-dowody{color:var(--mut);font-size:15px;margin-top:10px;max-width:62ch}
+.card h4 a{text-decoration:none}
+.card h4 a:hover,.card h4 a:focus-visible{text-decoration:underline}
 footer{margin-top:40px;color:var(--mut);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
 /* ---- chat ---- */
 #chatbox{position:fixed;bottom:14px;right:14px;left:14px;max-width:400px;margin-left:auto;z-index:99}
@@ -44,10 +48,11 @@ footer{margin-top:40px;color:var(--mut);font-size:13px;border-top:1px solid var(
 #chat header small{color:var(--mut);font-weight:400;margin-left:auto;font-size:12px}
 #msgs{height:min(300px,45vh);overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
 .m{max-width:88%;padding:8px 12px;border-radius:12px;font-size:14.5px;white-space:pre-wrap;word-break:break-word;line-height:1.45}
-.m.client{align-self:flex-end;background:var(--acc);color:#fff;border-bottom-right-radius:4px}
+.m.client{align-self:flex-end;background:var(--acc-btn);color:#fff;border-bottom-right-radius:4px}
 .m.dev{align-self:flex-start;background:#22262f;border-bottom-left-radius:4px}
 .m .who{display:block;font-size:11px;color:var(--mut);margin-bottom:2px}
-.m.client .who{color:#dce9ff}
+/* #dce9ff na niebieskim tle dawało kontrast 2,63:1 przy wymaganych 4,5:1 — biel na --acc-btn daje 4,70:1 */
+.m.client .who{color:#fff}
 #chatform{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);align-items:center}
 #chattext{flex:1;min-width:0;background:#10131a;border:1px solid var(--line);color:var(--txt);border-radius:22px;padding:10px 15px;font-size:16px}
 #chattext:focus{outline:1.5px solid var(--acc)}
@@ -97,6 +102,65 @@ footer{margin-top:40px;color:var(--mut);font-size:13px;border-top:1px solid var(
 <div class="step">Naprawiam na kopii strony i pokazuję efekt. Płacisz przelewem dopiero, gdy wszystko działa.</div>
 </div>
 
+<h2>Rzeczy, które zbudowałem — wszystkie działają, można kliknąć</h2>
+<p class="lead-dowody">To nie są zrzuty ekranu ani opisy. Każdy link niżej otwiera działające narzędzie
+albo raport z prawdziwego pomiaru. Jeśli interesuje Cię coś podobnego, napisz na czacie — pokażę,
+jak to wygląda na Twoich danych.</p>
+
+<h3 class="grupa">Narzędzia diagnostyczne</h3>
+<div class="grid">
+  <div class="card"><h4><a href="audyt-przyklad.html">Audyt strony — przykładowy raport</a></h4>
+    <p>Jeden przebieg mierzy wydajność, SEO techniczne i dostępność, a na końcu daje listę zaleceń
+    uszeregowaną ważnością. Raport jawnie pisze, czego <b>nie</b> udało się zmierzyć.</p></div>
+  <div class="card"><h4><a href="audyt-strony.js">Kod audytu (do wklejenia w konsolę)</a></h4>
+    <p>Cały skrypt jest jawny — możesz go przeczytać, zanim uruchomisz na swojej stronie. Nic nie wysyła na zewnątrz.</p></div>
+  <div class="card"><h4><a href="wcag-audyt.js">Audyt dostępności WCAG 2.1 AA</a></h4>
+    <p>14 testów przypisanych do konkretnych kryteriów: kontrast liczony z realnych kolorów, teksty
+    alternatywne, etykiety pól, struktura nagłówków. Osobno wypisuje to, co wymaga oceny człowieka.</p></div>
+  <div class="card"><h4><a href="przeglad-techniczny-wzor.html">Wzór przeglądu technicznego</a></h4>
+    <p>Jak wygląda comiesięczny raport z opieki nad stroną: co sprawdzone, co zmienione, co wymaga decyzji.</p></div>
+</div>
+
+<h3 class="grupa">E-commerce i dane</h3>
+<div class="grid">
+  <div class="card"><h4><a href="opisy-aukcji.html">Generator opisów aukcji (Shoper / BaseLinker)</a></h4>
+    <p>Wklejasz tabelę produktów, dostajesz gotowy HTML do aukcji i CSV do importu wsadowego.
+    Nie zmyśla parametrów — wypisuje, których danych nie dostał.</p></div>
+  <div class="card"><h4><a href="raport-migracji-demo.md">Weryfikator migracji danych</a></h4>
+    <p>Po przeniesieniu sklepu porównuje zbiór źródłowy z docelowym: braki, nadmiarowe rekordy,
+    duplikaty i różnice w polach. „129,00” i „129.00” traktuje jak tę samą wartość.</p></div>
+  <div class="card"><h4><a href="rejestry-etl.js">Importer z KRS i białej listy VAT</a></h4>
+    <p>Działający ETL uruchomiony na prawdziwych danych: pobiera, łączy rekordy i wykrywa zmiany hashem.</p></div>
+  <div class="card"><h4><a href="notion-crm.html">CRM w Notion + pliki do importu</a></h4>
+    <p>Gotowa struktura bazy kontaktów i szans sprzedaży wraz z plikami CSV do wgrania.</p></div>
+</div>
+
+<h3 class="grupa">Strony, sklepy i widgety</h3>
+<div class="grid">
+  <div class="card"><h4><a href="chatbot-demo.html">Chatbot FAQ w jednej linijce JS</a></h4>
+    <p>Widget odpowiadający na najczęstsze pytania, osadzany na dowolnej stronie jednym znacznikiem.</p></div>
+  <div class="card"><h4><a href="chatbot-tajski-demo.html">Ten sam chatbot po tajsku</a></h4>
+    <p>Dowód, że dopasowanie pytań działa poza alfabetem łacińskim — pierwsza wersja tego nie potrafiła.</p></div>
+  <div class="card"><h4><a href="wp-chatbot-faq.html">Wtyczka WordPress napisana od zera</a></h4>
+    <p>Własny typ wpisu, ustawienia w panelu, endpoint REST. Bez buildera i bez płatnych dodatków.</p></div>
+  <div class="card"><h4><a href="konfigurator-3d-demo.html">Parametryczny konfigurator 3D</a></h4>
+    <p>Mebel na wymiar w Three.js: suwaki wymiarów, wybór materiału i wycena przeliczana na żywo.</p></div>
+  <div class="card"><h4><a href="suplementy-demo.html">Strona marki produktowej</a></h4>
+    <p>Strona informacyjna z kartami produktów i wersjami językowymi.</p></div>
+  <div class="card"><h4><a href="trener-demo.html">Wizytówka z kalendarzem rezerwacji</a></h4>
+    <p>Jednoplikowa strona z terminarzem — bez systemu rezerwacji za abonament.</p></div>
+</div>
+
+<h3 class="grupa">Automatyzacja pracy</h3>
+<div class="grid">
+  <div class="card"><h4><a href="inbox-ai-demo.html">Wspólna skrzynka z triażem AI</a></h4>
+    <p>Poczta kilku marek w jednym miejscu: automatyczne kategorie, priorytety i propozycje odpowiedzi.</p></div>
+  <div class="card"><h4><a href="assessment-demo.html">Assessment z logiką warunkową</a></h4>
+    <p>Ścieżka pytań zależna od odpowiedzi, punktacja i raport na końcu.</p></div>
+  <div class="card"><h4><a href="kds-demo.html">Ekran kuchenny (KDS)</a></h4>
+    <p>Zamówienia na stanowiska, liczniki czasu i sygnalizacja opóźnień.</p></div>
+</div>
+
 <h2>Częste pytania</h2>
 <ul class="faq">
 <li><b>Czy to bezpieczne?</b> Pracuję na kopii strony, dostęp dostajesz po ustaleniu szczegółów, a płatność jest dopiero po wykonaniu usługi i Twojej akceptacji.</li>
@@ -144,7 +208,19 @@ function add(who, text, name){
   var d = document.createElement('div');
   d.className = 'm ' + who;
   if (who === 'client' && myName) { var w = document.createElement('span'); w.className='who'; w.textContent = myName; d.appendChild(w); }
-  d.appendChild(document.createTextNode(text));
+  // Adresy zamieniamy na klikalne linki, ale NIE przez innerHTML — treść wiadomości
+  // wstawiamy wyłącznie jako tekst, żeby nic z czatu nie mogło wykonać się na stronie.
+  String(text).split(/(https?:\/\/[^\s]+)/g).forEach(function(cz){
+    if (!cz) return;
+    if (/^https?:\/\//.test(cz)) {
+      var a = document.createElement('a');
+      a.href = cz; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      a.textContent = cz; a.style.color = 'inherit';
+      d.appendChild(a);
+    } else {
+      d.appendChild(document.createTextNode(cz));
+    }
+  });
   msgsEl.appendChild(d); msgsEl.scrollTop = msgsEl.scrollHeight;
 }
 function openChat(){
@@ -173,7 +249,9 @@ async function poll(){
     (d.msgs || []).forEach(function(m){ add(m.who, m.text); last = m.t; });
   }catch(e){
     polNieUdalo++;
-    if (polNieUdalo === 2) add('dev', '⚠️ Nie mogę dosięgnąć serwera czatu — odśwież stronę (Ctrl+F5). Jeśli problem trwa, czat jest chwilowo niedostępny.');
+    // Sam komunikat „czat nie działa" zostawia odwiedzającego bez wyjścia. Zawsze podajemy
+    // działającą drogę kontaktu — profil Useme, gdzie wiadomość na pewno dojdzie.
+    if (polNieUdalo === 2) add('dev', '⚠️ Nie mogę dosięgnąć serwera czatu. Żeby nie tracić Twojego czasu: napisz do mnie przez Useme — wiadomość na pewno dojdzie, a rozliczenie idzie tam przez platformę, więc płacisz dopiero po odbiorze pracy.\n\nhttps://useme.com/pl/roles/contractor/bartekdev-pl,695198/');
   }
 }
 document.getElementById('chatform').addEventListener('submit', async function(e){
@@ -187,7 +265,7 @@ document.getElementById('chatform').addEventListener('submit', async function(e)
     var r = await fetch(API + '/chat/send', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({clientId: cid, text: text, name: myName})});
     if (!r.ok) throw new Error('HTTP ' + r.status);
   } catch(e) {
-    add('dev', '⚠️ Wiadomość NIE dotarła (serwer czatu nie odpowiada). Odśwież stronę (Ctrl+F5) i wyślij ponownie — nic nie zginęło, po prostu nie wyszło.');
+    add('dev', '⚠️ Wiadomość NIE dotarła — serwer czatu nie odpowiada. Skopiuj swój tekst i wyślij go przez Useme, tam na pewno do mnie trafi:\n\nhttps://useme.com/pl/roles/contractor/bartekdev-pl,695198/');
   }
 });
 setInterval(poll, 3000); poll();
