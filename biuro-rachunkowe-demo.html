@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biuro Rachunkowe Kontura — księgowość dla małych firm w Rybniku</title>
+<meta name="description" content="Pełna księgowość, KPiR, ryczałt i kadry dla jednoosobowych działalności i spółek. Stałe stawki miesięczne, umowa bez okresu wypowiedzenia, dokumenty online.">
+<style>
+:root{
+  --tekst:#1a1d23; --mut:#5a6472; --linia:#e2e6ec; --tlo:#fff; --plyta:#f6f8fb;
+  --akcent:#1f5fb0; --akcent-ciemny:#164478; --ok:#0f7a54;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--tekst);background:var(--tlo)}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+a{color:var(--akcent)}
+.skip{position:absolute;left:-9999px;top:0;background:var(--akcent);color:#fff;padding:10px 18px;z-index:99}
+.skip:focus{left:0}
+
+header{border-bottom:1px solid var(--linia);position:sticky;top:0;background:rgba(255,255,255,.97);backdrop-filter:blur(6px);z-index:20}
+.pasek{display:flex;align-items:center;gap:22px;padding:14px 0;flex-wrap:wrap}
+.logo{font-weight:800;font-size:20px;letter-spacing:-.02em;color:var(--tekst);text-decoration:none;display:flex;align-items:center;gap:9px}
+.logo span{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:9px;background:var(--akcent);color:#fff;font-size:15px}
+nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+nav a{padding:9px 13px;border-radius:9px;text-decoration:none;color:var(--tekst);font-size:15px;font-weight:500}
+nav a:hover,nav a:focus-visible{background:var(--plyta)}
+.tel{background:var(--akcent);color:#fff!important;font-weight:600}
+.tel:hover{background:var(--akcent-ciemny)}
+
+.hero{padding:64px 0 52px;display:grid;grid-template-columns:1.15fr .85fr;gap:46px;align-items:center}
+.hero h1{font-size:clamp(28px,4vw,42px);line-height:1.14;letter-spacing:-.02em}
+.hero p.lead{color:var(--mut);font-size:18px;margin-top:16px;max-width:52ch}
+.cta-rzad{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
+.btn{display:inline-block;padding:13px 24px;border-radius:10px;text-decoration:none;font-weight:600;font-size:16px}
+.btn-glowny{background:var(--akcent);color:#fff}
+.btn-glowny:hover{background:var(--akcent-ciemny)}
+.btn-drugi{background:#fff;color:var(--akcent);border:1.5px solid var(--akcent)}
+.btn-drugi:hover{background:var(--plyta)}
+.fakty{list-style:none;margin-top:30px;display:flex;gap:26px;flex-wrap:wrap}
+.fakty li{font-size:14.5px;color:var(--mut)}
+.fakty b{display:block;font-size:24px;color:var(--tekst)}
+.karta-hero{background:var(--plyta);border:1px solid var(--linia);border-radius:16px;padding:26px}
+.karta-hero h2{font-size:17px;margin-bottom:14px}
+.karta-hero label{display:block;font-size:14px;font-weight:600;margin:12px 0 5px}
+.karta-hero input,.karta-hero select{width:100%;padding:13px 12px;min-height:46px;border:1px solid var(--linia);border-radius:9px;font:15px inherit;background:#fff}
+.karta-hero input:focus,.karta-hero select:focus{outline:2px solid var(--akcent);outline-offset:1px}
+.karta-hero .btn{width:100%;text-align:center;margin-top:18px;border:0;cursor:pointer;font:600 16px inherit}
+.drobne{font-size:13px;color:var(--mut);margin-top:10px}
+
+section{padding:56px 0;border-top:1px solid var(--linia)}
+h2.sekcja{font-size:27px;letter-spacing:-.01em}
+.podtytul{color:var(--mut);margin-top:8px;max-width:60ch}
+.siatka{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-top:30px}
+.karta{border:1px solid var(--linia);border-radius:14px;padding:22px}
+.karta h3{font-size:17px;margin-bottom:8px}
+.karta p{color:var(--mut);font-size:15px}
+.karta ul{margin:10px 0 0 18px;color:var(--mut);font-size:15px}
+.karta li{margin:4px 0}
+
+.cennik{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:18px;margin-top:30px}
+.plan{border:1px solid var(--linia);border-radius:14px;padding:24px;display:flex;flex-direction:column}
+.plan.polecany{border:2px solid var(--akcent);position:relative}
+.plan.polecany::before{content:"Najczęściej wybierany";position:absolute;top:-12px;left:20px;background:var(--akcent);color:#fff;font-size:12px;font-weight:700;padding:3px 11px;border-radius:99px}
+.plan h3{font-size:18px}
+.cena{font-size:32px;font-weight:800;margin:12px 0 2px;letter-spacing:-.02em}
+.cena small{font-size:14px;font-weight:500;color:var(--mut)}
+.plan ul{list-style:none;margin:16px 0 22px;font-size:15px;color:var(--mut)}
+.plan li{padding-left:24px;position:relative;margin:8px 0}
+.plan li::before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:700}
+.plan .btn{margin-top:auto;text-align:center}
+
+details{border:1px solid var(--linia);border-radius:12px;padding:0;margin-top:12px;overflow:hidden}
+summary{padding:15px 18px;font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:14px;font-size:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:22px;color:var(--akcent);line-height:1}
+details[open] summary::after{content:"–"}
+summary:focus-visible{outline:2px solid var(--akcent);outline-offset:-2px}
+details p{padding:0 18px 16px;color:var(--mut);font-size:15px}
+
+.kontakt{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.dane p{margin:10px 0;color:var(--mut)}
+.dane a{display:inline-block;padding:8px 2px;min-height:44px;line-height:28px}
+.dane b{color:var(--tekst)}
+form.pelny label{display:block;font-size:14px;font-weight:600;margin:14px 0 5px}
+form.pelny input,form.pelny textarea{width:100%;padding:13px 12px;min-height:46px;border:1px solid var(--linia);border-radius:9px;font:15px inherit}
+form.pelny textarea{min-height:110px;resize:vertical}
+form.pelny input:focus,form.pelny textarea:focus{outline:2px solid var(--akcent);outline-offset:1px}
+form.pelny button{margin-top:18px;border:0;cursor:pointer;font:600 16px inherit}
+.zgoda{display:flex;gap:9px;align-items:flex-start;margin-top:14px;font-size:13.5px;color:var(--mut)}
+.zgoda input[type=checkbox]{width:20px;min-width:20px;height:20px;min-height:20px;flex:none;margin-top:4px;transform:none}
+
+footer{border-top:1px solid var(--linia);padding:30px 0;color:var(--mut);font-size:14px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.notka{background:#fffbe9;border:1px solid #e9d68f;border-radius:12px;padding:14px 18px;margin:22px 0 0;font-size:14.5px}
+
+@media(max-width:820px){
+  .hero{grid-template-columns:1fr;gap:34px;padding:40px 0}
+  .kontakt{grid-template-columns:1fr;gap:28px}
+  nav{margin-left:0;width:100%}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#tresc">Przejdź do treści</a>
+
+<header>
+  <div class="wrap pasek">
+    <a class="logo" href="#tresc"><span aria-hidden="true">K</span>Biuro Rachunkowe Kontura</a>
+    <nav aria-label="Menu główne">
+      <a href="#o-firmie">O firmie</a>
+      <a href="#uslugi">Usługi</a>
+      <a href="#cennik">Cennik</a>
+      <a href="#faq">FAQ</a>
+      <a href="#kontakt">Kontakt</a>
+      <a class="tel" href="tel:+48320000000">32 000 00 00</a>
+    </nav>
+  </div>
+</header>
+
+<main id="tresc">
+
+<div class="wrap">
+  <div class="hero">
+    <div>
+      <h1>Księgowość, o której nie musisz pamiętać</h1>
+      <p class="lead">Prowadzimy KPiR, ryczałt, pełne księgi i kadry dla małych firm.
+      Dokumenty wysyłasz zdjęciem z telefonu, my pilnujemy terminów i odzywamy się pierwsi,
+      gdy coś wymaga Twojej decyzji.</p>
+      <div class="cta-rzad">
+        <a class="btn btn-glowny" href="#kontakt">Zapytaj o wycenę</a>
+        <a class="btn btn-drugi" href="#cennik">Zobacz cennik</a>
+      </div>
+      <ul class="fakty">
+        <li><b>14 lat</b> na rynku</li>
+        <li><b>230+</b> obsługiwanych firm</li>
+        <li><b>do 24 h</b> odpowiedź na pytanie</li>
+      </ul>
+    </div>
+
+    <div class="karta-hero">
+      <h2>Szybka wycena w 3 pytaniach</h2>
+      <form id="wycena">
+        <label for="forma">Forma działalności</label>
+        <select id="forma" name="forma">
+          <option>Jednoosobowa działalność</option>
+          <option>Spółka z o.o.</option>
+          <option>Spółka cywilna / jawna</option>
+        </select>
+        <label for="dokumenty">Dokumentów miesięcznie</label>
+        <select id="dokumenty" name="dokumenty">
+          <option>do 20</option><option>21–50</option><option>51–120</option><option>powyżej 120</option>
+        </select>
+        <label for="pracownicy">Liczba pracowników</label>
+        <input id="pracownicy" name="pracownicy" type="number" min="0" max="500" value="0" inputmode="numeric">
+        <button class="btn btn-glowny" type="submit">Policz orientacyjną cenę</button>
+        <p class="drobne" id="wynik-wyceny" role="status">Wynik pojawi się tutaj. To orientacja, nie oferta —
+        ostateczną cenę podajemy po rozmowie.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<section id="o-firmie">
+  <div class="wrap">
+    <h2 class="sekcja">O firmie</h2>
+    <p class="podtytul">Jesteśmy małym biurem i tak chcemy zostać — po to, żeby każdy klient
+    rozmawiał zawsze z tą samą osobą, a nie z infolinią.</p>
+    <div class="siatka">
+      <div class="karta">
+        <h3>Jedna osoba do kontaktu</h3>
+        <p>Dostajesz swojego księgowego z imienia i nazwiska, numerem telefonu i adresem e-mail.
+        Nie przechodzisz przez system zgłoszeń.</p>
+      </div>
+      <div class="karta">
+        <h3>Ubezpieczenie OC</h3>
+        <p>Biuro posiada obowiązkowe ubezpieczenie odpowiedzialności cywilnej.
+        Numer polisy podajemy w umowie, a nie dopiero na żądanie.</p>
+      </div>
+      <div class="karta">
+        <h3>Umowa bez pułapek</h3>
+        <p>Miesięczny okres wypowiedzenia, wydanie kompletu dokumentów w 7 dni,
+        brak opłaty za zamknięcie współpracy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="uslugi">
+  <div class="wrap">
+    <h2 class="sekcja">Usługi</h2>
+    <p class="podtytul">Zakres dobieramy do wielkości firmy. Wszystko poniżej możesz mieć osobno.</p>
+    <div class="siatka">
+      <div class="karta">
+        <h3>Księga przychodów i rozchodów</h3>
+        <ul><li>księgowanie dokumentów</li><li>rozliczenia PIT i VAT</li><li>ewidencja środków trwałych</li><li>JPK_V7 w terminie</li></ul>
+      </div>
+      <div class="karta">
+        <h3>Ryczałt ewidencjonowany</h3>
+        <ul><li>ustalenie właściwej stawki</li><li>ewidencja przychodów</li><li>rozliczenia miesięczne i kwartalne</li><li>pilnowanie limitu</li></ul>
+      </div>
+      <div class="karta">
+        <h3>Pełna księgowość</h3>
+        <ul><li>księgi handlowe</li><li>sprawozdanie finansowe</li><li>CIT i deklaracje</li><li>współpraca z biegłym rewidentem</li></ul>
+      </div>
+      <div class="karta">
+        <h3>Kadry i płace</h3>
+        <ul><li>umowy o pracę i zlecenia</li><li>listy płac, PIT-11</li><li>zgłoszenia i rozliczenia ZUS</li><li>e-akta pracownicze</li></ul>
+      </div>
+      <div class="karta">
+        <h3>Start działalności</h3>
+        <ul><li>wybór formy opodatkowania</li><li>rejestracja w CEIDG i VAT</li><li>kasa fiskalna — czy jest potrzebna</li><li>pierwszy miesiąc gratis</li></ul>
+      </div>
+      <div class="karta">
+        <h3>Rozmowa doradcza</h3>
+        <ul><li>leasing czy zakup</li><li>próg podatkowy i składka zdrowotna</li><li>zatrudnić czy zlecić</li><li>płatne tylko poza abonamentem</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cennik" style="background:var(--plyta)">
+  <div class="wrap">
+    <h2 class="sekcja">Cennik</h2>
+    <p class="podtytul">Stała kwota miesięczna, ustalana raz i niezmieniana w trakcie roku.
+    Ceny netto, bez opłat za pojedyncze pytania.</p>
+    <div class="cennik">
+      <div class="plan">
+        <h3>Ryczałt</h3>
+        <div class="cena">199 zł<small> / mies.</small></div>
+        <ul><li>do 20 dokumentów</li><li>ewidencja przychodów</li><li>JPK i deklaracje</li><li>kontakt e-mail i telefon</li></ul>
+        <a class="btn btn-drugi" href="#kontakt">Wybieram</a>
+      </div>
+      <div class="plan polecany">
+        <h3>KPiR</h3>
+        <div class="cena">349 zł<small> / mies.</small></div>
+        <ul><li>do 50 dokumentów</li><li>PIT, VAT, JPK_V7</li><li>środki trwałe</li><li>1 pracownik w cenie</li><li>rozmowa doradcza raz na kwartał</li></ul>
+        <a class="btn btn-glowny" href="#kontakt">Wybieram</a>
+      </div>
+      <div class="plan">
+        <h3>Pełna księgowość</h3>
+        <div class="cena">od 890 zł<small> / mies.</small></div>
+        <ul><li>księgi handlowe</li><li>sprawozdanie finansowe</li><li>CIT</li><li>wycena po rozmowie</li></ul>
+        <a class="btn btn-drugi" href="#kontakt">Zapytaj</a>
+      </div>
+      <div class="plan">
+        <h3>Kadry i płace</h3>
+        <div class="cena">45 zł<small> / pracownik</small></div>
+        <ul><li>lista płac</li><li>ZUS i PIT-11</li><li>umowy i świadectwa</li><li>e-akta</li></ul>
+        <a class="btn btn-drugi" href="#kontakt">Zapytaj</a>
+      </div>
+    </div>
+    <p class="drobne" style="margin-top:18px">Powyżej 120 dokumentów miesięcznie wyceniamy indywidualnie —
+    przy takiej skali ryczałtowa cena zawsze komuś krzywdzi: albo Tobie, albo nam.</p>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2 class="sekcja">Najczęstsze pytania</h2>
+    <details><summary>Czy muszę przywozić dokumenty osobiście?</summary>
+      <p>Nie. Wystarczy zdjęcie lub skan wysłany na adres e-mail albo wrzucony do wspólnego folderu.
+      Oryginały przechowujesz u siebie — my potrzebujemy czytelnej kopii.</p></details>
+    <details><summary>Jak wygląda zmiana biura w trakcie roku?</summary>
+      <p>Przejmujemy dokumentację od poprzedniego biura i sprawdzamy zamknięte okresy.
+      Zmiana jest możliwa w dowolnym miesiącu; najspokojniej wychodzi po zamknięciu kwartału.</p></details>
+    <details><summary>Kto odpowiada za błąd w rozliczeniu?</summary>
+      <p>Za błąd wynikający z naszej pracy odpowiadamy my i pokrywa go polisa OC biura.
+      Za dokumenty dostarczone po terminie lub niekompletne odpowiada klient — dlatego przypominamy
+      o brakach zanim termin minie.</p></details>
+    <details><summary>Czy pomagacie przy kontroli z urzędu skarbowego?</summary>
+      <p>Tak. Przygotowujemy dokumenty, odpowiadamy na wezwania i jesteśmy obecni przy czynnościach.
+      Przy kontroli dotyczącej okresu, który sami prowadziliśmy, nie doliczamy za to opłaty.</p></details>
+    <details><summary>Od kiedy możecie zacząć?</summary>
+      <p>Zwykle od kolejnego miesiąca. Jeśli termin goni — na przykład kończy się czas na JPK —
+      napisz o tym w pierwszej wiadomości, wtedy sprawdzamy, czy da się wejść od zaraz.</p></details>
+  </div>
+</section>
+
+<section id="kontakt" style="background:var(--plyta)">
+  <div class="wrap">
+    <h2 class="sekcja">Kontakt</h2>
+    <div class="kontakt" style="margin-top:26px">
+      <div class="dane">
+        <p><b>Biuro Rachunkowe Kontura</b><br>ul. Przykładowa 14/2, 44-200 Rybnik</p>
+        <p><b>Telefon:</b> <a href="tel:+48320000000">32 000 00 00</a><br>
+           <b>E-mail:</b> <a href="mailto:biuro@przyklad.pl">biuro@przyklad.pl</a></p>
+        <p><b>Godziny:</b> poniedziałek–piątek 8:00–16:00<br>
+        W okresie rozliczeń rocznych także w soboty 9:00–13:00.</p>
+        <p><b>NIP:</b> 000-00-00-000 &nbsp;·&nbsp; <b>Polisa OC:</b> nr podajemy w umowie</p>
+      </div>
+      <form class="pelny" id="kontakt-form">
+        <label for="imie">Imię i nazwisko</label>
+        <input id="imie" name="imie" type="text" autocomplete="name" required>
+        <label for="email">Adres e-mail</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+        <label for="telefon">Telefon (opcjonalnie)</label>
+        <input id="telefon" name="telefon" type="tel" autocomplete="tel">
+        <label for="wiadomosc">Czego dotyczy sprawa?</label>
+        <textarea id="wiadomosc" name="wiadomosc" required></textarea>
+        <label class="zgoda"><input type="checkbox" id="zgoda" required>
+          <span>Zgadzam się na kontakt w sprawie mojego zapytania. Dane przetwarzamy wyłącznie
+          w tym celu — szczegóły w polityce prywatności.</span></label>
+        <button class="btn btn-glowny" type="submit">Wyślij zapytanie</button>
+        <p class="drobne" id="wynik-kontakt" role="status"></p>
+      </form>
+    </div>
+
+    <div class="notka">
+      <b>Uwaga — to jest makieta demonstracyjna.</b> Nazwa biura, adres, numery i ceny są przykładowe.
+      Formularze nie wysyłają danych nigdzie: kalkulator liczy w przeglądarce, a formularz kontaktowy
+      tylko pokazuje komunikat. W wersji dla klienta podpinam wysyłkę na wskazany adres
+      wraz z zabezpieczeniem przed spamem.
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap" style="display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;width:100%">
+    <span>© 2026 Biuro Rachunkowe Kontura — makieta demonstracyjna</span>
+    <span>Wykonanie: bartekdev_pl · <a href="https://uuhyy666.github.io/naprawa-stron/">więcej prac</a></span>
+  </div>
+</footer>
+
+<script>
+// Kalkulator liczy orientacyjnie i mówi o tym wprost — cena wiążąca wymaga rozmowy.
+document.getElementById('wycena').addEventListener('submit', function(e){
+  e.preventDefault();
+  const forma = document.getElementById('forma').value;
+  const dok = document.getElementById('dokumenty').value;
+  const prac = Math.max(0, parseInt(document.getElementById('pracownicy').value || '0', 10));
+
+  const bazaFormy = { 'Jednoosobowa działalność': 199, 'Spółka z o.o.': 890, 'Spółka cywilna / jawna': 490 };
+  const dodatekDok = { 'do 20': 0, '21–50': 150, '51–120': 380, 'powyżej 120': null };
+  let baza = bazaFormy[forma];
+  const dodatek = dodatekDok[dok];
+
+  const cel = document.getElementById('wynik-wyceny');
+  if (dodatek === null) {
+    cel.textContent = 'Powyżej 120 dokumentów miesięcznie nie podajemy ceny z kalkulatora — przy tej skali ryczałt zawsze komuś krzywdzi. Napisz przez formularz obok, wycenimy po rozmowie.';
+    return;
+  }
+  const kadry = prac * 45;
+  const razem = baza + dodatek + kadry;
+  cel.textContent = 'Orientacyjnie ' + razem + ' zł netto miesięcznie'
+    + (prac ? ' (w tym ' + kadry + ' zł za kadry dla ' + prac + (prac === 1 ? ' pracownika' : ' pracowników') + ')' : '')
+    + '. To wynik z kalkulatora, nie oferta — ostateczną cenę podajemy po obejrzeniu dokumentów.';
+});
+
+document.getElementById('kontakt-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  document.getElementById('wynik-kontakt').textContent =
+    'To makieta — wiadomość nie została nigdzie wysłana. W wersji dla klienta trafiłaby na wskazany adres e-mail.';
+});
+</script>
+</body>
+</html>
