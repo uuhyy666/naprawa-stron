@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sklep odzieżowy na WooCommerce — co musi mieć, żeby nie narazić właścicielki na karę</title>
+<style>
+  :root{--tekst:#14161a;--mut:#5a6472;--linia:#e2e6ec;--akcent:#1f5fb0;--ok:#0f7a54;--zle:#c0392b;--uwaga:#96700a;}
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--tekst);background:#fbfbfc;}
+  .wrap{max-width:820px;margin:0 auto;padding:44px 20px 90px;}
+  h1{font-size:24px;margin:0 0 4px;line-height:1.28}
+  .sub{color:var(--mut);margin:0 0 8px;}
+  .meta{color:var(--mut);font-size:14px;border-bottom:2px solid var(--tekst);padding-bottom:14px;margin-bottom:26px;}
+  h2{font-size:19px;margin:34px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--linia);}
+  h3{font-size:16px;margin:22px 0 6px;}
+  .alarm{background:#fff4f2;border:1px solid #e8b3a8;border-radius:11px;padding:16px 20px;margin:16px 0;}
+  .dobre{background:#f1faf5;border:1px solid #a6d9bf;border-radius:11px;padding:16px 20px;margin:16px 0;}
+  table{border-collapse:collapse;width:100%;font-size:14.5px;margin:12px 0;}
+  th,td{border:1px solid var(--linia);padding:8px 11px;text-align:left;vertical-align:top;}
+  th{background:#f5f6f8;font-weight:600;}
+  .zle{color:var(--zle);font-weight:600}.ok{color:var(--ok);font-weight:600}
+  ul,ol{padding-left:21px;} li{margin:7px 0;}
+  code{background:#f2f3f6;border-radius:4px;padding:1px 5px;font-size:13.5px;font-family:ui-monospace,Consolas,monospace;}
+  .demo{background:#fff;border:2px dashed var(--akcent);border-radius:14px;padding:22px;margin:18px 0}
+  .produkt{border:1px solid var(--linia);border-radius:12px;padding:18px;background:#fff;max-width:340px}
+  .nazwa{font-weight:700;font-size:17px}
+  .ceny{margin:10px 0 4px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .teraz{font-size:26px;font-weight:800;color:var(--zle)}
+  .stara{text-decoration:line-through;color:var(--mut);font-size:16px}
+  .omnibus{font-size:13.5px;color:var(--mut);margin-top:2px}
+  label{display:block;font-size:14px;font-weight:600;margin:14px 0 5px}
+  select,input{font:15px inherit;padding:11px 12px;min-height:46px;border:1px solid var(--linia);border-radius:9px;background:#fff;width:100%;max-width:340px}
+  select:focus,input:focus{outline:2px solid var(--akcent);outline-offset:1px}
+  .skip{position:absolute;left:-9999px;top:0;background:var(--akcent);color:#fff;padding:10px 18px;z-index:99}
+  .skip:focus{left:0}
+  footer{margin-top:42px;padding-top:14px;border-top:1px solid var(--linia);color:var(--mut);font-size:13px;}
+</style>
+</head>
+<body>
+<a class="skip" href="#tresc">Przejdź do treści</a>
+<main id="tresc" class="wrap">
+
+<h1>Sklep odzieżowy na WooCommerce: co musi mieć, żeby nie narazić właścicielki na karę</h1>
+<p class="sub">Rzeczy, których nie widać w wycenie, a które decydują o tym, czy sklep jest legalny</p>
+<div class="meta">Przygotował bartekdev_pl, 12.09.2026, na potrzeby zlecenia 143257 · Nie jestem prawnikiem — piszę o obowiązkach, które wdraża się technicznie w sklepie</div>
+
+<div class="alarm">
+  <h2 style="margin-top:0;border:0;padding:0">Najczęściej pomijana rzecz: cena Omnibus</h2>
+  <p>Przy każdej obniżce ceny sklep ma obowiązek pokazać <b>najniższą cenę z 30 dni przed obniżką</b>.
+  Dotyczy to każdej promocji, także wyprzedaży rozmiarów i kodów rabatowych obniżających cenę produktu.</p>
+  <p style="margin-bottom:0">W tanich wdrożeniach WooCommerce ten punkt znika, bo standardowa instalacja
+  <b>tego nie robi sama</b> — pokazuje tylko starą cenę przekreśloną i nową obok.
+  Sklep wygląda poprawnie, działa, sprzedaje i przez pół roku nikt nie zauważa problemu.
+  Odpowiada właścicielka, nie wykonawca.</p>
+</div>
+
+<h2>Jak to wygląda w praktyce — działający przykład</h2>
+<p>Poniżej karta produktu z prawidłowym komunikatem. Proszę przełączać warianty:
+widać, że w niektórych sytuacjach informacja <b>nie powinna</b> się pojawić i to też jest częścią przepisu.</p>
+
+<div class="demo">
+  <label for="wariant">Sytuacja</label>
+  <select id="wariant">
+    <option value="promocja">Promocja — produkt w sprzedaży od dawna</option>
+    <option value="nowy">Promocja — produkt w sklepie od 12 dni</option>
+    <option value="bezpromo">Brak promocji</option>
+    <option value="glebsza">Druga obniżka w ciągu miesiąca</option>
+  </select>
+
+  <div class="produkt" style="margin-top:18px">
+    <div class="nazwa">Sukienka midi LÂME, len</div>
+    <div class="ceny">
+      <span class="teraz" id="teraz">—</span>
+      <span class="stara" id="stara"></span>
+    </div>
+    <div class="omnibus" id="omnibus"></div>
+  </div>
+  <p class="omnibus" id="wyjasnienie" style="margin-top:14px;max-width:520px"></p>
+</div>
+
+<h2>Pełna lista rzeczy obowiązkowych w sklepie odzieżowym</h2>
+<table>
+<tr><th>Element</th><th>Dlaczego</th><th>Czy WooCommerce robi to sam</th></tr>
+<tr><td><b>Najniższa cena z 30 dni</b> przy każdej obniżce</td><td>obowiązek informacyjny przy promocjach</td><td class="zle">nie — trzeba dołożyć</td></tr>
+<tr><td><b>Prawo odstąpienia w 14 dni</b> i wzór formularza zwrotu</td><td>sprzedaż na odległość do konsumenta</td><td class="zle">nie — trzeba dopisać treści</td></tr>
+<tr><td><b>Regulamin i polityka prywatności</b> dopasowane do sklepu</td><td>wymóg, także przy zbieraniu danych do wysyłki</td><td class="zle">nie</td></tr>
+<tr><td><b>Cena całkowita widoczna przed zamówieniem</b>, z kosztem dostawy</td><td>zakaz ukrytych kosztów na ostatnim kroku</td><td class="ok">tak, po poprawnej konfiguracji</td></tr>
+<tr><td><b>Wyraźny przycisk „Zamawiam i płacę"</b></td><td>klient musi wiedzieć, że klika obowiązek zapłaty</td><td class="ok">tak, zależnie od szablonu</td></tr>
+<tr><td>Zgody w formularzu <b>niezaznaczone domyślnie</b></td><td>zgoda musi być dobrowolna</td><td class="ok">tak</td></tr>
+<tr><td><b>Informacja o reklamacji i niezgodności towaru</b></td><td>obowiązek wobec konsumenta</td><td class="zle">nie</td></tr>
+</table>
+
+<div class="dobre">
+  <b>Dlaczego o tym piszę w ofercie na sklep za 500–800 zł:</b> bo to jest dokładnie ta część,
+  która wypada z tanich wdrożeń jako pierwsza. Sklep bez tego wygląda tak samo i sprzedaje tak samo —
+  różnica ujawnia się przy pierwszej kontroli albo przy pierwszym zwrocie, którego klientka nie chce przyjąć.
+  Wolę wskazać to przed wyceną niż po.
+</div>
+
+<h2>Co realnie mieści się w 500–800 zł, a co nie</h2>
+<table>
+<tr><th>Mieści się</th><th>Nie mieści się</th></tr>
+<tr>
+  <td>
+    <ul style="margin:0">
+      <li>WooCommerce na gotowym szablonie, dopasowanie kolorów i logo</li>
+      <li>strona główna, kategorie, karta produktu z wyborem rozmiaru</li>
+      <li>koszyk i zamówienia, stany magazynowe</li>
+      <li>płatności BLIK, karta, szybki przelew (jeden operator)</li>
+      <li>dostawa z Paczkomatami InPost i mapą punktów</li>
+      <li>komunikat o najniższej cenie z 30 dni</li>
+      <li>strony: kontakt, dostawa i zwroty, regulamin, polityka prywatności</li>
+      <li>wgranie 20–30 produktów z dostarczonych materiałów</li>
+      <li>instrukcja dodawania produktów przez właścicielkę</li>
+    </ul>
+  </td>
+  <td>
+    <ul style="margin:0">
+      <li>projekt graficzny marki i sesja zdjęciowa</li>
+      <li>pisanie opisów produktów</li>
+      <li>napisanie regulaminu przez prawnika — wgrywam treść, ale jej nie tworzę</li>
+      <li>integracja z zewnętrznym magazynem lub hurtownią</li>
+      <li>kampanie reklamowe i pozycjonowanie</li>
+      <li>zdjęcia produktowe i obróbka</li>
+    </ul>
+  </td>
+</tr>
+</table>
+
+<h2>Czego nie wiem i o co zapytam na starcie</h2>
+<ul>
+  <li><b>Czy jest już hosting i domena?</b> Jeśli nie, dochodzi koszt po stronie właścicielki — niewielki, ale trzeba go znać z góry.</li>
+  <li><b>Który operator płatności?</b> BLIK, karta i szybki przelew są u każdego, ale prowizje i formalności się różnią. Umowę podpisuje właścicielka, nie ja.</li>
+  <li><b>Czy produkty mają rozmiary i warianty kolorystyczne?</b> Wariant „rozmiar × kolor" to inna praca niż sam rozmiar.</li>
+  <li><b>Czy jest gotowy regulamin?</b> Jeśli nie, wgram szablon, ale zaznaczę wyraźnie, że sprawdzenie go przez prawnika jest po stronie właścicielki.</li>
+</ul>
+
+<footer>
+  bartekdev_pl · 12.09.2026 · przygotowane do zlecenia 143257 na Useme.
+  Nie jestem prawnikiem i nie udzielam porad prawnych — opisuję obowiązki, które wdraża się technicznie
+  w sklepie, i wskazuję, co warto potwierdzić u prawnika.
+</footer>
+</main>
+
+<script>
+// Cztery sytuacje, bo przepis nie sprowadza się do "pokaż najniższą cenę".
+// Przy produkcie krótko w sprzedaży i przy braku obniżki komunikat wygląda inaczej —
+// a to jest właśnie miejsce, w którym gotowe wtyczki bywają skonfigurowane byle jak.
+const WARIANTY = {
+  promocja: {
+    teraz: '229,00 zł', stara: '329,00 zł',
+    omnibus: 'Najniższa cena z 30 dni przed obniżką: <b>299,00 zł</b>',
+    wyjasnienie: 'Sytuacja podstawowa. Klientka widzi, że „przekreślone 329 zł" nie jest pełną prawdą — ' +
+      'tydzień temu sukienka kosztowała 299 zł. Realna obniżka to 70 zł, nie 100 zł. Właśnie po to jest ten przepis.'
+  },
+  nowy: {
+    teraz: '229,00 zł', stara: '279,00 zł',
+    omnibus: 'Produkt w sprzedaży od 12 dni. Najniższa cena od wprowadzenia do sprzedaży: <b>279,00 zł</b>',
+    wyjasnienie: 'Produkt jest w sklepie krócej niż 30 dni, więc podaje się najniższą cenę od dnia wprowadzenia ' +
+      'do sprzedaży, a nie z pełnych 30 dni. Wtyczka skonfigurowana byle jak pokaże tu pustkę albo błędną wartość.'
+  },
+  bezpromo: {
+    teraz: '329,00 zł', stara: '',
+    omnibus: '',
+    wyjasnienie: 'Brak obniżki, więc żadnego komunikatu nie pokazujemy. Wyświetlanie „najniższej ceny z 30 dni" ' +
+      'przy produkcie bez promocji tylko zaśmieca kartę i myli klientkę.'
+  },
+  glebsza: {
+    teraz: '199,00 zł', stara: '329,00 zł',
+    omnibus: 'Najniższa cena z 30 dni przed obniżką: <b>229,00 zł</b>',
+    wyjasnienie: 'Druga obniżka w ciągu miesiąca. Punktem odniesienia jest najniższa cena z 30 dni ' +
+      'przed TĄ obniżką, czyli 229 zł z poprzedniej promocji — nie cena regularna. Tu najłatwiej o pomyłkę.'
+  }
+};
+
+function pokaz(klucz) {
+  const w = WARIANTY[klucz];
+  document.getElementById('teraz').textContent = w.teraz;
+  document.getElementById('stara').textContent = w.stara;
+  // Treści pochodzą wyłącznie z tego pliku, nie z wejścia użytkownika — innerHTML jest tu bezpieczny.
+  document.getElementById('omnibus').innerHTML = w.omnibus;
+  document.getElementById('wyjasnienie').textContent = w.wyjasnienie;
+}
+document.getElementById('wariant').addEventListener('change', e => pokaz(e.target.value));
+pokaz('promocja');
+</script>
+</body>
+</html>
