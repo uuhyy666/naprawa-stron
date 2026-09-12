@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>prawdziwy-sukces.pl i prawdziwysukces.pl — pomiar wersji mobilnej</title>
+<style>
+  :root{--tekst:#14161a;--mut:#5a6472;--linia:#e2e6ec;--akcent:#1f5fb0;--ok:#0f7a54;--zle:#c0392b;--uwaga:#96700a;}
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--tekst);background:#fbfbfc;}
+  .wrap{max-width:860px;margin:0 auto;padding:44px 20px 90px;}
+  h1{font-size:24px;margin:0 0 4px;line-height:1.28}
+  .sub{color:var(--mut);margin:0 0 8px;}
+  .meta{color:var(--mut);font-size:14px;border-bottom:2px solid var(--tekst);padding-bottom:14px;margin-bottom:26px;}
+  h2{font-size:19px;margin:34px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--linia);}
+  h3{font-size:16px;margin:22px 0 6px;}
+  .alarm{background:#fff4f2;border:1px solid #e8b3a8;border-radius:11px;padding:16px 20px;margin:16px 0;}
+  .dobre{background:#f1faf5;border:1px solid #a6d9bf;border-radius:11px;padding:16px 20px;margin:16px 0;}
+  table{border-collapse:collapse;width:100%;font-size:14.5px;margin:12px 0;}
+  th,td{border:1px solid var(--linia);padding:8px 11px;text-align:left;vertical-align:top;}
+  th{background:#f5f6f8;font-weight:600;}
+  .zle{color:var(--zle);font-weight:600}.ok{color:var(--ok);font-weight:600}.uw{color:var(--uwaga);font-weight:600}
+  ul,ol{padding-left:21px;} li{margin:7px 0;}
+  code{background:#f2f3f6;border-radius:4px;padding:1px 5px;font-size:13.5px;font-family:ui-monospace,Consolas,monospace;word-break:break-word;}
+  .zrzuty{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin:18px 0}
+  figure{margin:0;background:#fff;border:1px solid var(--linia);border-radius:12px;padding:14px}
+  figure img{width:100%;height:auto;border:1px solid var(--linia);border-radius:8px;display:block}
+  figcaption{font-size:14px;color:var(--mut);margin-top:10px}
+  .skip{position:absolute;left:-9999px;top:0;background:var(--akcent);color:#fff;padding:10px 18px;z-index:99}
+  .skip:focus{left:0}
+  footer{margin-top:42px;padding-top:14px;border-top:1px solid var(--linia);color:var(--mut);font-size:13px;}
+</style>
+</head>
+<body>
+<a class="skip" href="#tresc">Przejdź do treści</a>
+<main id="tresc" class="wrap">
+
+<h1>prawdziwy-sukces.pl i prawdziwysukces.pl — pomiar wersji mobilnej</h1>
+<p class="sub">Zrobiony po Pana wiadomości, na obu stronach, przy szerokości ekranu 390 px</p>
+<div class="meta">Data: 12.09.2026, godz. 22:48 · Metoda: przeglądarka ustawiona na 390 × 844 px (iPhone), Performance API i pomiar położenia elementów · bartekdev_pl</div>
+
+<div class="alarm">
+  <h2 style="margin-top:0;border:0;padding:0">Najdroższy błąd: pasek z kodem rabatowym jest ucięty</h2>
+  <p>Na <b>prawdziwy-sukces.pl</b> na górze jest czerwony pasek z treścią:</p>
+  <p><i>„Tylko teraz! Wpisz w koszyku kod <b>SUKCES20</b> i otrzymaj 20% rabatu na całe zamówienie.
+  Promocja obejmuje wszystkie książki, e-booki i audiobooki."</i></p>
+  <p>Ten tekst ma <b>998 px szerokości w kontenerze o szerokości 1028 px</b>, a ekran telefonu ma 390 px.
+  Klient na telefonie widzi tylko początek: <i>„Tylko teraz! Wpisz w koszyku kod „SUKCES20" i o…"</i>
+  — i nic więcej. Pasek się nie przewija i nie zawija.</p>
+  <p style="margin-bottom:0"><b>Skutek:</b> akurat ten kod widać jeszcze w całości, ale warunki promocji już nie.
+  Gdyby kod był choć o kilka znaków dłuższy albo stał dalej w zdaniu, <b>nie byłby widoczny wcale</b> —
+  a to jest pasek, który ma bezpośrednio zwiększać sprzedaż. To poprawka na kilkanaście minut.</p>
+</div>
+
+<h2>Jak obie strony wyglądają na telefonie — zrzuty z pomiaru</h2>
+<div class="zrzuty">
+  <figure>
+    <img src="zrzuty/prawdziwy-sukces-390.jpg" alt="Zrzut strony prawdziwy-sukces.pl na ekranie 390 px: u góry czerwony pasek z uciętym tekstem promocji, pod nim menu i lista produktów">
+    <figcaption><b>prawdziwy-sukces.pl</b> — układ trzyma się poprawnie, ale pasek promocyjny u góry jest ucięty, a element „Sortuj wg" łamie się w trzy linie z osieroconym dwukropkiem.</figcaption>
+  </figure>
+  <figure>
+    <img src="zrzuty/prawdziwysukces-390.jpg" alt="Zrzut strony prawdziwysukces.pl na ekranie 390 px: nazwa wydawnictwa nachodzi na ikonę menu, pasek informacyjny ucięty, baner główny wychodzi poza ekran">
+    <figcaption><b>prawdziwysukces.pl</b> — tu jest gorzej: nazwa wydawnictwa nachodzi na ikonę menu, pasek „Natychmiastowa dostawa" jest ucięty, a <b>baner główny z logo wychodzi poza ekran</b> i widać z niego mniej niż połowę.</figcaption>
+  </figure>
+</div>
+
+<h2>Liczby</h2>
+<table>
+<tr><th>Co mierzone (przy 390 px)</th><th>prawdziwy-sukces.pl</th><th>prawdziwysukces.pl</th></tr>
+<tr><td>Czas pełnego załadowania</td><td class="ok">1,09 s</td><td class="uw">2,80 s</td></tr>
+<tr><td>Waga strony</td><td class="uw">1,84 MB / 72 zasoby</td><td class="zle">3,54 MB / 127 zasobów</td></tr>
+<tr><td>Elementy wychodzące poza ekran</td><td class="zle">tak — pasek promocyjny (1028 px)</td><td class="zle">tak — m.in. baner i nagłówek (767 px)</td></tr>
+<tr><td><b>Elementy dotykowe mniejsze niż 44 px</b></td><td class="zle"><b>98 ze 140</b></td><td class="uw">16 ze 100</td></tr>
+<tr><td><b>Bloki tekstu poniżej 14 px</b></td><td class="zle"><b>87</b></td><td class="uw">13</td></tr>
+<tr><td>Zdjęcia bez opisu alternatywnego</td><td class="uw">17 z 41</td><td class="ok">2 z 41</td></tr>
+<tr><td>Zdjęcia bez leniwego ładowania</td><td class="uw">11 z 41</td><td>—</td></tr>
+<tr><td>Opis meta strony głównej</td><td>jest</td><td class="zle">brak</td></tr>
+<tr><td>Wersja WordPressa</td><td>7.1</td><td class="uw">7.0.4 (starsza)</td></tr>
+</table>
+
+<h3>Co znaczy „98 elementów dotykowych poniżej 44 px"</h3>
+<p>44 × 44 px to rozmiar, przy którym palec trafia pewnie. Na stronie sklepowej dotyczy to przycisków
+„do koszyka", ikon podglądu produktu, filtrów i paginacji. Przy 98 elementach poniżej tego progu
+część klientów trafia obok i klika drugi raz — a część rezygnuje. To nie jest kwestia estetyki,
+tylko liczby osób, które dochodzą do koszyka.</p>
+
+<h3>Co znaczy „87 bloków tekstu poniżej 14 px"</h3>
+<p>To dokładnie ta „czytelność", o której Pan pisze w swoim ogłoszeniu usługi.
+Ceny, nazwy kategorii i opisy przy produktach są na telefonie mniejsze niż wygodny próg czytania.
+Zmiana rozmiaru w kilku miejscach arkusza stylów, bez ruszania układu, załatwia większość.</p>
+
+<div class="dobre">
+  <b>Dobra wiadomość:</b> żadna z tych stron nie przewija się w poziomie, więc fundament jest w porządku.
+  To są poprawki w warstwie stylów, a nie przebudowa. Nie widzę tu powodu, żeby cokolwiek robić od nowa —
+  i nie będę Pana do tego namawiał.
+</div>
+
+<h2>Jedno pytanie, na które nie znam odpowiedzi</h2>
+<p>Obie domeny prowadzą do <b>dwóch różnych stron</b>, a nie do jednej z przekierowaniem:
+inne tytuły, inne wersje WordPressa, inna zawartość. To może być w pełni zamierzone
+(sklep osobno, wydawnictwo osobno), ale jeśli nie jest, to dwie podobne domeny z podobną treścią
+konkurują ze sobą w wyszukiwarce. Zapytam o to, zanim cokolwiek doradzę — nie zgaduję.</p>
+
+<h2>Czego nie sprawdzałem</h2>
+<ul>
+  <li>Panelu WordPressa od środka — widzę tylko to, co widzi klient.</li>
+  <li>Innych podstron niż strona główna każdej z domen.</li>
+  <li>Wyglądu na konkretnym modelu telefonu — mierzyłem przy 390 px, czyli typowej szerokości iPhone'a. Na węższych ekranach (360 px) część problemów będzie większa, nie mniejsza.</li>
+  <li>Danych sprzedażowych — bez nich nie powiem, ile złotówek kosztuje ucięty pasek. Powiem tylko, że kosztuje.</li>
+</ul>
+
+<footer>
+  Pomiar wykonał bartekdev_pl 12.09.2026 na prośbę zleceniodawcy, po wiadomości w wątku zlecenia 143082 na Useme.
+  Zrzuty ekranu pochodzą z przeglądarki ustawionej na 390 × 844 px. Metoda możliwa do powtórzenia.
+</footer>
+</main>
+</body>
+</html>
