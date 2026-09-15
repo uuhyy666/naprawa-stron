@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jedna oferta, pięć marketplace'ów — Allegro / Amazon / eMAG / eBay / ERLI (demo działające)</title>
+<style>
+  :root{--tekst:#14161a;--szary:#666e7a;--linia:#e5e7ea;--tlo:#fbfbfc;--akcent:#2f6fe0;--ok:#1d7a3e;--zle:#b3362b;}
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--tekst);background:var(--tlo);}
+  .wrap{max-width:1080px;margin:0 auto;padding:40px 18px 80px;}
+  h1{font-size:27px;margin:0 0 4px;}
+  .sub{color:var(--szary);margin:0 0 10px;}
+  .meta{color:var(--szary);font-size:14px;border-bottom:2px solid var(--tekst);padding-bottom:14px;margin-bottom:26px;}
+  h2{font-size:19px;margin:30px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--linia);}
+  .box{background:#fff;border:1px solid var(--linia);border-radius:11px;padding:16px 20px;margin:14px 0;}
+  label{display:block;font-weight:600;margin:12px 0 4px;font-size:14px;}
+  input[type=text],input[type=number]{font:15px inherit;padding:8px 10px;border:1px solid var(--linia);border-radius:8px;background:#fff;width:100%;}
+  button{background:var(--akcent);color:#fff;border:0;border-radius:8px;padding:10px 18px;font-size:15px;font-weight:600;cursor:pointer;min-height:44px;}
+  button.sek{background:#fff;color:var(--akcent);border:1px solid var(--akcent);}
+  button:focus-visible{outline:3px solid #14161a;outline-offset:2px;}
+  .pasek{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0;}
+  .karta{background:#fff;border:1px solid var(--linia);border-radius:11px;margin:14px 0;overflow:hidden;}
+  .karta h3{margin:0;padding:11px 16px;font-size:16px;background:#f5f6f8;border-bottom:1px solid var(--linia);display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;}
+  .karta .tresc{padding:8px 16px 14px;}
+  .tytul{font-weight:600;font-size:15px;background:#f7f9fc;border:1px dashed var(--linia);border-radius:8px;padding:8px 10px;margin:8px 0;word-break:break-word;}
+  .stat{font-size:12px;font-weight:700;border-radius:999px;padding:2px 9px;}
+  .stat.ok{background:#e4f4e9;color:var(--ok);}
+  .stat.blad{background:#fbe7e4;color:var(--zle);}
+  .stat.uci{background:#fff4dd;color:#8a6410;}
+  ul.wym{margin:8px 0;padding-left:20px;font-size:14px;}
+  ul.wym li.ok::marker{content:"✓ ";}
+  ul.wym li.blad::marker{content:"✗ ";}
+  ul.wym li.blad{color:var(--zle);}
+  ul.wym li.ok{color:var(--tekst);}
+  .licz{color:var(--szary);font-size:14px;}
+  .ostrz{background:#fff8e6;border:1px solid #e8d08a;border-radius:8px;padding:10px 14px;font-size:14px;margin:10px 0;}
+  code{background:#f2f3f6;border-radius:4px;padding:1px 5px;font-size:14px;font-family:ui-monospace,Consolas,monospace;}
+  footer{margin-top:42px;padding-top:14px;border-top:1px solid var(--linia);color:var(--szary);font-size:13px;}
+  .pill{display:inline-block;background:#eef3fd;color:#1a4a9c;border-radius:999px;padding:2px 10px;font-size:13px;font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Jedna oferta, pięć marketplace'ów</h1>
+<p class="sub">Działające narzędzie, nie zrzut ekranu. Wpisz dane produktu raz — dostaniesz ofertę dopasowaną do reguł każdego serwisu, z walidacją.</p>
+<div class="meta">Zrobione 15.09.2026 na potrzeby zlecenia 144414 (indeksowanie ofert: Allegro, Amazon, eMAG, eBay, ERLI) · bartekdev_pl · wszystko liczy się w Twojej przeglądarce, dane nigdzie nie wychodzą</div>
+
+<div class="box">
+  <b>Po co to jest.</b> Indeksowanie ofert na kilku marketplace'ach to w 80% ta sama powtarzalna robota:
+  ten sam produkt, ale każdy serwis ma inny limit długości tytułu, inne wymagane pola i inne
+  drobiazgi, przez które oferta wraca do poprawy. Poniżej wariant tej pracy, który da się skalować:
+  jedno źródło danych, reguły per serwis, walidacja <i>zanim</i> oferta pójdzie na produkcję.
+  Człowiek zostaje tam, gdzie jest potrzebny: sens opisu, zdjęcia, ceny.
+</div>
+
+<h2>1. Dane produktu (jedno źródło)</h2>
+<div class="box">
+  <label for="nazwa">Pełna nazwa produktu (tak, jak jest w arkuszu)</label>
+  <input type="text" id="nazwa" value="Wiertarka udarowa Bosch Professional GSB 18V-55 18V bez szczotek + 2 akumulatory 5,5 Ah + walizka">
+  <label for="marka">Marka</label>
+  <input type="text" id="marka" value="Bosch Professional">
+  <label for="ean">EAN (kod kreskowy)</label>
+  <input type="text" id="ean" value="3165140851234">
+  <label for="sku">SKU / indeks własny</label>
+  <input type="text" id="sku" value="GSB18V-55-KIT">
+  <label for="stan">Stan</label>
+  <input type="text" id="stan" value="nowy">
+  <div class="pasek">
+    <button id="adaptuj">Adaptuj do 5 serwisów</button>
+    <button id="za dlugie" class="sek">Wstaw nazwę za długą na wszystko</button>
+    <button id="braki" class="sek">Wyczyść EAN i markę</button>
+  </div>
+  <p class="licz" id="podsumowanie"></p>
+</div>
+
+<h2>2. Wynik per marketplace</h2>
+<div id="wynik"></div>
+
+<div class="ostrz">
+  <b>Co tu jest prawdą, a co uproszczeniem.</b> Limity znaków i wymagane pola to realne reguły
+  (Allegro 75 znaków w tytule, eBay 80, Amazon do ~200 z zaleceniem krócej, eMAG wymaga
+  marki i part numbera, ERLI własny arkusz oferty). Ale marketplace'y zmieniają detale
+  i różnicują je per kategoria — więc w realnej pracy te reguły siedzą w konfiguracji
+  per kategoria i serwis, a nie w kodzie na sztywno. Tu są na sztywno, bo to demo.
+</div>
+
+<h2>3. Dlaczego to przyspiesza indeksowanie</h2>
+<div class="box">
+  <ul>
+    <li><b>Jedna poprawka zamiast pięciu.</b> Zmiana nazwy produktu w źródle przelicza wszystkie warianty przy następnym uruchomieniu.</li>
+    <li><b>Błędy łapane przed wysyłką.</b> Oferta bez EAN na Allegro przejdzie, na Amazonie wróci do poprawy — lepiej wiedzieć to wcześniej.</li>
+    <li><b>Powtarzalność przez równoległość.</b> Przy 30 ofertach na start to różnica między „robione po kolei" a „robione partią".</li>
+  </ul>
+</div>
+
+<footer>
+  <span class="pill">demo</span> Strona statyczna, bez backendu i bez wysyłania danych.
+  Część większego zestawu narzędzi: generator opisów aukcji (Shoper/BaseLinker), parser zamówień Allegro,
+  synchronizacja stanów XML→BaseLinker. Kontakt przez Useme: bartekdev_pl.
+</footer>
+
+</div>
+
+<script>
+"use strict";
+
+// Reguły per serwis: limit tytułu, wymagane pola, jak skracać.
+// W realnej pracy ten obiekt wyczytywany byłby z konfiguracji per kategoria.
+var SERWISY = [
+  {
+    nazwa: "Allegro",
+    limit: 75,
+    skrot: "kropka-koniec", // ucinamy na ostatnim pełnym słowie przed limitem
+    wymaga: ["marka", "ean", "stan"],
+    uwaga: "Największy polski ruch, ale najkrótszy tytuł. EAN pomaga w dopasowaniu do istniejącej karty produktu."
+  },
+  {
+    nazwa: "Amazon",
+    limit: 150,
+    skrot: "kropka-koniec",
+    wymaga: ["marka", "sku", "ean", "stan"],
+    uwaga: "Tytuł może być długi, ale algorytm lubi konkret (model, pojemność, kompletacja) na początku."
+  },
+  {
+    nazwa: "eMAG",
+    limit: 100,
+    skrot: "kropka-koniec",
+    wymaga: ["marka", "sku", "stan"],
+    uwaga: "Wymaga marki i part numbera; oferty bez nich lądują w kolejce błędów importu."
+  },
+  {
+    nazwa: "eBay",
+    limit: 80,
+    skrot: "kropka-koniec",
+    wymaga: ["marka", "stan"],
+    uwaga: "Limit 80 znaków i „item specifics” per kategoria; tytuł to głównie frazy, po których szukają."
+  },
+  {
+    nazwa: "ERLI",
+    limit: 120,
+    skrot: "kropka-koniec",
+    wymaga: ["marka", "ean", "stan"],
+    uwaga: "Mniejszy ruch, ale mniejsza konkurencja — opłaca się wrzucać tym samym strumieniem co pozostałe."
+  }
+];
+
+var ETYKIETY = { marka: "marka", ean: "EAN", sku: "SKU / part number", stan: "stan" };
+
+function daneWejsciowe() {
+  return {
+    nazwa: document.getElementById("nazwa").value.trim(),
+    marka: document.getElementById("marka").value.trim(),
+    ean: document.getElementById("ean").value.trim(),
+    sku: document.getElementById("sku").value.trim(),
+    stan: document.getElementById("stan").value.trim()
+  };
+}
+
+// Skraca do limitu na ostatnim pełnym słowie; zwraca {tytul, uciety}
+function skrocTytul(nazwa, limit) {
+  if (nazwa.length <= limit) return { tytul: nazwa, uciety: false };
+  var uciecie = nazwa.slice(0, limit);
+  var spacja = uciecie.lastIndexOf(" ");
+  if (spacja > limit * 0.6) uciecie = uciecie.slice(0, spacja);
+  return { tytul: uciecie.trimEnd(), uciety: true };
+}
+
+function czyPoprawneEan(ean) {
+  return /^\d{8}$|^\d{13}$/.test(ean); // EAN-8 albo EAN-13
+}
+
+function adaptuj() {
+  var d = daneWejsciowe();
+  var kontener = document.getElementById("wynik");
+  var podsumowanie = document.getElementById("podsumowanie");
+  kontener.innerHTML = "";
+
+  if (!d.nazwa) {
+    podsumowanie.textContent = "Podaj choć nazwę produktu — bez niej nie ma czego adaptować.";
+    return;
+  }
+
+  var ileOk = 0, ileUcietych = 0, ileBledow = 0;
+
+  SERWISY.forEach(function (s) {
+    var wynik = skrocTytul(d.nazwa, s.limit);
+    var braki = s.wymaga.filter(function (pole) {
+      if (pole === "ean") return !czyPoprawneEan(d.ean); // pusty ZŁY EAN to też błąd
+      return !d[pole];
+    });
+    var html = '<div class="karta"><h3><span>' + s.nazwa + '</span>';
+    if (braki.length > 0) {
+      ileBledow++;
+      html += '<span class="stat blad">wymaga poprawy</span>';
+    } else if (wynik.uciety) {
+      ileOk++; ileUcietych++;
+      html += '<span class="stat uci">gotowe (tytuł skrócony)</span>';
+    } else {
+      ileOk++;
+      html += '<span class="stat ok">gotowe</span>';
+    }
+    html += '</h3><div class="tresc">';
+    html += '<div class="tytul">' + escapeHtml(wynik.tytul) +
+      ' <span style="color:#666e7a;font-weight:400">(' + wynik.tytul.length + '/' + s.limit + ' znaków)</span></div>';
+    html += '<ul class="wym">';
+    s.wymaga.forEach(function (pole) {
+      var zlePole = (pole === "ean") ? !czyPoprawneEan(d.ean) : !d[pole];
+      var wartosc = (pole === "ean" && d.ean && !czyPoprawneEan(d.ean)) ? d.ean + " (zły format)" : (d[pole] || "brak");
+      html += '<li class="' + (zlePole ? "blad" : "ok") + '">' + ETYKIETY[pole] + ": " + escapeHtml(wartosc) + "</li>";
+    });
+    html += '</ul>';
+    if (wynik.uciety) {
+      html += '<div class="ostrz">Tytuł przekraczał ' + s.limit + ' znaków, uciąłem na ostatnim pełnym słowie. ' +
+        'W realnej pracy to decyzja do sprawdzenia (co ucięliśmy: „' + escapeHtml(d.nazwa.slice(wynik.tytul.length).trim()) + '”), nie automatu.</div>';
+    }
+    html += '<p style="font-size:14px;color:#666e7a;margin:6px 0 0">' + s.uwaga + '</p>';
+    html += '</div></div>';
+    kontener.insertAdjacentHTML("beforeend", html);
+  });
+
+  podsumowanie.textContent = "Gotowe bez poprawek: " + ileOk + "/5 · tytuł skrócony w: " +
+    (ileUcietych ? ileUcietych : "0") + " · wymaga poprawy: " + (ileBledow ? ileBledow : "0") +
+    ". Zmień dane u góry i kliknij ponownie — wszystko przelicza się na miejscu.";
+}
+
+function escapeHtml(t) {
+  return t.replace(/[&<>"']/g, function (c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+  });
+}
+
+document.getElementById("adaptuj").addEventListener("click", adaptuj);
+
+document.getElementById("za dlugie").addEventListener("click", function () {
+  document.getElementById("nazwa").value =
+    "Profesjonalny zestaw wiertarko-wkrętarka udarowa Bosch Professional GSB 18V-55 Fusion 18V litowo-jonowy bezszczotkowy z dwoma akumulatorami 5,5 Ah Core18V, ładowarką GAL 18V-40, walizką transportową systemu L-BOXX i zestawem 10 wierteł do metalu oraz betonu";
+  adaptuj();
+});
+
+document.getElementById("braki").addEventListener("click", function () {
+  document.getElementById("ean").value = "";
+  document.getElementById("marka").value = "";
+  adaptuj();
+});
+
+adaptuj(); // pierwszy przebieg od razu, żeby strona nie była pusta
+</script>
+
+</body>
+</html>
