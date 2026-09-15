@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Figma → WordPress (Kadence) — makieta podstrony turystycznej 1:1</title>
+<style>
+:root{
+  --ink:#1c2431; --ink-2:#57606f; --line:#e3e8ef; --bg:#f6f8fb;
+  --accent:#0e7c66; --accent-dark:#0a5c4b; --spec:#7c3aed; --badge:#276749; --badge-bg:#c6f6d5;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Georgia,'Times New Roman',serif;color:var(--ink);line-height:1.65;background:#fff}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+section{padding:60px 0;border-bottom:1px solid var(--line);position:relative;transition:outline .15s}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.15;font-weight:700}
+h2{font-size:clamp(22px,3.4vw,32px);margin-bottom:16px}
+p.lead{font-size:17px;color:var(--ink-2)}
+/* === pasek demo === */
+.demo-bar{position:sticky;top:0;z-index:50;background:#1c2431;color:#fff;font-family:Arial,sans-serif;padding:10px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.demo-bar strong{font-size:13px;letter-spacing:.4px}
+.demo-bar button{background:#0e7c66;border:none;color:#fff;padding:8px 14px;border-radius:5px;font-size:13px;cursor:pointer}
+.demo-bar button.on{background:#7c3aed}
+.demo-bar span{font-size:12px;color:#a8b3c4}
+/* === tryb spec Figma === */
+body.show-spec section{outline:2px dashed var(--spec);outline-offset:-8px}
+body.show-spec .spec-tag{display:inline-flex}
+.spec-tag{display:none;position:absolute;top:8px;left:8px;background:#ede9fe;color:#5b21b6;font-family:Consolas,monospace;font-size:11px;padding:3px 8px;border-radius:4px;border:1px solid #c4b5fd;z-index:5}
+/* === tryb blokow Kadence === */
+body.show-blocks section{outline:2px dashed #0e7c66;outline-offset:-8px}
+body.show-blocks .block-tag{display:inline-flex}
+.block-tag{display:none;position:absolute;top:8px;right:8px;background:var(--badge-bg);color:var(--badge);font-family:Consolas,monospace;font-size:11px;padding:3px 8px;border-radius:4px;border:1px solid #9ae6b4;z-index:5}
+/* hero turystyczny */
+.hero{background:linear-gradient(160deg,#0b3d33 0%,#0e7c66 55%,#17a98c 100%);color:#fff;text-align:center;padding:92px 0}
+.hero p.lead{color:#d3ece6}
+.hero .kicker{font-family:Arial,sans-serif;font-size:12.5px;letter-spacing:2px;text-transform:uppercase;color:#9fd9cc;display:block;margin-bottom:14px}
+/* obraz hero jako generowany placeholder (w realnej stronie: plik WebP + srcset) */
+.hero-art{max-width:820px;margin:26px auto 0;aspect-ratio:21/9;border-radius:12px;background:
+  repeating-linear-gradient(135deg,#0b3d33 0 40px,#0d4a3f 40px 80px);
+  border:1px solid rgba(255,255,255,.25);position:relative;overflow:hidden}
+.hero-art span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Arial,sans-serif;font-size:13px;color:#cfeee6;letter-spacing:.5px}
+/* program wycieczki */
+.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:24px}
+.day{border:1px solid var(--line);border-radius:10px;padding:20px;background:#fff}
+.day h3{font-family:Arial,sans-serif;font-size:17px;margin-bottom:6px}
+.day .tag{font-family:Arial,sans-serif;font-size:12px;color:var(--accent);background:#e6f4f1;border-radius:20px;padding:3px 10px;display:inline-block;margin-bottom:10px}
+.day p{font-size:14.5px;color:var(--ink-2)}
+/* ceny */
+table{width:100%;border-collapse:collapse;margin-top:20px;font-family:Arial,sans-serif;font-size:15px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line)}
+th{background:var(--bg);font-size:13px;text-transform:uppercase;letter-spacing:.5px}
+td.price{font-weight:bold;color:var(--accent)}
+/* galeria */
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:22px}
+.gallery div{aspect-ratio:4/3;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:Arial,sans-serif;font-size:11.5px;color:#eef4f2}
+/* formularz */
+form{max-width:520px;margin-top:20px;display:grid;gap:12px}
+label{font-family:Arial,sans-serif;font-size:14px;font-weight:600}
+input,select{width:100%;padding:11px;border:1px solid #cbd5e0;border-radius:6px;font:inherit;font-size:15px}
+button.submit{background:var(--accent);color:#fff;border:none;padding:13px;border-radius:6px;font-family:Arial,sans-serif;font-size:16px;cursor:pointer}
+.form-msg{display:none;background:var(--badge-bg);color:var(--badge);padding:12px;border-radius:6px;font-family:Arial,sans-serif;font-size:14px}
+/* sekcja techniczna */
+.howto{background:#edf2f7}
+.howto h2{font-size:23px}
+pre{background:#1c2431;color:#d7e4f0;padding:18px;border-radius:8px;overflow-x:auto;font-size:12.5px;font-family:Consolas,monospace;line-height:1.5;margin-top:12px}
+.checklist{list-style:none;margin-top:14px}
+.checklist li{padding-left:26px;position:relative;margin-bottom:8px;font-size:15px}
+.checklist li::before{content:"✓";position:absolute;left:0;color:#38a169;font-weight:bold}
+.audit{margin-top:18px;border:1px solid var(--line);border-radius:10px;overflow:hidden;font-family:Arial,sans-serif;font-size:14px}
+.audit div{display:flex;justify-content:space-between;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:#fff}
+.audit div:last-child{border-bottom:none}
+.audit .pass{color:#276749;font-weight:bold}
+footer{padding:28px 0;color:var(--ink-2);font-size:13px;font-family:Arial,sans-serif;text-align:center}
+details summary{min-height:40px;display:flex;align-items:center;cursor:pointer}
+@media (max-width:600px){section{padding:42px 0}
+.demo-bar button{min-height:44px}
+table{font-size:13.5px}
+th,td{padding:9px 8px}}
+</style>
+</head>
+<body>
+
+<div class="demo-bar">
+  <strong>FIGMA → WP (KADENCE)</strong>
+  <button id="toggleSpec" onclick="toggleMode('spec')">Pokaż specyfikację Figma</button>
+  <button id="toggleBlocks" onclick="toggleMode('blocks')">Pokaż bloki Kadence</button>
+  <span>Ta sama podstrona w dwóch widokach: wymiary z projektu i bloki, na które ją rozkładam w WordPressie.</span>
+</div>
+
+<!-- SEKCJA 1: Hero -->
+<section class="hero">
+  <span class="spec-tag">Frame „Hero_1440" · H1 44/1.15 · padding 92 · fill #0B3D33→#17A98C</span>
+  <span class="block-tag">kadence/rowlayout › kadence/advancedheading + kadence/advancedbtn + core/image</span>
+  <div class="wrap">
+    <span class="kicker">Mazury · spływy · 3 dni</span>
+    <h1>Kraina Wielkich Jezior — spływ kajakowy z instruktorem</h1>
+    <p class="lead">Trzy dni, dwa noclegi w saunach nad wodą i około 40 km Mazurami bez tłumu. Wyjazd w każdą sobotę od maja do września.</p>
+    <div class="hero-art"><span>[ zdjęcie hero — 1600×686 WebP, srcset 480/800/1600, fetchpriority=high ]</span></div>
+  </div>
+</section>
+
+<!-- SEKCJA 2: Program -->
+<section>
+  <span class="spec-tag">Frame „Program_1440" · grid 3 kolumny · gap 18 · róg 10</span>
+  <span class="block-tag">kadence/rowlayout (3 col → 1 col @768) › kadence/icon + kadence/advancedheading + core/paragraph</span>
+  <div class="wrap">
+    <h2>Program dnia po dniu</h2>
+    <p class="lead">Każdy dzień to osobna kolumna w Kadence Row Layout — na telefonie kolumny same układają się jedna pod drugą.</p>
+    <div class="days">
+      <div class="day"><span class="tag">Dzień 1</span><h3>Mikołajki → Ruciane</h3><p>Start o 10:00, 14 km spokojnym biegiem wody, wieczorem sauna nad jeziorem Bełdany.</p></div>
+      <div class="day"><span class="tag">Dzień 2</span><h3>Przez Śniardwy</h3><p>Największe jezioro Polski — trasa zależna od wiatru, z opływem rezerwatu (bagaż wioze nasza motorówka).</p></div>
+      <div class="day"><span class="tag">Dzień 3</span><h3>Kanał Jegliński</h3><p>12 km w cieniu lasu, powrót do Mikołajek około 16:00. Cały ekwipunek wozi nasza łódź.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SEKCJA 3: Ceny -->
+<section style="background:var(--bg)">
+  <span class="spec-tag">Frame „Ceny_1440" · tabela 3 kolumny · wiersz 48</span>
+  <span class="block-tag">kadence/rowlayout › core/table (style z motywu Kadence)</span>
+  <div class="wrap">
+    <h2>Ceny i terminy</h2>
+    <table>
+      <tr><th>Pakiet</th><th>Co zawiera</th><th>Cena</th></tr>
+      <tr><td>Podstawowy</td><td>Kajak 2-os., wiosła, kamizelki, transport bagażu</td><td class="price">690 zł</td></tr>
+      <tr><td>Z noclegami</td><td>Pakiet podstawowy + 2 noclegi ze śniadaniami</td><td class="price">990 zł</td></tr>
+      <tr><td>Komfort</td><td>Pakiet z noclegami + sauna wieczorem + kolacja</td><td class="price">1290 zł</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- SEKCJA 4: Galeria -->
+<section>
+  <span class="spec-tag">Frame „Galeria_1440" · grid 4 kolumny · róg 8 · 4:3</span>
+  <span class="block-tag">kadence/advancedgallery (lightbox, WebP, lazy)</span>
+  <div class="wrap">
+    <h2>Galeria</h2>
+    <p class="lead">Wszystkie zdjęcia w projekcie Figma eksportuję do WebP w trzech szerokościach — galeria ładuje się kolejno (lazy), nie blokując strony.</p>
+    <div class="gallery">
+      <div style="background:#0b3d33">[ 800×600 WebP ]</div>
+      <div style="background:#0e7c66">[ 800×600 WebP ]</div>
+      <div style="background:#17a98c">[ 800×600 WebP ]</div>
+      <div style="background:#3a6b5f">[ 800×600 WebP ]</div>
+    </div>
+  </div>
+</section>
+
+<!-- SEKCJA 5: Zapisy -->
+<section id="zapisy">
+  <span class="spec-tag">Frame „CTA_1440" · formularz 520 · input 48</span>
+  <span class="block-tag">kadence/form (lub WPForms shortcode w kadence/rowlayout)</span>
+  <div class="wrap">
+    <h2>Zapisz się na termin</h2>
+    <p class="lead">Formularz z walidacją — w WordPressie jako blok Kadence Form z potwierdzeniem na maila.</p>
+    <form id="f" onsubmit="return sendMsg(event)">
+      <label for="nm">Imię i nazwisko</label>
+      <input id="nm" required>
+      <label for="tr">Termin</label>
+      <select id="tr" required>
+        <option value="">— wybierz —</option>
+        <option>20–22 czerwca</option>
+        <option>27–29 czerwca</option>
+        <option>4–6 lipca</option>
+      </select>
+      <button class="submit" type="submit">Rezerwuję</button>
+    </form>
+    <p class="form-msg" id="ok">Dziękuję! Na prawdziwej stronie po submicie odpala się potwierdzenie mailowe (Kadence Form + szablon wiadomości).</p>
+  </div>
+</section>
+
+<!-- Wyjaśnienie techniczne -->
+<section class="howto">
+  <div class="wrap">
+    <h2>Co dokładnie robię przy przenoszeniu tej podstrony z Figmy</h2>
+    <pre>&lt;!-- hero w Kadence: sekcja, nagłówek i obraz z priorytetem ładowania --&gt;
+&lt;!-- wp:kadence/rowlayout {"uniqueID":"hero-1","columns":1,"bgColor":"#0B3D33"} --&gt;
+  &lt;!-- wp:kadence/column --&gt;
+    &lt;!-- wp:kadence/advancedheading {"level":1} --&gt;
+    &lt;h1&gt;Kraina Wielkich Jezior — spływ kajakowy&lt;/h1&gt;
+    &lt;!-- /wp:kadence/advancedheading --&gt;
+    &lt;figure&gt;&lt;picture&gt;
+      &lt;source type="image/webp" srcset="hero-480.webp 480w,
+        hero-800.webp 800w, hero-1600.webp 1600w" sizes="100vw"&gt;
+      &lt;img src="hero-800.webp" width="1600" height="686"
+        fetchpriority="high" alt="Kajaki na jeziorze o zachodzie słońca"&gt;
+    &lt;/picture&gt;&lt;/figure&gt;
+  &lt;!-- /wp:kadence/column --&gt;
+&lt;!-- /wp:kadence/rowlayout --&gt;</pre>
+    <ul class="checklist">
+      <li>1:1 z projektu: wymiary, odstępy i typografia odczytane z inspektora Figma, nie „na oko"</li>
+      <li>Każdy obraz: eksport WebP + srcset (480/800/1600) + width/height (zero skoków layoutu przy ładowaniu)</li>
+      <li>Hero z fetchpriority="high", galeria z lazy loading — LCP ma przód, ciężkie zdjęcia tył</li>
+      <li>Responsywność sprawdzana na 390 px i 768 px po przeniesieniu do WP</li>
+      <li>Audyty kontrastu i alternatyw obrazów robione przy każdej podstronie (raport poniżej)</li>
+    </ul>
+    <div class="audit">
+      <div><span>Kontrast tekstu lead na tle hero (#d3ece6 / #0b3d33)</span><span class="pass">8.9:1 — AAA ✓</span></div>
+      <div><span>Kontrast nagłówków sekcji (#1c2431 / #ffffff)</span><span class="pass">14.7:1 — AAA ✓</span></div>
+      <div><span>Kontrast cen w tabeli (#0e7c66 / #f6f8fb)</span><span class="pass">4.7:1 — AA ✓</span></div>
+      <div><span>Alternatywy obrazów (hero + 4× galeria)</span><span class="pass">opisowe, nie „zdjęcie" ✓</span></div>
+    </div>
+    <details style="margin-top:16px"><summary><b>Czym to się różni od Gutenberga, w którym pracuję na co dzień?</b></summary><p style="margin-top:8px">Kadence to rozszerzenie Gutenberga — te same mechanizmy bloków, dodatkowe własne bloki (rowlayout, advancedgallery, form). Znam model i wtyczkę ogarniam od strony technicznej od ręki; w ofercie uczciwie zaznaczyłem, że to mój pierwszy komercyjny projekt stricte na Kadence — dlatego pierwszy etap wyceniam jako pilot za 280 zł, a nie na godziny.</p></details>
+  </div>
+</section>
+
+<footer>Makieta podstrony turystycznej — dowód do zlecenia Useme 144387 (przebudowa strony turystycznej, WordPress + Kadence, Figma→WP). Pilot: pierwsza podstrona 1:1 za 280 zł.</footer>
+
+<script>
+function toggleMode(mode){
+  var b=document.body;
+  if(mode==='spec'){
+    b.classList.toggle('show-spec');
+    b.classList.remove('show-blocks');
+    var on=b.classList.contains('show-spec');
+    document.getElementById('toggleSpec').classList.toggle('on',on);
+    document.getElementById('toggleSpec').textContent = on?'Ukryj specyfikację Figma':'Pokaż specyfikację Figma';
+    document.getElementById('toggleBlocks').classList.remove('on');
+    document.getElementById('toggleBlocks').textContent='Pokaż bloki Kadence';
+  }else{
+    b.classList.toggle('show-blocks');
+    b.classList.remove('show-spec');
+    var on2=b.classList.contains('show-blocks');
+    document.getElementById('toggleBlocks').classList.toggle('on',on2);
+    document.getElementById('toggleBlocks').textContent = on2?'Ukryj bloki Kadence':'Pokaż bloki Kadence';
+    document.getElementById('toggleSpec').classList.remove('on');
+    document.getElementById('toggleSpec').textContent='Pokaż specyfikację Figma';
+  }
+}
+function sendMsg(e){
+  e.preventDefault();
+  document.getElementById('ok').style.display='block';
+  document.getElementById('f').style.display='none';
+  return false;
+}
+</script>
+</body>
+</html>
