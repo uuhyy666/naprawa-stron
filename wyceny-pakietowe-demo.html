@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wyceny pakietowe: dodawanie ofert + opisy AI + EAN/SKU (kalkulator działający)</title>
+<style>
+  :root{--tekst:#14161a;--szary:#666e7a;--linia:#e5e7ea;--tlo:#fbfbfc;--akcent:#2f6fe0;--ok:#1d7a3e;--zle:#b3362b;}
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--tekst);background:var(--tlo);}
+  .wrap{max-width:1080px;margin:0 auto;padding:40px 18px 80px;}
+  h1{font-size:27px;margin:0 0 4px;}
+  .sub{color:var(--szary);margin:0 0 10px;}
+  .meta{color:var(--szary);font-size:14px;border-bottom:2px solid var(--tekst);padding-bottom:14px;margin-bottom:26px;}
+  h2{font-size:19px;margin:30px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--linia);}
+  .box{background:#fff;border:1px solid var(--linia);border-radius:11px;padding:16px 20px;margin:14px 0;}
+  label{display:block;font-weight:600;margin:12px 0 4px;font-size:14px;}
+  input[type=text],input[type=number]{font:15px inherit;padding:8px 10px;border:1px solid var(--linia);border-radius:8px;background:#fff;width:100%;}
+  button{background:var(--akcent);color:#fff;border:0;border-radius:8px;padding:10px 18px;font-size:15px;font-weight:600;cursor:pointer;min-height:44px;}
+  button.sek{background:#fff;color:var(--akcent);border:1px solid var(--akcent);}
+  button:focus-visible{outline:3px solid #14161a;outline-offset:2px;}
+  input:focus-visible{outline:3px solid #14161a;outline-offset:2px;}
+  .karta{background:#fff;border:1px solid var(--linia);border-radius:11px;margin:14px 0;overflow:hidden;}
+  .karta h3{margin:0;padding:11px 16px;font-size:16px;background:#f5f6f8;border-bottom:1px solid var(--linia);display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;}
+  .karta .tresc{padding:8px 16px 14px;}
+  .stat{font-size:12px;font-weight:700;border-radius:999px;padding:2px 9px;}
+  .stat.ok{background:#e4f4e9;color:var(--ok);}
+  .stat.ucieto{background:#fff4dd;color:#8a6410;}
+  .polecana{border:2px solid var(--akcent);}
+  .polecana h3 .stat{background:#eef3fd;color:#1a4a9c;}
+  table{border-collapse:collapse;width:100%;font-size:15px;}
+  th,td{border-bottom:1px solid var(--linia);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{font-size:13px;text-transform:uppercase;letter-spacing:.03em;color:var(--szary);}
+  td.kw{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600;}
+  .duza{font-size:26px;font-weight:700;line-height:1.2;}
+  .licz{color:var(--szary);font-size:14px;}
+  .ostrz{background:#fff8e6;border:1px solid #e8d08a;border-radius:8px;padding:10px 14px;font-size:14px;margin:10px 0;}
+  code{background:#f2f3f6;border-radius:4px;padding:1px 5px;font-size:14px;font-family:ui-monospace,Consolas,monospace;}
+  footer{margin-top:42px;padding-top:14px;border-top:1px solid var(--linia);color:var(--szary);font-size:13px;}
+  .pill{display:inline-block;background:#eef3fd;color:#1a4a9c;border-radius:999px;padding:2px 10px;font-size:13px;font-weight:600;}
+  .check{display:flex;align-items:flex-start;gap:10px;margin:10px 0;font-size:15px;min-height:44px;}
+  .check input{width:20px;height:20px;margin-top:3px;flex:none;}
+  .wynik-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:14px 0;}
+  @media (max-width:520px){ th,td{padding:6px 6px;} .duza{font-size:22px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Wyceny pakietowe — dodawanie ofert, opisy AI, EAN/SKU</h1>
+<p class="sub">Działający kalkulator, nie cennik w PDF. Ustaw swój tygodniowy rytm pracy — dostaniesz rekomendowany pakiet, cenę oferty po rabacie volumenowym i pełne wyliczenie.</p>
+<div class="meta">Zrobione 15.09.2026 na potrzeby zlecenia 144252 (BaseLinker / Allegro / Marketplace – dodawanie ofert, AI, EAN/SKU) · bartekdev_pl · liczy się w Twojej przeglądarce, dane nigdzie nie wychodzą</div>
+
+<div class="box">
+  <b>Po co to jest.</b> Dodawanie ofert pojedynczo po 15 zł opłaca się przy kilku sztukach. Przy
+  stałej współpracy (np. 15–40 ofert tygodniowo) wycena musi być pakietowa: liczysz prognozę
+  z góry, płacisz za pakiet, nie za sztukę ad hoc — a cena oferty spada wraz z wolumenem,
+  bo przy stałym zespole produktów i szablonach każda kolejna oferta jest tańsza w wykonaniu.
+  Kalkulator niżej pokazuje dokładnie tę logikę — tak samo liczę realną wycenę.
+</div>
+
+<h2>1. Twój rytm pracy</h2>
+<div class="box">
+  <label for="oferty">Ile nowych ofert tygodniowo mam dodawać?</label>
+  <input type="number" id="oferty" min="1" max="500" value="30" inputmode="numeric">
+  <p class="licz">Przykładowo: 30 ofert/tydz. ≈ 130 miesięcznie.</p>
+
+  <label>Co ma wchodzić w skład każdej oferty? (zaznacz, co potrzebujesz)</label>
+  <label class="check"><input type="checkbox" id="opcjaA" checked>
+    <span><b>Dodanie oferty Allegro przez BaseLinker</b> — karta produktu, parametry, zdjęcia, warianty, reguły cenowe i magazynowe.</span></label>
+  <label class="check"><input type="checkbox" id="opcjaB" checked>
+    <span><b>Opis AI dopracowany ręcznie</b> — generowanie z danych produktu + korekta faktów, tonu i zakazanych sformułowań (bez „halucynacji” w specyfikacji).</span></label>
+  <label class="check"><input type="checkbox" id="opcjaC" checked>
+    <span><b>EAN/SKU: dopisanie i weryfikacja</b> — sprawdzenie kodów w GS1, obsługa braków (własne SKU zamiast błędnego EAN), mapa SKU hurtownia ↔ BaseLinker.</span></label>
+  <label class="check"><input type="checkbox" id="opcjaD">
+    <span><b>Synchronizacja stanów z XML hurtowni</b> — jednorazowe podłączenie + reguły; dalej działa samo (to pozycja jednorazowa, nie per oferta).</span></label>
+  <p style="margin:8px 0 0"><button id="liczBtn">Przelicz wycenę</button></p>
+</div>
+
+<h2>2. Rekomendowany pakiet</h2>
+<div id="wynikPakiet"></div>
+
+<h2>3. Wyliczenie krok po kroku</h2>
+<div id="wynikTabela"></div>
+
+<div class="ostrz">
+  <b>Co jest celowo uproszczone w demie:</b> ceny są prawdziwymi stawkami bazowymi, ale ostateczna
+  wycena zależy od kategorii (ile parametrów obowiązkowych), jakości danych wejściowych (czy EAN-y
+  w ogóle istnieją w arkuszu) i liczby wariantów. Dlatego przed startem robię bezpłatny pilotaż na
+  20 ofertach — z niego bierze się ostateczny mnożnik.
+</div>
+
+<div class="box">
+  <b>Jak wygląda współpraca w praktyce.</b>
+  1) Dostaję arkusz/CSV produktów i dostęp tylko do konta BaseLinker (bez danych logowania do
+  Allegro — oferta idzie przez API BaseLinkera). 2) Umawiamy pakiet i zakres. 3) Pierwsze 20 ofert
+  to pilotaż: weryfikujesz jakość, ja kalibruję szablony. 4) Dalej jedziemy w ustalonym rytmie,
+  z prostym raportem na koniec tygodnia: ile dodane, ile odrzucone przez serwis i dlaczego.
+  Rozliczenie przez Useme (escrow) albo faktura po odbiorze paczki.
+</div>
+
+<footer>
+  bartekdev_pl · demo na potrzeby zlecenia Useme 144252 · strona statyczna, zero trackingu,
+  zero wysyłania danych · <a href="https://uuhyy666.github.io/naprawa-stron/marketplace-adaptacja-demo.html">powiązane demo: adaptacja jednej oferty do 5 serwisów</a>
+</footer>
+</div>
+
+<script>
+// Stawki bazowe (zł netto za pozycję przy pracy jednostkowej)
+var STAWKA_ALLEGRO = 15;     // dodanie 1 oferty przez BaseLinker
+var STAWKA_AI = 6;           // opis AI + korekta, per oferta
+var STAWKA_EAN = 4;          // weryfikacja/dopisanie EAN/SKU, per oferta
+var STAWKA_XML = 350;        // jednorazowe podłączenie synchronizacji stanów
+
+// Progi volumenowe: [min ofert/mies., rabat % na część per-oferta]
+var PROGI = [
+  { min: 0,   rabat: 0,   nazwa: "Jednostkowo" },
+  { min: 40,  rabat: 15,  nazwa: "Pakiet Start" },
+  { min: 100, rabat: 25,  nazwa: "Pakiet Regular" },
+  { min: 250, rabat: 35,  nazwa: "Pakiet Skala" }
+];
+
+function fmt(n){ return n.toLocaleString('pl-PL', {maximumFractionDigits:0}); }
+
+function oblicz(){
+  var tygodniowo = parseInt(document.getElementById('oferty').value, 10);
+  if (!tygodniowo || tygodniowo < 1) tygodniowo = 1;
+  if (tygodniowo > 500) tygodniowo = 500;
+  var miesiecznie = Math.round(tygodniowo * 52 / 12);
+
+  var a = document.getElementById('opcjaA').checked;
+  var b = document.getElementById('opcjaB').checked;
+  var c = document.getElementById('opcjaC').checked;
+  var d = document.getElementById('opcjaD').checked;
+
+  var stawkaJedn = (a?STAWKA_ALLEGRO:0) + (b?STAWKA_AI:0) + (c?STAWKA_EAN:0);
+  if (stawkaJedn === 0 && !d) {
+    document.getElementById('wynikPakiet').innerHTML =
+      '<div class="ostrz">Zaznacz przynajmniej jedną pozycję zakresu — inaczej nie ma czego liczyć. 😊</div>';
+    document.getElementById('wynikTabela').innerHTML = '';
+    return;
+  }
+
+  var prog = PROGI[0];
+  for (var i = PROGI.length - 1; i >= 0; i--) { if (miesiecznie >= PROGI[i].min) { prog = PROGI[i]; break; } }
+
+  var stawkaPak = stawkaJedn * (1 - prog.rabat / 100);
+  var kosztOfert = Math.round(miesiecznie * stawkaPak);
+  var kosztJedn = Math.round(miesiecznie * stawkaJedn);
+  var oszczednosc = kosztJedn - kosztOfert;
+  var xmlJednorazowo = d ? STAWKA_XML : 0;
+  var pierwszyMiesiac = kosztOfert + xmlJednorazowo;
+
+  // --- karta pakietu ---
+  var zakres = [];
+  if (a) zakres.push('dodawanie ofert przez BaseLinker');
+  if (b) zakres.push('opisy AI z korektą');
+  if (c) zakres.push('EAN/SKU');
+  if (d) zakres.push('synchronizacja XML hurtowni (jednorazowo)');
+
+  var html = '<div class="karta' + (prog.rabat > 0 ? ' polecana' : '') + '">';
+  html += '<h3><span>' + prog.nazwa + ' — ' + fmt(miesiecznie) + ' ofert/mies.</span>';
+  if (prog.rabat > 0) html += '<span class="stat ok">rabat volumenowy ' + prog.rabat + '%</span>';
+  else html += '<span class="stat ucieto">poniżej progu pakietowego (40/mies.)</span>';
+  html += '</h3><div class="tresc">';
+  if (stawkaJedn > 0) {
+    html += '<div class="duza">' + fmt(kosztOfert) + ' zł netto / miesiąc</div>';
+    html += '<p class="licz">czyli <b>' + stawkaPak.toFixed(2).replace('.', ',') + ' zł za ofertę</b> '
+      + '(jednostkowo: ' + stawkaJedn + ' zł)' + (oszczednosc > 0
+        ? ' · oszczędzasz <b>' + fmt(oszczednosc) + ' zł/mies.</b> vs rozliczenie po sztuce'
+        : '') + '</p>';
+  }
+  if (d) {
+    html += '<p class="licz">+ jednorazowo ' + fmt(STAWKA_XML) + ' zł za podłączenie synchronizacji stanów z XML hurtowni — w kolejnych miesiącach ta pozycja już nie wraca.</p>';
+    if (stawkaJedn > 0) html += '<p class="licz"><b>Pierwszy miesiąc razem: ' + fmt(pierwszyMiesiac) + ' zł netto.</b></p>';
+    else html += '<div class="duza">' + fmt(xmlJednorazowo) + ' zł netto jednorazowo</div>';
+  }
+  html += '<p class="licz">Zakres: ' + zakres.join(' · ') + '.</p>';
+  html += '</div></div>';
+
+  if (prog.rabat === 0 && stawkaJedn > 0) {
+    var doProgu = PROGI[1].min - miesiecznie;
+    html += '<div class="ostrz">Do progu pakietowego brakuje ' + fmt(doProgu)
+      + ' ofert miesięcznie. Pakiet można też liczyć kwartalnie (suma ofert z 3 miesięcy) — wtedy próg 15% rabatu osiąga się łatwiej, bo liczy się suma, nie pojedynczy miesiąc.</div>';
+  }
+  document.getElementById('wynikPakiet').innerHTML = html;
+
+  // --- tabela wyliczenia ---
+  var t = '<div class="box"><table><thead><tr><th>Pozycja</th><th>Ilość</th><th>Stawka</th><th>Suma</th></tr></thead><tbody>';
+  if (a) t += '<tr><td>Dodanie oferty Allegro przez BaseLinker (parametry, zdjęcia, warianty, reguły)</td><td>' + fmt(miesiecznie) + '/mies.</td><td>' + (STAWKA_ALLEGRO*(1-prog.rabat/100)).toFixed(2).replace('.',',') + ' zł</td><td class="kw">' + fmt(Math.round(miesiecznie*STAWKA_ALLEGRO*(1-prog.rabat/100))) + ' zł</td></tr>';
+  if (b) t += '<tr><td>Opis AI + ręczna korekta faktów i tonu</td><td>' + fmt(miesiecznie) + '/mies.</td><td>' + (STAWKA_AI*(1-prog.rabat/100)).toFixed(2).replace('.',',') + ' zł</td><td class="kw">' + fmt(Math.round(miesiecznie*STAWKA_AI*(1-prog.rabat/100))) + ' zł</td></tr>';
+  if (c) t += '<tr><td>EAN/SKU: weryfikacja w GS1, dopisanie, mapa SKU</td><td>' + fmt(miesiecznie) + '/mies.</td><td>' + (STAWKA_EAN*(1-prog.rabat/100)).toFixed(2).replace('.',',') + ' zł</td><td class="kw">' + fmt(Math.round(miesiecznie*STAWKA_EAN*(1-prog.rabat/100))) + ' zł</td></tr>';
+  if (d) t += '<tr><td>Synchronizacja stanów z XML hurtowni (jednorazowo)</td><td>1</td><td>' + fmt(STAWKA_XML) + ' zł</td><td class="kw">' + fmt(STAWKA_XML) + ' zł</td></tr>';
+  t += '</tbody></table>';
+  t += '<p class="licz">Suma bieżącego miesiąca: <b>' + fmt(kosztOfert + xmlJednorazowo) + ' zł netto</b>'
+    + (stawkaJedn > 0 ? ' · rozliczenie jednostkowe kosztowałoby ' + fmt(kosztJedn + xmlJednorazowo) + ' zł' : '')
+    + '.</p></div>';
+  document.getElementById('wynikTabela').innerHTML = t;
+}
+
+document.getElementById('liczBtn').addEventListener('click', oblicz);
+document.getElementById('oferty').addEventListener('input', oblicz);
+['opcjaA','opcjaB','opcjaC','opcjaD'].forEach(function(id){
+  document.getElementById(id).addEventListener('change', oblicz);
+});
+oblicz();
+</script>
+</body>
+</html>
