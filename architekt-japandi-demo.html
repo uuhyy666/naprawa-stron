@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pracownia architektury wnętrz — makieta strony (Japandi)</title>
+<meta name="description" content="Makieta strony one-page dla pracowni architektury wnętrz. Minimalistyczny styl japandi, portfolio realizacji, formularz kontaktowy.">
+<style>
+  :root{
+    --tlo:#f5f2ec;
+    --tlo2:#ebe6dd;
+    --tekst:#2c2a26;
+    --szary:#7a756c;
+    --akcent:#8a7455;
+    --bialy:#fffdf9;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:Georgia,'Times New Roman',serif;background:var(--tlo);color:var(--tekst);line-height:1.65}
+  .szer{max-width:1080px;margin:0 auto;padding:0 24px}
+  header{display:flex;justify-content:space-between;align-items:center;padding:28px 0}
+  .logo{font-size:1.15rem;letter-spacing:.22em;text-transform:uppercase}
+  nav a{color:var(--szary);text-decoration:none;margin-left:28px;font-family:Verdana,Arial,sans-serif;font-size:.78rem;letter-spacing:.08em}
+  nav a:hover{color:var(--tekst)}
+  .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;padding:72px 0 88px}
+  .hero h1{font-weight:400;font-size:clamp(2rem,4.5vw,3.4rem);line-height:1.2}
+  .hero h1 em{font-style:italic;color:var(--akcent)}
+  .hero p{margin-top:22px;color:var(--szary);max-width:34rem}
+  .hero .kadry{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .kadry .k{aspect-ratio:3/4;background:var(--tlo2);border-radius:2px;position:relative;overflow:hidden}
+  .kadry .k:nth-child(1){margin-top:34px}
+  .kadry .k::after{content:attr(data-opis);position:absolute;bottom:10px;left:12px;font-family:Verdana,sans-serif;font-size:.62rem;letter-spacing:.1em;color:var(--szary);text-transform:uppercase}
+  .etykieta{font-family:Verdana,Arial,sans-serif;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--akcent);margin-bottom:14px}
+  section{padding:72px 0}
+  .realizacje{background:var(--bialo)}
+  .siatka{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:36px}
+  .projekt{background:var(--tlo2);aspect-ratio:4/3;border-radius:2px;position:relative}
+  .projekt::after{content:attr(data-nazwa);position:absolute;top:14px;left:16px;font-family:Verdana,sans-serif;font-size:.64rem;letter-spacing:.12em;color:var(--szary);text-transform:uppercase}
+  .uslugi{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:36px}
+  .usluga{border:1px solid var(--tlo2);padding:30px 26px;border-radius:2px;background:var(--bialo)}
+  .usluga h3{font-weight:400;font-size:1.05rem;margin-bottom:10px}
+  .usluga p{font-family:Verdana,Arial,sans-serif;font-size:.78rem;color:var(--szary);line-height:1.7}
+  .kontakt{background:var(--tlo2);text-align:center}
+  .kontakt h2{font-weight:400;font-size:clamp(1.6rem,3vw,2.2rem)}
+  .kontakt p{color:var(--szary);margin:14px auto 30px;max-width:32rem}
+  form{display:flex;gap:12px;max-width:520px;margin:0 auto;flex-wrap:wrap}
+  input,button{font-family:Verdana,Arial,sans-serif;font-size:.8rem;padding:13px 18px;border-radius:2px;border:1px solid #d8d2c6}
+  input{flex:1;min-width:200px;background:var(--bialo)}
+  button{background:var(--tekst);color:var(--tlo);border:none;cursor:pointer;letter-spacing:.06em}
+  button:hover{background:var(--akcent)}
+  footer{text-align:center;padding:40px 0;font-family:Verdana,Arial,sans-serif;font-size:.7rem;color:var(--szary);letter-spacing:.08em}
+  .baner-makiety{background:var(--akcent);color:#fff;text-align:center;font-family:Verdana,Arial,sans-serif;font-size:.72rem;padding:9px 16px;letter-spacing:.05em}
+  @media(max-width:820px){
+    .hero{grid-template-columns:1fr;padding:48px 0 60px}
+    .siatka,.uslugi{grid-template-columns:1fr 1fr}
+    nav a{margin-left:16px}
+  }
+  @media(max-width:520px){
+    .siatka,.uslugi{grid-template-columns:1fr}
+    .hero .kadry{max-width:420px}
+  }
+</style>
+</head>
+<body>
+<div class="baner-makiety">Makieta poglądowa — przykładowy układ i styl dla pracowni wnętrz. Zdjęcia i treści: zastępcze.</div>
+
+<div class="szer">
+  <header>
+    <div class="logo">HAN<span style="color:var(--akcent)">.</span>studio</div>
+    <nav>
+      <a href="#realizacje">Realizacje</a>
+      <a href="#uslugi">Usługi</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+  </header>
+</div>
+
+<div class="szer">
+  <section class="hero" id="start">
+    <div>
+      <div class="etykieta">Architektura wnętrz · Kraków</div>
+      <h1>Wnętrza, w których<br>chce się <em>zostać</em>.</h1>
+      <p>Projektujemy przestrzenie spokojne i funkcjonalne — w duchu japandi i minimalizmu. Od koncepcji po nadzór autorski.</p>
+    </div>
+    <div class="kadry">
+      <div class="k" data-opis="Salon · 62 m²"></div>
+      <div class="k" data-opis="Sypialnia · japandi"></div>
+    </div>
+  </section>
+</div>
+
+<section class="realizacje" id="realizacje">
+  <div class="szer">
+    <div class="etykieta">Portfolio</div>
+    <h2 style="font-weight:400;font-size:1.8rem">Wybrane realizacje</h2>
+    <div class="siatka">
+      <div class="projekt" data-nazwa="Mieszkanie · Kraków"></div>
+      <div class="projekt" data-nazwa="Apartament · 85 m²"></div>
+      <div class="projekt" data-nazwa="Biuro · loft"></div>
+    </div>
+  </div>
+</section>
+
+<section id="uslugi">
+  <div class="szer">
+    <div class="etykieta">Zakres współpracy</div>
+    <h2 style="font-weight:400;font-size:1.8rem">Usługi</h2>
+    <div class="uslugi">
+      <div class="usluga"><h3>Projekt kompleksowy</h3><p>Koncepcja, projekt techniczny, lista zakupowa i nadzór autorski — do klucza.</p></div>
+      <div class="usluga"><h3>Projekt pojedynczego wnętrza</h3><p>Pokój, kuchnia lub łazienka — z wizualizacją i doborem materiałów.</p></div>
+      <div class="usluga"><h3>Konsultacja online</h3><p>Godzinna rozmowa i konkretny plan działania dla Twojego wnętrza.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="kontakt" id="kontakt">
+  <div class="szer">
+    <h2>Porozmawiajmy o Twoim wnętrzu</h2>
+    <p>Opowiedz, co chcesz zmienić — odezwę się w ciągu dwóch dni roboczych.</p>
+    <form onsubmit="event.preventDefault();this.querySelector('button').textContent='Wysłane (demo)';">
+      <input type="email" placeholder="Twój e-mail" aria-label="Twój e-mail" required>
+      <button type="submit">Napisz do mnie</button>
+    </form>
+  </div>
+</section>
+
+<footer>© 2026 · makieta demonstracyjna · układ i paleta do dopasowania</footer>
+</body>
+</html>
