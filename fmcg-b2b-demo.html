@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bridge Foods — eksport produktów FMCG na rynki UK i Europy | makieta B2B</title>
+<meta name="description" content="Makieta strony B2B dla firmy rozwijającej eksport polskich producentów spożywczych: wejście na rynek UK i europejski, wyszukiwanie importerów i dystrybutorów. Wersje PL / EN / DE.">
+<style>
+:root{
+  --tekst:#20241f; --mut:#5f665c; --linia:#e4e6df; --tlo:#faf9f5; --plyta:#f1efe7;
+  --akcent:#1e4d38; --akcent-jasny:#2f6b4f; --zloto:#b98a2f; --ok:#0f7a54;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font:16px/1.65 Georgia,"Times New Roman",serif;color:var(--tekst);background:var(--tlo)}
+.wrap{max-width:1100px;margin:0 auto;padding:0 22px}
+a{color:var(--akcent)}
+.bezsel{position:absolute;left:-9999px}
+.bezsel:focus{left:0;top:0;position:fixed;background:var(--akcent);color:#fff;padding:10px 16px;z-index:99}
+
+header{position:sticky;top:0;background:rgba(250,249,245,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--linia);z-index:30}
+.pasek{display:flex;align-items:center;gap:18px;padding:14px 0;flex-wrap:wrap}
+.logo{font:700 21px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:-.02em;color:var(--tekst);text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo span{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:8px;background:var(--akcent);color:#fff;font-size:16px;font-family:Georgia,serif}
+nav{margin-left:auto;display:flex;gap:2px;flex-wrap:wrap}
+nav a{padding:11px 12px;border-radius:8px;text-decoration:none;color:var(--tekst);font:500 14.5px/1 -apple-system,"Segoe UI",Arial,sans-serif;min-height:40px;display:inline-flex;align-items:center}
+nav a:hover,nav a:focus-visible{background:var(--plyta)}
+.jezyki{display:flex;gap:4px}
+.jezyki button{border:1px solid var(--linia);background:#fff;border-radius:7px;padding:9px 12px;min-height:40px;font:600 13px -apple-system,"Segoe UI",Arial,sans-serif;color:var(--mut);cursor:pointer}
+.jezyki button[aria-pressed="true"]{background:var(--akcent);border-color:var(--akcent);color:#fff}
+
+.hero{padding:84px 0 64px;background:linear-gradient(180deg,#f4f2ea 0%,var(--tlo) 100%);border-bottom:1px solid var(--linia)}
+.hero .nadtytul{font:600 13px -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--zloto)}
+.hero h1{font-size:clamp(30px,4.6vw,50px);line-height:1.12;letter-spacing:-.015em;margin-top:14px;max-width:20ch}
+.hero p.lead{color:var(--mut);font-size:18px;margin-top:18px;max-width:56ch}
+.hero .kwestia{margin-top:26px;font-size:15px;color:var(--akcent);border-left:3px solid var(--zloto);padding-left:14px;max-width:60ch}
+.fakty{list-style:none;margin-top:34px;display:flex;gap:44px;flex-wrap:wrap}
+.fakty b{display:block;font:700 30px/1.1 Georgia,serif;color:var(--akcent)}
+.fakty li{font:14.5px -apple-system,"Segoe UI",Arial,sans-serif;color:var(--mut)}
+
+section{padding:60px 0;border-bottom:1px solid var(--linia)}
+h2.sekcja{font-size:clamp(24px,3vw,32px);letter-spacing:-.01em}
+.podtytul{color:var(--mut);margin-top:10px;max-width:62ch;font-size:17px}
+
+.siatka{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:34px}
+.karta{background:#fff;border:1px solid var(--linia);border-radius:14px;padding:26px 24px}
+.karta .numer{font:600 12px -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.12em;color:var(--zloto)}
+.karta h3{font-size:19px;margin:10px 0 8px}
+.karta p{color:var(--mut);font-size:15.5px}
+.karta ul{margin:12px 0 0 18px;color:var(--mut);font-size:14.5px}
+.karta li{margin:5px 0}
+
+.kroki{list-style:none;margin-top:34px;counter-reset:krok}
+.kroki li{counter-increment:krok;display:grid;grid-template-columns:56px 1fr;gap:18px;padding:22px 0;border-top:1px solid var(--linia)}
+.kroki li::before{content:counter(krok,decimal-leading-zero);font:700 26px Georgia,serif;color:var(--zloto);grid-row:span 2}
+.kroki h3{font-size:18px}
+.kroki p{color:var(--mut);margin-top:6px;max-width:70ch}
+
+.onas{display:grid;grid-template-columns:1.1fr .9fr;gap:44px;align-items:start;margin-top:8px}
+.onas .tekst p{color:var(--mut);margin-top:14px;font-size:16.5px}
+.cytat{background:var(--akcent);color:#fff;border-radius:16px;padding:32px 30px}
+.cytat blockquote{font-size:19px;line-height:1.5;font-style:italic}
+.cytat footer{margin-top:16px;font:14px -apple-system,"Segoe UI",Arial,sans-serif;opacity:.85}
+.zaufane{list-style:none;margin-top:30px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.zaufane li{border:1px solid var(--linia);border-radius:10px;padding:14px 16px;font:600 13.5px -apple-system,"Segoe UI",Arial,sans-serif;color:var(--mut);background:#fff}
+
+form.kontakt{margin-top:34px;background:#fff;border:1px solid var(--linia);border-radius:16px;padding:30px}
+.dwa{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+form label{display:block;font:600 14px -apple-system,"Segoe UI",Arial,sans-serif;margin:14px 0 6px}
+form input,form textarea,form select{width:100%;padding:13px 12px;min-height:47px;border:1px solid var(--linia);border-radius:9px;font:15.5px inherit;background:#fff;color:var(--tekst)}
+form textarea{min-height:120px;resize:vertical}
+form input:focus,form textarea:focus,form select:focus{outline:2px solid var(--akcent-jasny);outline-offset:1px}
+.btn{display:inline-block;padding:14px 26px;border-radius:10px;border:0;cursor:pointer;text-decoration:none;font:600 16px -apple-system,"Segoe UI",Arial,sans-serif}
+.btn-glowny{background:var(--akcent);color:#fff;margin-top:20px}
+.btn-glowny:hover{background:var(--akcent-jasny)}
+.info-po{display:none;margin-top:16px;padding:14px 16px;border-radius:10px;background:#e8f4ec;color:var(--ok);font:15px -apple-system,"Segoe UI",Arial,sans-serif}
+.zgoda{font:13.5px -apple-system,"Segoe UI",Arial,sans-serif;color:var(--mut);margin-top:12px;display:flex;gap:9px;align-items:flex-start}
+.zgoda input{width:18px;height:18px;min-height:0;margin-top:3px;accent-color:var(--akcent)}
+
+footer.stopka{padding:36px 0;font:14px -apple-system,"Segoe UI",Arial,sans-serif;color:var(--mut)}
+.stopka .wiersz{display:flex;gap:20px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+
+.ciastko{position:fixed;bottom:16px;left:16px;right:16px;max-width:520px;background:#fff;border:1px solid var(--linia);border-radius:14px;box-shadow:0 8px 30px rgba(32,36,31,.12);padding:18px 20px;z-index:40;font:14.5px -apple-system,"Segoe UI",Arial,sans-serif;color:var(--mut)}
+.ciastko p{margin-bottom:12px}
+.ciastko button{margin-right:8px}
+.btn-maly{padding:9px 16px;font-size:14px}
+
+.notka-demo{background:var(--plyta);border-bottom:1px solid var(--linia);font:13px -apple-system,"Segoe UI",Arial,sans-serif;color:var(--mut);text-align:center;padding:7px 12px}
+
+@media(max-width:860px){
+  .onas{grid-template-columns:1fr}
+  .dwa{grid-template-columns:1fr}
+  .kroki li{grid-template-columns:44px 1fr}
+  .fakty{gap:26px}
+  .hero{padding:56px 0 44px}
+}
+</style>
+</head>
+<body>
+<a class="bezsel" href="#glowna">Przejdź do treści</a>
+<div class="notka-demo">Makieta poglądowa wykonana na potrzeby wyceny — „Bridge Foods” to przykładowa marka. Zmiana języka przełącza całą treść strony.</div>
+
+<header>
+  <div class="wrap pasek">
+    <a class="logo" href="#glowna"><span>B</span>Bridge&nbsp;Foods</a>
+    <nav aria-label="Menu główne">
+      <a href="#glowna" data-t="nav-home">Strona główna</a>
+      <a href="#uslugi" data-t="nav-services">Usługi</a>
+      <a href="#jak" data-t="nav-how">Jak działamy</a>
+      <a href="#onas" data-t="nav-about">O nas</a>
+      <a href="#kontakt" data-t="nav-contact">Kontakt</a>
+    </nav>
+    <div class="jezyki" role="group" aria-label="Wybór języku">
+      <button type="button" data-lang="pl" aria-pressed="true">PL</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      <button type="button" data-lang="de" aria-pressed="false">DE</button>
+    </div>
+  </div>
+</header>
+
+<main id="glowna">
+  <section class="hero" id="glowna-hero" style="border-top:0">
+    <div class="wrap">
+      <p class="nadtytul" data-t="hero-kicker">Eksport i sprzedaż zagraniczna · FMCG</p>
+      <h1 data-t="hero-title">Wprowadzamy polskich producentów spożywczych na rynki Europy</h1>
+      <p class="lead" data-t="hero-lead">Znajdujemy importerów i dystrybutorów, przygotowujemy oferty handlowe i prowadzimy rozmowy aż do pierwszej dostawy. Główny kierunek: Wielka Brytania.</p>
+      <p class="kwestia" data-t="hero-q">„Proszę o 20 minut rozmowy — pokażę Panu, które z Państwa produktów mają realne szanse na półkach brytyjskich sieciówek.”</p>
+      <ul class="fakty">
+        <li><b>60+</b><span data-t="fact-1">producerów w portfolio</span></li>
+        <li><b>14</b><span data-t="fact-2">rynku europejskich</span></li>
+        <li><b>2016</b><span data-t="fact-3">na rynku od</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="uslugi">
+    <div class="wrap">
+      <h2 class="sekcja" data-t="srv-title">Usługi</h2>
+      <p class="podtytul" data-t="srv-lead">Od decyzji o ekspansji do powtarzalnych dostaw — bierzemy na siebie część handlową, żeby zespół produkcyjny mógł pracować u siebie.</p>
+      <div class="siatka">
+        <article class="karta">
+          <p class="numer">01</p>
+          <h3 data-t="srv1-h">Wejście na rynek UK</h3>
+          <p data-t="srv1-p">Analiza szans produktu, wymagania prawne i etykiety, kanały dystrybucji dopasowane do kategorii.</p>
+        </article>
+        <article class="karta">
+          <p class="numer">02</p>
+          <h3 data-t="srv2-h">Wyszukiwanie importerów</h3>
+          <p data-t="srv2-p">Baza dystrybutorów i sieci detalowych, wstępna kwalifikacja i układanie spotkań handlowych.</p>
+        </article>
+        <article class="karta">
+          <p class="numer">03</p>
+          <h3 data-t="srv3-h">Oferty i dokumenty</h3>
+          <p data-t="srv3-p">Cenniki eksportowe, karty produktu po angielsku, certyfikaty i specyfikacje gotowe do wysyłki.</p>
+        </article>
+        <article class="karta">
+          <p class="numer">04</p>
+          <h3 data-t="srv4-h">Rozwój sprzedaży</h3>
+          <p data-t="srv4-p">Opieka nad importerem po pierwszej dostawie: promocje, plany rocznej ekspozycji, raporty sprzedaży.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="jak">
+    <div class="wrap">
+      <h2 class="sekcja" data-t="how-title">Jak działamy</h2>
+      <p class="podtytul" data-t="how-lead">Cztery etapy, po każdym z nich Pan wie, co dalej i ile to kosztuje.</p>
+      <ol class="kroki">
+        <li>
+          <div><h3 data-t="how1-h">Analiza produktu i rynku</h3>
+          <p data-t="how1-p">Przegląd portfolio, konkurencja na docelowym rynku, realny wolumen i cena wejścia. Efekt: raport z rekomendacją, które produkty prowadzimy jako pierwsze.</p></div>
+        </li>
+        <li>
+          <div><h3 data-t="how2-h">Przygotowanie oferty</h3>
+          <p data-t="how2-p">Materiały handlowe w języku rynku docelowego, cennik eksportowy, komplet dokumentów, których wymaga importer.</p></div>
+        </li>
+        <li>
+          <div><h3 data-t="how3-h">Kontakt z importerami</h3>
+          <p data-t="how3-p">Kwalifikowana lista dystrybutorów, pierwszy kontakt w Państwa imieniu, negocjacje warunków do podpisanej umowy.</p></div>
+        </li>
+        <li>
+          <div><h3 data-t="how4-h">Pierwsza dostawa i dalej</h3>
+          <p data-t="how4-p">Współorganizacja logistyki i płatności, potem stała opieka nad relacją, żeby dostawy się powtarzały.</p></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="onas">
+    <div class="wrap">
+      <h2 class="sekcja" data-t="about-title">O nas</h2>
+      <div class="onas" style="margin-top:26px">
+        <div class="tekst">
+          <p data-t="about-p1">Zespół byłej kadry handlowej z branży spożywczej: łącznie 30 lat doświadczenia w eksporcie do Wielkiej Brytanii, Niemiec i Skandynawii. Znamy od podszewki procesy zakupowe sieci i wymogi importerów — bo sami w nich pracowali.</p>
+          <p data-t="about-p2">Pracujemy w modelu partnerskim: nie pobieramy opłat wstępnych za „raporty strategiczne”. Zarabiamy, gdy Państwo zaczynają sprzedawać.</p>
+          <ul class="zaufane">
+            <li data-t="about-c1">Certyfikat BRC</li>
+            <li data-t="about-c2">Członkostwo PTW</li>
+            <li data-t="about-c3">Zielona biała lista</li>
+            <li data-t="about-c4">Audyt 2025</li>
+          </ul>
+        </div>
+        <aside class="cytat">
+          <blockquote data-t="about-quote">„W ciągu ośmiu miesięcy mieliśmy trzy umowy dystrybucyjne na Wyspach. Bez Bridge Foods proces zająłby nam dwa lata i trzy razy więcej pieniędzy.”</blockquote>
+          <footer data-t="about-quote-who">— Współwłaściciel producenta przekąsek, Śląsk</footer>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontakt">
+    <div class="wrap">
+      <h2 class="sekcja" data-t="ct-title">Kontakt</h2>
+      <p class="podtytul" data-t="ct-lead">Napisz, jakie produkty chce Pan wypromować za granicą — odezwiemy się w ciągu dwóch dni roboczych.</p>
+      <form class="kontakt" id="formularz" novalidate>
+        <div class="dwa">
+          <div>
+            <label for="f-nazwa" data-t="ct-name">Nazwa firmy</label>
+            <input id="f-nazwa" name="nazwa" type="text" autocomplete="organization" required>
+          </div>
+          <div>
+            <label for="f-email" data-t="ct-email">E-mail</label>
+            <input id="f-email" name="email" type="email" autocomplete="email" required>
+          </div>
+        </div>
+        <label for="f-kierunek" data-t="ct-market">Rynek docelowy</label>
+        <select id="f-kierunek" name="kierunek">
+          <option data-t="ct-m1">Wielka Brytania</option>
+          <option data-t="ct-m2">Niemcy / DACH</option>
+          <option data-t="ct-m3">Skandynawia</option>
+          <option data-t="ct-m4">Inny rynek europejski</option>
+        </select>
+        <label for="f-wiad" data-t="ct-msg">Wiadomość</label>
+        <textarea id="f-wiad" name="wiadomosc" required></textarea>
+        <p class="zgoda"><input type="checkbox" id="f-zgoda" required> <label for="f-zgoda" style="margin:0;font-weight:400" data-t="ct-consent">Zgadzam się na przetwarzanie danych w celu odpowiedzi na zapytanie.</label></p>
+        <button class="btn btn-glowny" type="submit" data-t="ct-send">Wyślij zapytanie</button>
+        <p class="info-po" id="potwierdzenie" data-t="ct-ok">Dziękujemy — zapytanie wysłane. Odpowiemy w ciągu dwóch dni roboczych.</p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="stopka">
+  <div class="wrap wiersz">
+    <span>© 2026 Bridge Foods Sp. z o.o. — makieta</span>
+    <span><a href="#glowna" data-t="foot-top">Powrót na górę</a> · <a href="#kontakt" data-t="foot-contact">Kontakt</a></span>
+  </div>
+</footer>
+
+<div class="ciastko" id="ciastko" role="dialog" aria-label="Zgoda na cookies">
+  <p data-t="cookie-text">Używamy plików cookies do statystyk odwiedzin. Możesz zaakceptować lub korzystać tylko z niezbędnych.</p>
+  <button class="btn btn-glowny btn-maly" id="ciastko-tak" data-t="cookie-yes">Akceptuję</button>
+  <button class="btn btn-maly" id="ciastko-nie" style="background:var(--plyta);color:var(--tekst)" data-t="cookie-no">Tylko niezbędne</button>
+</div>
+
+<script>
+// Tłumaczenia — cała treść strony w trzech językach, przełączana bez przeładowania.
+var TL = {
+  pl:{},
+  en:{
+    "nav-home":"Home","nav-services":"Services","nav-how":"How we work","nav-about":"About us","nav-contact":"Contact",
+    "hero-kicker":"Export & international sales · FMCG",
+    "hero-title":"We take Polish food producers to European markets",
+    "hero-lead":"We find importers and distributors, prepare commercial offers and lead negotiations through to the first delivery. Main market: the United Kingdom.",
+    "hero-q":"“Give me twenty minutes — I will show you which of your products have a real chance on UK retail shelves.”",
+    "fact-1":"producers in portfolio","fact-2":"European markets","fact-3":"on the market since",
+    "srv-title":"Services",
+    "srv-lead":"From the expansion decision to repeat deliveries — we take over the commercial side so your production team can focus at home.",
+    "srv1-h":"UK market entry","srv1-p":"Product opportunity analysis, labelling and legal requirements, distribution channels matched to the category.",
+    "srv2-h":"Importer sourcing","srv2-p":"Database of distributors and retail chains, pre-qualification and arranged trade meetings.",
+    "srv3-h":"Offers & documents","srv3-p":"Export price lists, product cards in English, certificates and specifications ready to send.",
+    "srv4-h":"Sales development","srv4-p":"Post-launch importer care: promotions, annual shelf plans, sales reports.",
+    "how-title":"How we work",
+    "how-lead":"Four stages — after each one you know what comes next and what it costs.",
+    "how1-h":"Product & market analysis","how1-p":"Portfolio review, competition in the target market, realistic volume and entry price. Deliverable: a report recommending which products to lead with.",
+    "how2-h":"Offer preparation","how2-p":"Commercial materials in the target market language, export price list, the full document set importers ask for.",
+    "how3-h":"Approaching importers","how3-p":"A qualified list of distributors, first contact on your behalf, negotiating terms up to a signed contract.",
+    "how4-h":"First delivery and beyond","how4-p":"Logistics and payment coordination, then ongoing relationship care so deliveries keep repeating.",
+    "about-title":"About us",
+    "about-p1":"A team of former commercial staff from the food industry: thirty years of combined experience exporting to the UK, Germany and Scandinavia. We know retailer buying processes inside out — because we used to work in them.",
+    "about-p2":"We work as partners: no upfront fees for “strategic reports”. We earn when you start selling.",
+    "about-c1":"BRC certified","about-c2":"PTW membership","about-c3":"Clean VAT registry","about-c4":"Audited 2025",
+    "about-quote":"“Within eight months we had three distribution contracts in the UK. Without Bridge Foods it would have taken two years and three times the money.”",
+    "about-quote-who":"— Co-owner of a snack manufacturer, Silesia",
+    "ct-title":"Contact",
+    "ct-lead":"Tell us which products you want to take abroad — we reply within two working days.",
+    "ct-name":"Company name","ct-email":"E-mail","ct-market":"Target market",
+    "ct-m1":"United Kingdom","ct-m2":"Germany / DACH","ct-m3":"Scandinavia","ct-m4":"Other European market",
+    "ct-msg":"Message","ct-consent":"I consent to my data being processed to answer this enquiry.",
+    "ct-send":"Send enquiry","ct-ok":"Thank you — your enquiry has been sent. We will reply within two working days.",
+    "foot-top":"Back to top","foot-contact":"Contact",
+    "cookie-text":"We use cookies for visit statistics. You can accept or keep only the essential ones.",
+    "cookie-yes":"Accept","cookie-no":"Essential only"
+  },
+  de:{
+    "nav-home":"Startseite","nav-services":"Leistungen","nav-how":"Vorgehen","nav-about":"Über uns","nav-contact":"Kontakt",
+    "hero-kicker":"Export & Auslandsvertrieb · FMCG",
+    "hero-title":"Wir bringen polnische Lebensmittelhersteller auf die europäischen Märkte",
+    "hero-lead":"Wir finden Importeure und Distributoren, bereiten Handelsangebote vor und führen die Verhandlungen bis zur ersten Lieferung. Hauptmarkt: das Vereinigte Königreich.",
+    "hero-q":"„Geben Sie mir zwanzig Minuten — ich zeige Ihnen, welche Ihrer Produkte echte Chancen in den britischen Regalen haben.”",
+    "fact-1":"Hersteller im Portfolio","fact-2":"europäische Märkte","fact-3":"am Markt seit",
+    "srv-title":"Leistungen",
+    "srv-lead":"Von der Expansionsentscheidung bis zu wiederkehrenden Lieferungen — wir übernehmen den Vertrieb, damit Ihr Produktionsteam sich auf das Wesentliche konzentrieren kann.",
+    "srv1-h":"Markteintritt UK","srv1-p":"Analyse der Produktchancen, Kennzeichnung und rechtliche Anforderungen, passend zur Kategorie gewählte Vertriebskanäle.",
+    "srv2-h":"Importeur-Suche","srv2-p":"Datenbank von Distributoren und Handelsketten, Vorauswahl und vereinbarte Geschäftstermine.",
+    "srv3-h":"Angebote & Unterlagen","srv3-p":"Exportpreislisten, Produktkarten auf Englisch, Zertifikate und Spezifikationen versandbereit.",
+    "srv4-h":"Vertriebsentwicklung","srv4-p":"Betreuung des Importeurs nach dem Launch: Aktionen, Jahresplatzierungspläne, Verkaufsberichte.",
+    "how-title":"Vorgehen",
+    "how-lead":"Vier Phasen — nach jeder wissen Sie, was als Nächstes passiert und was es kostet.",
+    "how1-h":"Produkt- & Marktanalyse","how1-p":"Portfolio-Review, Wettbewerb im Zielmarkt, realistisches Volumen und Einstiegspreis. Ergebnis: ein Bericht mit Empfehlung, welche Produkte zuerst geführt werden.",
+    "how2-h":"Angebotsvorbereitung","how2-p":"Handelsunterlagen in der Sprache des Zielmarkts, Exportpreisliste, das vollständige Dokumentenset, das Importeure anfragen.",
+    "how3-h":"Ansprache der Importeure","how3-p":"Qualifizierte Distributorenliste, erster Kontakt in Ihrem Namen, Verhandlung der Konditionen bis zum unterschriebenen Vertrag.",
+    "how4-h":"Erste Lieferung und danach","how4-p":"Koordination von Logistik und Zahlungen, danach laufende Betreuung der Geschäftsbeziehung, damit sich Lieferungen wiederholen.",
+    "about-title":"Über uns",
+    "about-p1":"Ein Team ehemaliger Vertriebsprofis aus der Lebensmittelbranche: dreißig Jahre gemeinsame Erfahrung im Export nach Großbritannien, Deutschland und Skandinavien. Wir kennen die Einkaufsprozesse des Handels genau — weil wir selbst darin gearbeitet haben.",
+    "about-p2":"Wir arbeiten partnerschaftlich: keine Vorauszahlungen für „strategische Berichte”. Wir verdienen, wenn Sie verkaufen.",
+    "about-c1":"BRC-zertifiziert","about-c2":"PTW-Mitglied","about-c3":"Saubere USt-Liste","about-c4":"Geprüft 2025",
+    "about-quote":"„Innerhalb von acht Monaten hatten wir drei Distributionsverträge in Großbritannien. Ohne Bridge Foods hätte es zwei Jahre und dreimal so viel Geld gekostet.”",
+    "about-quote-who":"— Miteigentümer eines Snackherstellers, Schlesien",
+    "ct-title":"Kontakt",
+    "ct-lead":"Schreiben Sie uns, welche Produkte Sie ins Ausland bringen möchten — wir antworten innerhalb von zwei Werktagen.",
+    "ct-name":"Firmenname","ct-email":"E-Mail","ct-market":"Zielmarkt",
+    "ct-m1":"Vereinigtes Königreich","ct-m2":"Deutschland / DACH","ct-m3":"Skandinavien","ct-m4":"Anderer europäischer Markt",
+    "ct-msg":"Nachricht","ct-consent":"Ich stimme der Verarbeitung meiner Daten zur Beantwortung der Anfrage zu.",
+    "ct-send":"Anfrage senden","ct-ok":"Vielen Dank — Ihre Anfrage wurde gesendet. Wir antworten innerhalb von zwei Werktagen.",
+    "foot-top":"Nach oben","foot-contact":"Kontakt",
+    "cookie-text":"Wir verwenden Cookies für Besuchsstatistiken. Sie können alle akzeptieren oder nur die notwendigen behalten.",
+    "cookie-yes":"Akzeptieren","cookie-no":"Nur notwendige"
+  }
+};
+
+// Zapamiętujemy oryginalne teksty PL, żeby wracać bez przeładowania.
+document.querySelectorAll("[data-t]").forEach(function(el){
+  TL.pl[el.getAttribute("data-t")] = el.textContent;
+});
+
+document.querySelectorAll(".jezyki button").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    var lang = btn.getAttribute("data-lang"), slownik = TL[lang];
+    document.querySelectorAll(".jezyki button").forEach(function(b){
+      b.setAttribute("aria-pressed", String(b === btn));
+    });
+    document.querySelectorAll("[data-t]").forEach(function(el){
+      var klucz = el.getAttribute("data-t");
+      if (slownik[klucz]) el.textContent = slownik[klucz];
+    });
+    document.documentElement.lang = lang;
+  });
+});
+
+// Formularz: walidacja + potwierdzenie (w docelowej wersji wysyłka przez serwer).
+document.getElementById("formularz").addEventListener("submit", function(e){
+  e.preventDefault();
+  var bledy = [];
+  ["f-nazwa","f-email","f-wiad","f-zgoda"].forEach(function(id){
+    var el = document.getElementById(id);
+    var zle = el.type === "checkbox" ? !el.checked : !el.value.trim() ||
+              (el.type === "email" && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value));
+    el.style.borderColor = zle ? "#c0392b" : "";
+    if (zle) bledy.push(id);
+  });
+  if (bledy.length === 0) {
+    this.querySelector("#potwierdzenie").style.display = "block";
+    this.querySelectorAll("input,textarea").forEach(function(el){ if(el.type!=="checkbox") el.value=""; });
+    document.getElementById("f-zgoda").checked = false;
+  }
+});
+
+// Baner cookies — w wersji produkcyjnej zapis wyboru na rok.
+function zamknijCiastko(){ document.getElementById("ciastko").style.display = "none"; }
+document.getElementById("ciastko-tak").addEventListener("click", zamknijCiastko);
+document.getElementById("ciastko-nie").addEventListener("click", zamknijCiastko);
+</script>
+</body>
+</html>
