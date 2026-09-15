@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adaptacja szablonu Shopify Stretch — demo (zlecenie 144426)</title>
+<meta name="description" content="Makieta wdrożenia sklepu na gotowym szablonie Shopify: 3 typy kart produktu, sekcje układane z gotowych bloków, bez projektowania od zera.">
+<style>
+  :root{
+    --ink:#1c1917; --paper:#faf9f7; --line:#e7e5e4; --mut:#78716c;
+    --accent:#0f766e; --accent-soft:#ccfbf1;
+    --serif:'Georgia',serif; --sans:system-ui,-apple-system,'Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.5}
+  header.top{border-bottom:1px solid var(--line);background:#fff}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  .topbar{display:flex;justify-content:space-between;align-items:center;padding:14px 0}
+  .brand{font-family:var(--serif);font-size:20px;letter-spacing:.08em;text-transform:uppercase}
+  .topnav{display:flex;gap:18px;font-size:14px;color:var(--mut)}
+  .hero{padding:56px 0 40px;text-align:center}
+  .hero h1{font-family:var(--serif);font-weight:400;font-size:34px;margin:0 0 10px}
+  .hero p{color:var(--mut);margin:0}
+  .note{background:var(--accent-soft);border-left:4px solid var(--accent);padding:12px 16px;margin:28px auto;max-width:720px;font-size:14px}
+  section{padding:28px 0}
+  h2{font-family:var(--serif);font-weight:400;font-size:24px;margin:0 0 6px}
+  .sub{color:var(--mut);font-size:14px;margin:0 0 18px}
+  /* przełącznik typów produktu */
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px}
+  .tabs button{font:inherit;font-size:14px;padding:8px 16px;border:1px solid var(--line);background:#fff;border-radius:999px;cursor:pointer}
+  .tabs button[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+  /* karta produktu — budowana z "sekcji szablonu" */
+  .pdp{border:1px solid var(--line);border-radius:10px;background:#fff;overflow:hidden}
+  .pdp-grid{display:grid;grid-template-columns:1fr 1fr}
+  @media(max-width:640px){.pdp-grid{grid-template-columns:1fr}}
+  .media{background:linear-gradient(160deg,#f5f5f4,#e7e5e4);min-height:260px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;color:var(--mut);font-size:13px}
+  .media .big{font-size:44px}
+  .buy{padding:24px}
+  .buy .crumb{font-size:12px;color:var(--mut);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+  .buy h3{font-family:var(--serif);font-weight:400;font-size:22px;margin:0 0 8px}
+  .price{font-size:20px;margin:0 0 14px}
+  .price s{color:var(--mut);font-size:15px;margin-left:8px}
+  .omnibus{font-size:12px;color:var(--mut);margin:-8px 0 14px}
+  .variant{display:flex;gap:8px;margin:0 0 14px}
+  .variant span{width:34px;height:34px;border:1px solid var(--line);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px}
+  .btn{display:inline-block;background:var(--ink);color:#fff;padding:12px 28px;border:0;border-radius:6px;font:inherit;cursor:pointer}
+  .btn.sec{background:#fff;color:var(--ink);border:1px solid var(--ink)}
+  /* sekcje układane z bloków */
+  .blocks{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:8px}
+  .block{border:1px dashed var(--accent);border-radius:8px;background:#fff;padding:16px;font-size:13px}
+  .block b{display:block;font-size:14px;margin-bottom:4px}
+  .block small{color:var(--mut)}
+  footer{border-top:1px solid var(--line);margin-top:40px;padding:24px 0;color:var(--mut);font-size:13px;text-align:center}
+  /* typ "zestaw": lista elementów */
+  .setlist{list-style:none;padding:0;margin:0 0 14px;font-size:14px}
+  .setlist li{padding:6px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}
+  .setlist li small{color:var(--mut)}
+  /* typ "rozbudowany": zakładki */
+  .ptabs{display:flex;gap:2px;font-size:13px;border-bottom:1px solid var(--line);margin:16px 0 10px}
+  .ptabs button{font:inherit;border:0;background:none;padding:8px 12px;cursor:pointer;color:var(--mut)}
+  .ptabs button[aria-selected="true"]{color:var(--ink);border-bottom:2px solid var(--ink)}
+  .ptab-body{font-size:14px;min-height:64px}
+  .badge{display:inline-block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--accent);color:var(--accent);padding:2px 8px;border-radius:4px;margin-bottom:8px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap topbar">
+    <div class="brand">Strefa Ruchu</div>
+    <nav class="topnav" aria-label="Kategorie szablonu">
+      <span>Sklep</span><span>Wydarzenia</span><span>Trenerzy</span><span>O nas</span><span>Kontakt</span>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <h1>Adaptacja szablonu Shopify Stretch — makieta</h1>
+    <p>Ułożenie treści, produktów i sekcji na gotowym szablonie. Bez projektowania od zera.</p>
+  </div>
+  <p class="note">To demonstracja na potrzeby zlecenia 144426: pokazuje trzy typy kart produktu (zestaw / standardowy / rozbudowany) zbudowane z sekcji szablonu Stretch — dokładnie ten rodzaj pracy, który wg ogłoszenia stanowi ~90% zadania. Struktura i nawigacja odpowiadają układowi z Miro (5 kategorii, podstrony Wydarzenia i Trenerzy na wspólnym schemacie).</p>
+
+  <section>
+    <h2>Karta produktu — 3 typy z jednego szablonu</h2>
+    <p class="sub">Przełącz typ, żeby zobaczyć, jak te same sekcje szablonu układają różne prezentacje. Każdy typ to osobny template produktu w Shopify — treść wypełnia się polami, bez kodu.</p>
+    <div class="tabs" role="tablist" aria-label="Typ prezentacji produktu">
+      <button role="tab" id="t-zestaw" aria-selected="true" aria-controls="pdp">Zestaw / set</button>
+      <button role="tab" id="t-standard" aria-selected="false" aria-controls="pdp">Produkt standardowy</button>
+      <button role="tab" id="t-rozbudowany" aria-selected="false" aria-controls="pdp">Produkt rozbudowany</button>
+    </div>
+    <div class="pdp" id="pdp" role="tabpanel">
+      <div class="pdp-grid">
+        <div class="media"><div class="big" id="m-icon">🎒</div><div id="m-cap">Galeria produktu (sekcja szablonu)</div></div>
+        <div class="buy">
+          <div class="crumb" id="p-crumb">Kategoria</div>
+          <span class="badge" id="p-badge" hidden></span>
+          <h3 id="p-name">—</h3>
+          <p class="price" id="p-price">—</p>
+          <p class="omnibus" id="p-omni" hidden></p>
+          <ul class="setlist" id="p-set" hidden></ul>
+          <div class="variant" id="p-variants"></div>
+          <button class="btn">Dodaj do koszyka</button>
+          <button class="btn sec" style="margin-left:8px">Kup teraz</button>
+          <div id="p-extra"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Podstrona układana z gotowych sekcji</h2>
+    <p class="sub">Przykład dla „Wydarzenia” i „Trenerzy” — oba na jednym schemacie: baner, lista, sekcja CTA. Same bloki szablonu, inna kolejność i treść.</p>
+    <div class="blocks">
+      <div class="block"><b>Baner z nagłówkiem</b><small>sekcja „Image banner” Stretch</small></div>
+      <div class="block"><b>Lista elementów (siatka)</b><small>sekcja „Featured collection” / „Multicolumn”</small></div>
+      <div class="block"><b>Filtr kategorii</b><small>sekcja „Collection list”</small></div>
+      <div class="block"><b>CTA + stopka</b><small>sekcja „Rich text” + newsletter</small></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Co dostajesz w rozmowie o wdrożeniu</h2>
+    <p class="sub">Wycena jest na godziny adaptacji, nie na „projekt sklepu” — dlatego nie rośnie od rzeczy, których nie ma w szablonie.</p>
+    <div class="blocks">
+      <div class="block"><b>Mapa sekcji z Miro → szablon</b><small>każda podstrona przypisana do sekcji Stretch, zanim ruszy wypełnianie</small></div>
+      <div class="block"><b>3 szablony produktu</b><small>zestaw, standardowy, rozbudowany — pola zamiast swobodnego opisu</small></div>
+      <div class="block"><b>Omnibus i prawo</b><small>najniższa cena z 30 dni na karcie produktu (Shopify nie ma tego natywnie)</small></div>
+      <div class="block"><b>Przekierowania 301</b><small>jeśli sklep zastępuje istniejącą stronę — mapa starych adresów od pierwszego dnia</small></div>
+    </div>
+  </section>
+</div>
+
+<footer>Demo zbudowane jako dowód do zlecenia 144426 na Useme. Makieta statyczna — sekcje i typy produktów odpowiadają możliwościom szablonu Shopify Stretch.</footer>
+
+<script>
+(function(){
+  var T = {
+    zestaw: {
+      crumb:'Zestawy treningowe', icon:'🎒', cap:'Galeria zestawu (4 zdjęcia)',
+      name:'Zestaw startowy: aktywność w domu', price:'289 zł', was:'339 zł',
+      omni:'Najniższa cena z 30 dni: 319 zł',
+      badge:'Zestaw 4 elementów',
+      set:[['Mata treningowa 6 mm','1 szt.'],['Gumy oporowe (3 poziomy)','1 komplet'],['Plan treningowy PDF','24 tygodnie'],['Torba','1 szt.']],
+      variants:['Standard','Rozszerzony'],
+      extra:''
+    },
+    standard: {
+      crumb:'Akcesoria', icon:'🏃', cap:'Galeria produktu',
+      name:'Mata treningowa 6 mm', price:'129 zł', was:'', omni:'',
+      badge:'', set:[],
+      variants:['Czarny','Szary','Bezowy'],
+      extra:''
+    },
+    rozbudowany: {
+      crumb:'Sprzęt', icon:'🏋️', cap:'Galeria + warianty z własnymi zdjęciami',
+      name:'Regulowany stojak do przysiadów', price:'1 890 zł', was:'2 190 zł',
+      omni:'Najniższa cena z 30 dni: 1 990 zł',
+      badge:'Produkt rozbudowany',
+      set:[],
+      variants:['120 cm','150 cm','180 cm'],
+      extra:'ptabs'
+    }
+  };
+  var tabs = { 't-zestaw':'zestaw', 't-standard':'standard', 't-rozbudowany':'rozbudowany' };
+  var P = {
+    'p-crumb':null,'p-name':null,'p-price':null,'p-omni':null,'p-set':null,'p-variants':null,'p-extra':null,'p-badge':null,'m-icon':null,'m-cap':null
+  };
+  for (var id in P) P[id] = document.getElementById(id);
+
+  var ptabsHtml = '<div class="ptabs" role="tablist" aria-label="Szczegóły produktu">'
+    + '<button role="tab" aria-selected="true" data-b="opis">Opis</button>'
+    + '<button role="tab" aria-selected="false" data-b="spec">Specyfikacja</button>'
+    + '<button role="tab" aria-selected="false" data-b="dostawa">Dostawa i montaż</button>'
+    + '</div><div class="ptab-body" id="ptab-body"></div>';
+  var ptabsBody = {
+    opis:'Stojak ze stali ocynkowanej, regulacja wysokości co 5 cm, uchwyty na sztangę z zabezpieczeniem. Składa się do 12 cm głębokości.',
+    spec:'Waga 34 kg · Obciążenie maks. 300 kg · Wysokość 120–180 cm · Gwarancja 5 lat na konstrukcję.',
+    dostawa:'Kurier paletowy 2–4 dni robocze. Montaż: instrukcja + wideo 6 min; na życzeniu montaż u klienta (dopłata).'
+  };
+
+  function show(key){
+    var d = T[key];
+    P['p-crumb'].textContent = d.crumb;
+    P['p-name'].textContent = d.name;
+    P['p-price'].innerHTML = d.price + (d.was ? '<s>'+d.was+'</s>' : '');
+    P['m-icon'].textContent = d.icon;
+    P['m-cap'].textContent = d.cap;
+    // omnibus
+    P['p-omni'].hidden = !d.omni; P['p-omni'].textContent = d.omni || '';
+    // badge
+    P['p-badge'].hidden = !d.badge; P['p-badge'].textContent = d.badge || '';
+    // zestaw
+    P['p-set'].hidden = d.set.length === 0;
+    P['p-set'].innerHTML = d.set.map(function(r){ return '<li><span>'+r[0]+'</span><small>'+r[1]+'</small></li>'; }).join('');
+    // warianty
+    P['p-variants'].innerHTML = d.variants.map(function(v,i){
+      return '<span'+(i===0?' style="border-color:var(--ink);font-weight:600"':'')+'>'+v+'</span>';
+    }).join('');
+    // zakładki dla rozbudowanego
+    if (d.extra === 'ptabs') {
+      P['p-extra'].innerHTML = ptabsHtml;
+      var body = document.getElementById('ptab-body');
+      body.textContent = ptabsBody.opis;
+      P['p-extra'].querySelectorAll('.ptabs button').forEach(function(b){
+        b.addEventListener('click', function(){
+          P['p-extra'].querySelectorAll('.ptabs button').forEach(function(x){ x.setAttribute('aria-selected', x===b); });
+          body.textContent = ptabsBody[b.dataset.b];
+        });
+      });
+    } else { P['p-extra'].innerHTML = ''; }
+  }
+
+  Object.keys(tabs).forEach(function(id){
+    document.getElementById(id).addEventListener('click', function(){
+      for (var t in tabs) document.getElementById(t).setAttribute('aria-selected', t===id);
+      show(tabs[id]);
+    });
+  });
+  show('zestaw');
+})();
+</script>
+</body>
+</html>
