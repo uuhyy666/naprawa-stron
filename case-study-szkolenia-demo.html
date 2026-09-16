@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case study: strona firmy szkoleniowej — nowa UX bez utraty SEO | makieta</title>
+<meta name="description" content="Makieta zlecenia dla branży szkoleniowej: nowa struktura i UX strony WordPress oraz plan migracji adresów URL z przekierowaniami 301, który nie gubi obecnego ruchu z Google.">
+<meta name="robots" content="noindex">
+<style>
+:root{
+  --tekst:#141a24; --mut:#5b6675; --linia:#e3e7ee; --tlo:#fbfbfd; --plyta:#f2f5fa;
+  --granat:#123a6b; --granat-jasny:#1d5591; --akcent:#c2540c; --ok:#126b4a; --ostrz:#8a5300;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font:16px/1.65 -apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--tekst);background:var(--tlo)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+a{color:var(--granat-jasny)}
+h1,h2,h3{line-height:1.22;letter-spacing:-.01em}
+h1{font-size:clamp(26px,4.2vw,40px)}
+h2{font-size:clamp(21px,2.8vw,28px);margin-bottom:10px}
+h3{font-size:17px;margin-bottom:6px}
+p{margin-bottom:12px}
+.bezsel{position:absolute;left:-9999px}
+.bezsel:focus{left:0;top:0;position:fixed;background:var(--granat);color:#fff;padding:10px 16px;z-index:99;position:fixed}
+
+header{position:sticky;top:0;background:rgba(251,251,253,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--linia);z-index:30}
+.pasek{display:flex;align-items:center;gap:16px;padding:13px 0;flex-wrap:wrap}
+.logo{font-weight:700;font-size:19px;color:var(--tekst);text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo i{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:9px;background:var(--granat);color:#fff;font-style:normal;font-size:15px;font-weight:700}
+nav{display:flex;gap:16px;flex-wrap:wrap;margin-left:auto;font-size:14px}
+nav a{text-decoration:none;color:var(--mut)}
+nav a:hover{color:var(--granat)}
+.etykieta{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--akcent);background:#fdf1e7;border:1px solid #f6dcc6;border-radius:99px;padding:4px 11px;margin-bottom:14px}
+
+.hero{padding:46px 0 34px;border-bottom:1px solid var(--linia)}
+.hero p.lead{font-size:18px;color:var(--mut);max-width:760px}
+.fakty{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-top:26px}
+.fakt{background:#fff;border:1px solid var(--linia);border-radius:12px;padding:15px}
+.fakt b{display:block;font-size:24px;color:var(--granat);letter-spacing:-.02em}
+.fakt span{font-size:13.5px;color:var(--mut)}
+
+section{padding:42px 0;border-bottom:1px solid var(--linia)}
+.uwaga{background:var(--plyta);border:1px solid var(--linia);border-left:4px solid var(--akcent);border-radius:10px;padding:14px 16px;font-size:14.5px;color:var(--mut);margin-bottom:22px}
+.uwaga b{color:var(--tekst)}
+
+.dwie{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:760px){.dwie{grid-template-columns:1fr}}
+.karta{background:#fff;border:1px solid var(--linia);border-radius:12px;padding:18px}
+.karta.przed{border-top:3px solid #b3261e}
+.karta.po{border-top:3px solid var(--ok)}
+.karta h3{display:flex;align-items:center;gap:8px}
+ul.lista{list-style:none;margin-top:8px}
+ul.lista li{padding-left:24px;position:relative;margin-bottom:7px;font-size:14.6px;color:#333c48}
+ul.lista li::before{content:"✕";position:absolute;left:0;color:#b3261e;font-weight:700;font-size:13px}
+ul.lista.po li::before{content:"✓";color:var(--ok)}
+
+table{width:100%;border-collapse:collapse;font-size:14px;background:#fff}
+caption{text-align:left;font-size:13.5px;color:var(--mut);padding-bottom:8px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--linia);vertical-align:top}
+th{background:var(--plyta);font-size:12.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
+code{background:var(--plyta);border:1px solid var(--linia);border-radius:5px;padding:1px 5px;font:13px/1.5 ui-monospace,Consolas,monospace}
+.tabela-przewij{overflow-x:auto;border:1px solid var(--linia);border-radius:12px}
+
+.filtry{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.filtry button{font:inherit;font-size:14px;padding:8px 14px;border-radius:99px;border:1px solid var(--linia);background:#fff;color:var(--mut);cursor:pointer}
+.filtry button[aria-pressed="true"]{background:var(--granat);border-color:var(--granat);color:#fff}
+.szkolenia{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.szkol{border:1px solid var(--linia);border-radius:12px;background:#fff;padding:16px;display:flex;flex-direction:column;gap:8px}
+.szkol .typ{font-size:12px;font-weight:700;color:var(--granat-jasny);text-transform:uppercase;letter-spacing:.05em}
+.szkol h4{font-size:16px;margin:0}
+.szkol p{font-size:14px;color:var(--mut);margin:0;flex:1}
+.szkol .dol{display:flex;justify-content:space-between;align-items:center;font-size:14px;border-top:1px solid var(--linia);padding-top:10px}
+.szkol .dol b{color:var(--granat)}
+.szkol a{font-size:13.5px;text-decoration:none;font-weight:600}
+.pusty{display:none;padding:18px;border:1px dashed var(--linia);border-radius:12px;color:var(--mut);font-size:14.5px}
+
+.check{list-style:none;counter-reset:krok}
+.check li{counter-increment:krok;position:relative;padding-left:44px;margin-bottom:14px}
+.check li::before{content:counter(krok);position:absolute;left:0;top:1px;width:28px;height:28px;border-radius:8px;background:var(--plyta);border:1px solid var(--linia);display:grid;place-items:center;font-size:13.5px;font-weight:700;color:var(--granat)}
+.check b{display:block}
+.check span{font-size:14.4px;color:var(--mut)}
+
+.stopka{padding:30px 0 50px;font-size:14px;color:var(--mut)}
+.stopka .box{background:#fff;border:1px solid var(--linia);border-radius:12px;padding:18px}
+.pill{display:inline-block;font-size:12.5px;border:1px solid var(--linia);border-radius:99px;padding:3px 10px;color:var(--mut);margin:0 6px 6px 0;background:var(--plyta)}
+</style>
+</head>
+<body>
+<a class="bezsel" href="#tresc">Przejdź do treści</a>
+
+<header>
+  <div class="wrap pasek">
+    <a class="logo" href="#tresc"><i>S</i> Akademia Wiedzy Praktycznej — makieta</a>
+    <nav>
+      <a href="#problem">Punkt wyjścia</a>
+      <a href="#ux">Nowa struktura</a>
+      <a href="#migracja">Migracja SEO</a>
+      <a href="#katalog">Katalog szkoleń</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+  </div>
+</header>
+
+<main id="tresc">
+
+<section class="hero">
+  <div class="wrap">
+    <span class="etykieta">Case study · branża szkoleniowa</span>
+    <h1>Nowa strona firmy szkoleniowej — i migracja, która nie gubi ruchu z Google</h1>
+    <p class="lead">To odpowiedź na Pani prośbę o case study w branży szkoleniowej. Poniżej makieta nowej strony (działający katalog szkoleń z filtrami) oraz gotowy plan przeniesienia obecnych adresów URL na nowe — punkt po punkcie, z przekierowaniami 301.</p>
+    <div class="fakty">
+      <div class="fakt"><b>23 → 12</b><span>poziomów w menu zredukowanych do 12 pozycji</span></div>
+      <div class="fakt"><b>100%</b><span>starych adresów z regułą 301 przed startem</span></div>
+      <div class="fakt"><b>2</b><span>podstrony z koszykiem zostają, bez zmian funkcji</span></div>
+      <div class="fakt"><b>30 dni</b><span>monitoring indeksowania po wdrożeniu</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="problem">
+  <div class="wrap">
+    <div class="uwaga"><b>Jak czytać tę makietę:</b> to wzór przygotowany pod Pani zlecenie, a nie realizacja dla innego klienta. Wszystkie nazwy szkoleń i ceny są przykładowe — na Pani stronie wchodzą tam prawdziwe treści.</div>
+    <h2>Punkt wyjścia: co dziś zjada zapisy</h2>
+    <div class="dwie">
+      <div class="karta przed">
+        <h3>Problemy, które widać w większości stron szkoleniowych</h3>
+        <ul class="lista">
+          <li>Szkolenia wrzucone w jedną kategorię „Oferta" — klient nie wie, którą ścieżkę wybrać.</li>
+          <li>Karta szkolenia bez terminu, ceny i miejsc — trzeba dzwonić, żeby się dowiedzieć.</li>
+          <li>Zapis tylko przez formularz kontaktowy, w którym trzeba opisać, o jakie szkolenie chodzi.</li>
+          <li>Zmiana treści wymaga programisty — terminy i ceny zostają nieaktualne.</li>
+          <li>Koszyk na 2 podstronach, formularz zgłoszeniowy na 1 — łatwo je zgubić przy przebudowie.</li>
+        </ul>
+      </div>
+      <div class="karta po">
+        <h3>Co daje nowa struktura</h3>
+        <ul class="lista po">
+          <li>Podział po tym, jak myśli klient: temat, grupa odbiorców, forma (stacjonarne / online).</li>
+          <li>Karta szkolenia z terminem, ceną i miejscem widocznymi od razu — mniej telefonów z tym samym pytaniem.</li>
+          <li>„Zapisz się" prowadzi wprost do formularza zgłoszeniowego z nazwą szkolenia wypełnioną automatycznie.</li>
+          <li>Terminy, ceny i opisy edytuje Pani sama z panelu WordPressa, bez wracania do wykonawcy.</li>
+          <li>Koszyk na 2 podstronach i formularz zgłoszeniowy przeniesione 1:1, przetestowane przed startem.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ux">
+  <div class="wrap">
+    <h2>Nowa struktura i ścieżka zapisu</h2>
+    <p>Punkty poniżej to kolejność, w jakiej pracujemy — od struktury, przez treść, do wdrożenia. Każdy punkt ma sprawdzalny efekt, więc na każdym etapie widać, co jest już zrobione.</p>
+    <ol class="check">
+      <li><b>Inwentaryzacja obecnej strony</b><span>Spis wszystkich adresów URL, tytułów i opisów meta, nagłówków H1/H2 oraz treści, na które przychodzi ruch z Google. Wynik: plik z listą, do którego wracamy przy odbiorze.</span></li>
+      <li><b>Struktura i nawigacja</b><span>Mapa nowych kategorii i podstron. Każda stara podstrona ma przypisane jedno miejsce na nowej stronie — bez osieroconych adresów.</span></li>
+      <li><b>Projekt nowego układu</b><span>Karty szkoleń, karta szkolenia z terminem i ceną, ścieżka zapisu, sekcja „dla kogo". Wersja na telefon, tablet i komputer pokazywana razem z projektem.</span></li>
+      <li><b>Treść pod UX i SEO</b><span>Przepisanie opisów kursów: nagłówki H1/H2 pod realne frazy, CTA w miejscach decyzyjnych, zdania krótsze o połowę. Zdania piszemy pod to, o co klient pyta w telefonie.</span></li>
+      <li><b>Migracja adresów URL</b><span>Pełna mapa stary → nowy, przekierowania 301, zachowanie treści i meta. Szczegóły w sekcji obok.</span></li>
+      <li><b>Testy przed startem</b><span>Każdy formularz, oba podstrony z koszykiem, linki wewnętrzne i zewnętrzne, wersja mobilna, szybkość ładowania. Test po każdej zmianie, nie tylko raz na końcu.</span></li>
+      <li><b>Start i 30 dni kontroli</b><span>Podłączenie Search Console, sitemap.xml, kontrola po 7 i po 30 dniach: które adresy wypadły z indeksu, czy stare linki przenoszą na właściwe miejsce.</span></li>
+    </ol>
+  </div>
+</section>
+
+<section id="migracja">
+  <div class="wrap">
+    <h2>Migracja bez utraty SEO — jak to wygląda w praktyce</h2>
+    <p>Pani wymaganie brzmiało wprost: nowa strona, ale migracja maksymalnie bezpieczna dla obecnego SEO. To dlatego adresy sprawdzamy <b>przed</b> projektowaniem, a przekierowania wchodzą w tym samym momencie co nowa strona. Przykładowa mapa dla typowej struktury szkoleń:</p>
+    <div class="tabela-przewij">
+      <table>
+        <caption>Fragment mapy przekierowań — wiersze przykładowe, na Pani stronie wchodzą prawdziwe adresy z inwentaryzacji.</caption>
+        <thead>
+          <tr><th>Stary adres</th><th>Nowy adres</th><th>Typ</th><th>Co zachowujemy</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>/oferta/szkolenia-dla-firm</code></td><td><code>/szkolenia/dla-firm</code></td><td>301</td><td>tytuł, opis, H1, treść</td></tr>
+          <tr><td><code>/kursy/kadry-i-place</code></td><td><code>/szkolenia/kadry-i-place</code></td><td>301</td><td>tytuł, opis, H1, treść, zdjęcia</td></tr>
+          <tr><td><code>/kursy/kadry-i-place/terminy</code></td><td><code>/szkolenia/kadry-i-place#terminy</code></td><td>301</td><td>kotwica na sekcję z terminami</td></tr>
+          <tr><td><code>/zapisy-online</code></td><td><code>/zapisz-sie</code></td><td>301</td><td>formularz bez zmian</td></tr>
+          <tr><td><code>/koszyk</code>, <code>/zamowienie</code></td><td>bez zmian</td><td>—</td><td>adresy i funkcje przenoszone 1:1</td></tr>
+          <tr><td><code>/index.php?p=123</code></td><td>docelowa podstrona</td><td>301</td><td>indywidualnie z inwentaryzacji</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3 style="margin-top:26px">Co dokładnie robimy, żeby nie stracić pozycji</h3>
+    <ul class="lista po" style="margin-top:10px">
+      <li><b>301, nigdy 302.</b> Przekierowanie stałe przenosi wartość adresu; tymczasowe jej nie przenosi.</li>
+      <li><b>Żadnych przekierowań łańcuchowych.</b> Stary adres trafia od razu na docelowy, nie przez dwa pośrednie.</li>
+      <li><b>Meta bez zmian.</b> Tytuł i opis zostają takie same albo lepsze — nigdy krótsze i puste.</li>
+      <li><b>Mapa witryny od nowa.</b> Usunięcie starych adresów z sitemap.xml i wysłanie nowej w Search Console w dniu startu.</li>
+      <li><b>Linki wewnętrzne sprawdzone.</b> Żaden link w treści nie prowadzi do adresu, który już nie istnieje.</li>
+      <li><b>Kontrola po 7 i 30 dniach.</b> Sprawdzamy pokrycie indeksu i adresy, które zwracają 404 — raport dostaje Pani na piśmie.</li>
+    </ul>
+    <div class="uwaga" style="margin-top:22px"><b>Kryterium odbioru migracji:</b> wszystkie stare adresy zwracają 301 na właściwe nowe, żaden nie zwraca 404, a formularze i koszyk działają — sprawdzane razem, na żywo, przed podpisaniem odbioru.</div>
+  </div>
+</section>
+
+<section id="katalog">
+  <div class="wrap">
+    <h2>Makieta: katalog szkoleń z filtrami</h2>
+    <p>To działający fragment nowej strony — filtrowanie działa w przeglądarce, bez odświeżania. Na telefonie przyciski mają wygodny rozmiar, karty układają się w jedną kolumnę.</p>
+    <div class="filtry" role="group" aria-label="Filtruj szkolenia">
+      <button type="button" data-filtr="wszystkie" aria-pressed="true">Wszystkie</button>
+      <button type="button" data-filtr="dla-firm" aria-pressed="false">Dla firm</button>
+      <button type="button" data-filtr="kadry" aria-pressed="false">Kadry i płace</button>
+      <button type="button" data-filtr="online" aria-pressed="false">Online</button>
+    </div>
+    <div class="szkolenia" id="lista-szkolen"></div>
+    <div class="pusty" id="pusto">Brak szkoleń w tej kategorii.</div>
+  </div>
+</section>
+
+<section id="kontakt" style="border-bottom:none">
+  <div class="wrap">
+    <h2>Co dalej</h2>
+    <p>Ta makieta pokazuje kierunek i sposób pracy, nie gotową stronę Pani firmy. Jeśli kierunek się zgadza, następny krok jest krótki: podaje Pani adres obecnej strony, a ja w ciągu 24 godzin odsyłam przepisany fragment jednej podstrony ofertowej — do porównania z tym, co jest dziś. Bez zobowiązania.</p>
+    <p style="margin-bottom:0">Kontakt w tym samym wątku na Useme.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="stopka">
+  <div class="wrap">
+    <div class="box">
+      <p style="margin-bottom:8px"><b>Makieta przygotowana pod zlecenie „Nowa strona WordPress — UX, design, SEO i bezpieczne przeniesienie obecnej strony" (branża szkoleniowa).</b></p>
+      <p style="margin-bottom:10px">Wszystkie treści, nazwy szkoleń i ceny są przykładowe. Strona nie zawiera prawdziwych danych żadnej firmy ani nie zbiera danych osobowych — filtry działają w przeglądarce, nic nie jest nigdzie wysyłane.</p>
+      <span class="pill">WordPress</span><span class="pill">UX / SEO</span><span class="pill">migracja 301</span><span class="pill">responsywność</span><span class="pill">edytowalne treści</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var dane = [
+    {t:"Kadry i płace od podstaw", typ:"kadry", typNazwa:"Kadry i płace", opis:"Rozliczanie wynagrodzeń, umowy, ZUS i podatki — od pierwszego etatu do listy płac.", forma:"stacjonarne", termin:"12 października 2026", cena:"690 zł"},
+    {t:"Zatrudnianie i dokumentacja pracownicza", typ:"dla-firm", typNazwa:"Dla firm", opis:"Od podpisania umowy do rozwiązania stosunku pracy — komplet dokumentów i najczęstsze błędy.", forma:"stacjonarne", termin:"19 października 2026", cena:"640 zł"},
+    {t:"Excel w pracy biurowej", typ:"online", typNazwa:"Online", opis:"Tabele przestawne, wyszukiwanie danych, automatyzacja raportów — kurs w dwóch spotkaniach.", forma:"online", termin:"start 5 października 2026", cena:"390 zł"},
+    {t:"Zamówienia publiczne — praktyka", typ:"dla-firm", typNazwa:"Dla firm", opis:"Przygotowanie oferty, kryteria oceny, odwołania. Warsztat na dokumentach z rynku.", forma:"stacjonarne", termin:"26 października 2026", cena:"890 zł"},
+    {t:"Rozmowy oceniające w zespole", typ:"dla-firm", typNazwa:"Dla firm", opis:"Jak prowadzić rozmowę roczną, żeby zespół wychodził z niej z planem, a nie z urazą.", forma:"online", termin:"8 listopada 2026", cena:"540 zł"},
+    {t:"Kadry dla początkujących — online", typ:"kadry", typNazwa:"Kadry i płace", opis:"Teoria i akta osobowe w wersji online, z nagraniami do powtórek przez 60 dni.", forma:"online", termin:"start 15 października 2026", cena:"470 zł"}
+  ];
+
+  var lista = document.getElementById('lista-szkolen');
+  var pusto = document.getElementById('pusto');
+  var przyciski = document.querySelectorAll('.filtry button');
+
+  function render(filtr){
+    lista.innerHTML = '';
+    var widoczne = dane.filter(function(s){
+      if(filtr === 'wszystkie') return true;
+      if(filtr === 'online') return s.forma === 'online';
+      return s.typ === filtr;
+    });
+    widoczne.forEach(function(s){
+      var el = document.createElement('article');
+      el.className = 'szkol';
+      var typ = document.createElement('span'); typ.className='typ'; typ.textContent = s.typNazwa;
+      var h = document.createElement('h4'); h.textContent = s.t;
+      var p = document.createElement('p'); p.textContent = s.opis;
+      var dol = document.createElement('div'); dol.className = 'dol';
+      var l = document.createElement('div'); l.innerHTML = '<b>' + s.cena + '</b><br><span style="font-size:12.5px;color:#5b6675">' + s.forma + ' · ' + s.termin + '</span>';
+      var a = document.createElement('a'); a.href = '#kontakt'; a.textContent = 'Zapisz się →';
+      dol.appendChild(l); dol.appendChild(a);
+      el.appendChild(typ); el.appendChild(h); el.appendChild(p); el.appendChild(dol);
+      lista.appendChild(el);
+    });
+    pusto.style.display = widoczne.length ? 'none' : 'block';
+  }
+
+  przyciski.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      przyciski.forEach(function(b){ b.setAttribute('aria-pressed', 'false'); });
+      btn.setAttribute('aria-pressed', 'true');
+      render(btn.dataset.filtr);
+    });
+  });
+
+  render('wszystkie');
+})();
+</script>
+</body>
+</html>
