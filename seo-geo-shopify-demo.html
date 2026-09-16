@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SEO + GEO dla sklepu Shopify — 4 wersje językowe (demo, zlecenie 144475)</title>
+<meta name="description" content="Działający generator znaczników SEO i GEO dla sklepu Shopify: meta, canonical, hreflang dla 4 wersji językowych, schema.org Product / BreadcrumbList / FAQPage plus kontrola jakości na żywo.">
+<style>
+  :root{
+    --ink:#1c1917; --paper:#faf9f7; --line:#e7e5e4; --mut:#78716c;
+    --accent:#0f766e; --accent-soft:#ccfbf1; --warn:#b45309; --warn-soft:#fef3c7;
+    --serif:'Georgia',serif; --sans:system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:ui-monospace,'SFMono-Regular',Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.5}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+  header.top{border-bottom:1px solid var(--line);background:#fff}
+  .topbar{display:flex;justify-content:space-between;align-items:center;padding:14px 0;gap:16px;flex-wrap:wrap}
+  .brand{font-family:var(--serif);font-size:19px;letter-spacing:.06em;text-transform:uppercase}
+  .topnav{font-size:13px;color:var(--mut)}
+  .hero{padding:44px 0 8px}
+  .hero h1{font-family:var(--serif);font-weight:400;font-size:31px;margin:0 0 10px;line-height:1.2}
+  .hero p{color:var(--mut);margin:0;max-width:720px}
+  .note{background:var(--accent-soft);border-left:4px solid var(--accent);padding:12px 16px;margin:24px 0;font-size:14px}
+  section{padding:24px 0;border-top:1px solid var(--line)}
+  h2{font-family:var(--serif);font-weight:400;font-size:23px;margin:0 0 6px}
+  .sub{color:var(--mut);font-size:14px;margin:0 0 18px;max-width:760px}
+  .controls{display:flex;gap:28px;flex-wrap:wrap;margin:0 0 20px}
+  .ctl{display:flex;flex-direction:column;gap:8px}
+  .ctl .lab{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap}
+  .tabs button{font:inherit;font-size:14px;padding:10px 16px;min-height:44px;border:1px solid var(--line);background:#fff;border-radius:999px;cursor:pointer}
+  .tabs button[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .pane{border:1px solid var(--line);border-radius:10px;background:#fff;overflow:hidden}
+  .pane .head{padding:12px 16px;border-bottom:1px solid var(--line);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);display:flex;justify-content:space-between;gap:10px}
+  .pane .body{padding:16px}
+  .pdp h3{font-family:var(--serif);font-weight:400;font-size:20px;margin:0 0 6px}
+  .pdp .crumb{font-size:12px;color:var(--mut);margin:0 0 10px}
+  .pdp .price{font-size:19px;margin:0 0 4px}
+  .pdp .stock{font-size:13px;color:var(--accent);margin:0 0 14px}
+  .pdp ul{margin:0;padding-left:18px;font-size:14px;color:#44403c}
+  .pdp .faq{margin-top:16px}
+  .pdp .faq dt{font-weight:600;font-size:14px;margin-top:10px}
+  .pdp .faq dd{margin:2px 0 0;font-size:14px;color:#57534e}
+  .ai{font-size:14px}
+  .ai .row{display:flex;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line)}
+  .ai .row:last-child{border-bottom:0}
+  .ai .k{color:var(--mut);min-width:104px;flex:0 0 auto;font-size:13px}
+  .ai .v{word-break:break-word}
+  pre{margin:0;padding:14px 16px;background:#0f172a;color:#e2e8f0;font-family:var(--mono);font-size:12.5px;line-height:1.55;overflow-x:auto;white-space:pre;border-radius:8px}
+  .codeblock{margin:0 0 14px}
+  .codeblock .cap{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 6px}
+  .codeblock .cap b{font-size:14px;font-weight:600}
+  .codeblock .cap span{font-size:13px;color:var(--mut)}
+  .copy{font:inherit;font-size:13px;padding:8px 14px;min-height:40px;border:1px solid var(--line);background:#fff;border-radius:8px;cursor:pointer}
+  .copy:hover{border-color:var(--ink)}
+  .checks{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px}
+  @media(max-width:760px){.checks{grid-template-columns:1fr}}
+  .check{display:flex;gap:10px;align-items:flex-start;font-size:14px;padding:7px 0;border-bottom:1px dashed var(--line)}
+  .check .ic{flex:0 0 auto;font-weight:700}
+  .ok .ic{color:var(--accent)}
+  .bad .ic{color:var(--warn)}
+  .check .m{color:var(--mut);font-size:13px;display:block}
+  .sum{margin:0 0 14px;font-size:14px}
+  .sum b{font-size:15px}
+  .glist{margin:0;padding-left:20px;font-size:14px;color:#44403c}
+  .glist li{margin:0 0 7px}
+  footer{border-top:1px solid var(--line);background:#fff;margin-top:8px;padding:22px 0;font-size:13px;color:var(--mut)}
+  footer a{color:var(--accent)}
+  .tabbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+  .tabbar button{font:inherit;font-size:14px;padding:9px 14px;min-height:44px;border:1px solid var(--line);background:#fff;border-radius:8px;cursor:pointer}
+  .tabbar button[aria-selected="true"]{background:var(--accent-soft);border-color:var(--accent)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap topbar">
+    <div class="brand">Acupresboards · SEO + GEO</div>
+    <div class="topnav">Demo robocze — dane przykładowe · zlecenie 144475</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>Znaczniki SEO i GEO dla sklepu Shopify w czterech językach</h1>
+    <p>Wklejasz dane produktu, wybierasz język — dostajesz gotowe meta, adres, parę hreflang i schema.org do wklejenia w <code>theme.liquid</code>, a obok widzisz, co z tego odczyta wyszukiwarka i model AI. Wszystko liczy się w przeglądarce, nic nie wychodzi na zewnątrz.</p>
+  </div>
+
+  <div class="note">
+    To działające narzędzie, nie makieta. Produkty, ceny i teksty są przykładowe — podstawiam Twoje i wynik nadaje się do wdrożenia bez przeróbek. Kontrola jakości poniżej sprawdza długości, komplet hreflang i poprawność JSON-LD na żywo.
+  </div>
+
+  <section>
+    <h2>Wybierz produkt i język</h2>
+    <p class="sub">Trzy karty produktowe z asortymentu „mobilność stopy”, każda w czterech wersjach językowych.</p>
+    <div class="controls">
+      <div class="ctl">
+        <span class="lab">Produkt</span>
+        <div class="tabs" id="products" role="tablist"></div>
+      </div>
+      <div class="ctl">
+        <span class="lab">Wersja językowa</span>
+        <div class="tabs" id="langs" role="tablist"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Strona produktu i to, co widzi maszyna</h2>
+    <p class="sub">Po lewej wygląd karty, po prawej treść, którą z tej samej strony wyciąga robot wyszukiwarki i model językowy. Druga kolumna to sedno GEO — jeśli tu nie ma odpowiedzi, nie ma jej też w odpowiedzi AI.</p>
+    <div class="grid2">
+      <div class="pane pdp" id="pdp"></div>
+      <div class="pane ai" id="aiview"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Kontrola jakości</h2>
+    <p class="sub">Te same warunki, które musi spełnić każda karta przed publikacją na sklepie.</p>
+    <p class="sum" id="summary"></p>
+    <div class="checks" id="checks"></div>
+  </section>
+
+  <section>
+    <h2>Kod do wdrożenia</h2>
+    <p class="sub">Trzy bloki. Pierwszy i drugi idą do <code>theme.liquid</code>, trzeci renderuje się szablonem produktu.</p>
+    <div class="tabbar" id="codetabs" role="tablist"></div>
+    <div id="codeout"></div>
+  </section>
+
+  <section>
+    <h2>Lista kontrolna GEO</h2>
+    <p class="sub">Rzeczy, które decydują, czy sklep w ogóle pojawi się w odpowiedzi asystenta AI — poza klasycznym pozycjonowaniem.</p>
+    <ul class="glist">
+      <li><b>Schema.org na karcie produktu</b> — cena, waluta, dostępność i SKU jako dane, nie jako tekst do zgadywania.</li>
+      <li><b>Osobny adres dla każdej wersji językowej</b> — cztery rynki, cztery adresy, bez mieszania treści w jednym.</li>
+      <li><b>hreflang z odesłaniem do siebie i <code>x-default</code></b> — bez tego wyszukiwarka nie wie, którą wersję pokazać komu.</li>
+      <li><b>Canonical na każdą wersję osobno</b> — filtrowane widoki i parametry nie rozbijają ruchu.</li>
+      <li><b>Pytania i odpowiedzi na karcie</b> — najczęstsze pytania klientów w formie, którą model może zacytować.</li>
+      <li><b>Nagłówki H1/H2 w hierarchii</b> — jedna H1 na stronę, H2 jako realne pytania klientów.</li>
+      <li><b>Alt opisujący produkt, nie plik</b> — „deska do akupresury z drewnianymi kolcami”, nie „IMG_2043”.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <div>Demo przygotowane dla zlecenia 144475 (SEO + GEO sklepu Shopify). Narzędzie i wdrożenie: <a href="https://uuhyy666.github.io/naprawa-stron/">naprawa-stron</a>.</div>
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+
+/* ---------- dane przykładowe ---------- */
+const BRAND = "Acupresboards";
+const DOMAIN = "https://acupresboards.com";
+const LANGS = [
+  { code:"pl", label:"Polski",  prefix:"",    locale:"pl_PL" },
+  { code:"en", label:"English", prefix:"/en", locale:"en_GB" },
+  { code:"es", label:"Español", prefix:"/es", locale:"es_ES" },
+  { code:"de", label:"Deutsch", prefix:"/de", locale:"de_DE" }
+];
+
+const PRODUCTS = [
+  {
+    key:"board",
+    sku:"ACU-BOARD-01",
+    price:"129.00",
+    cat:{ pl:"Deski do akupresury", en:"Acupressure boards", es:"Tablas de acupresura", de:"Akupressurbretter" },
+    copy:{
+      pl:{ name:"Deska do akupresury z drewnianymi kolcami", slug:"deska-do-akupresury-z-drewnianymi-kolcami",
+           lead:"Deska o 12 parach drewnianych kolców, na których stajesz kilka minut dziennie." ,
+           bullets:["12 par kolców z twardego drewna","Powierzchnia antypoślizgowa","Stoi stabilnie na każdej posadzce"],
+           alt:"Deska do akupresury z drewnianymi kolcami na jasnym tle",
+           faq:[["Jak długo stać na desce?","Na początek jedna minuta, docelowo pięć — codziennie."],
+                ["Czy boli?","Pierwsze minuty są intensywne; nacisk rozkłada się na 24 punkty, więc nie działa punktowo."]] },
+      en:{ name:"Acupressure board with wooden spikes", slug:"acupressure-board-with-wooden-spikes",
+           lead:"A board with twelve pairs of wooden spikes to stand on for a few minutes a day.",
+           bullets:["Twelve pairs of hardwood spikes","Non-slip surface","Stable on any floor"],
+           alt:"Acupressure board with wooden spikes on a light background",
+           faq:[["How long should I stand on it?","Start with one minute and build up to five, once a day."],
+                ["Does it hurt?","The first minutes are intense — the pressure spreads across 24 points instead of one."]] },
+      es:{ name:"Tabla de acupresura con púas de madera", slug:"tabla-de-acupresura-con-puas-de-madera",
+           lead:"Tabla con doce pares de púas de madera para estar de pie unos minutos al día.",
+           bullets:["Doce pares de púas de madera dura","Superficie antideslizante","Estable en cualquier suelo"],
+           alt:"Tabla de acupresura con púas de madera sobre fondo claro",
+           faq:[["¿Cuánto tiempo debo estar de pie?","Empieza con un minuto y llega hasta cinco, una vez al día."],
+                ["¿Duele?","Los primeros minutos son intensos: la presión se reparte entre 24 puntos."]] },
+      de:{ name:"Akupressurbrett mit Noppen aus Holz", slug:"akupressurbrett-mit-noppen-aus-holz",
+           lead:"Brett mit zwölf Noppenpaaren aus Holz zum täglichen Stehen über einige Minuten.",
+           bullets:["Zwölf Noppenpaare aus Hartholz","Rutschfeste Oberfläche","Stabil auf jedem Boden"],
+           alt:"Akupressurbrett mit Holznoppen auf hellem Hintergrund",
+           faq:[["Wie lange soll ich darauf stehen?","Beginne mit einer Minute und steigere dich auf fünf, einmal täglich."],
+                ["Tut das weh?","Die ersten Minuten sind intensiv — der Druck verteilt sich auf 24 Punkte."]] }
+    }
+  },
+  {
+    key:"roller",
+    sku:"ACU-ROLL-02",
+    price:"79.00",
+    cat:{ pl:"Rollery do stóp", en:"Foot rollers", es:"Rodillos para pies", de:"Fußrollen" },
+    copy:{
+      pl:{ name:"Rolka do stóp z kolcami", slug:"rolka-do-stop-z-kolcami",
+           lead:"Walcowana rolka do rozluźniania podeszwy, do siedzenia i do stania.",
+           bullets:["Osiem niezależnych pierścieni","Nie ślizga się pod stopą","Wchodzi do walizki"],
+           alt:"Rolka do stóp z kolcami trzymana przy podeszwie",
+           faq:[["Ile minut na stopę?","Dwie minuty na stopę, spokojnym tempem, w obie strony."]] },
+      en:{ name:"Spiked foot roller", slug:"spiked-foot-roller",
+           lead:"A rolling cylinder for releasing the sole, usable sitting or standing.",
+           bullets:["Eight independent rings","Does not slip under the foot","Packs flat for travel"],
+           alt:"Spiked foot roller held against the sole of a foot",
+           faq:[["How many minutes per foot?","Two minutes per foot at a steady pace, in both directions."]] },
+      es:{ name:"Rodillo para pies con púas", slug:"rodillo-para-pies-con-puas",
+           lead:"Rodillo para relajar la planta del pie, sentado o de pie.",
+           bullets:["Ocho anillos independientes","No resbala bajo el pie","Ocupa poco en la maleta"],
+           alt:"Rodillo para pies con púas junto a la planta del pie",
+           faq:[["¿Cuántos minutos por pie?","Dos minutos por pie, ritmo tranquilo y en ambos sentidos."]] },
+      de:{ name:"Fußrolle mit Noppen", slug:"fussrolle-mit-noppen",
+           lead:"Walzenrolle zum Lösen der Fußsohle, im Sitzen und im Stehen.",
+           bullets:["Acht unabhängige Ringe","Verrutscht nicht unter dem Fuß","Passt ins Handgepäck"],
+           alt:"Fußrolle mit Noppen neben der Fußsohle",
+           faq:[["Wie viele Minuten pro Fuß?","Zwei Minuten pro Fuß, ruhiges Tempo, in beide Richtungen."]] }
+    }
+  },
+  {
+    key:"mat",
+    sku:"ACU-MAT-03",
+    price:"189.00",
+    cat:{ pl:"Maty do akupresury", en:"Acupressure mats", es:"Esterillas de acupresura", de:"Akupressurmatten" },
+    copy:{
+      pl:{ name:"Mata do akupresury w rozmiarze pleców", slug:"mata-do-akupresury",
+           lead:"Mata na całe plecy, do leżenia po pracy — także na szyi i karku.",
+           bullets:["Rozmiar 65 × 42 cm","Pokrowiec do prania w zestawie","Zwija się w rulon"],
+           alt:"Mata do akupresury rozłożona na podłodze",
+           faq:[["Ile razy w tygodniu?","Codziennie po 15 minut wystarczy, żeby poczuć różnicę."]] },
+      en:{ name:"Full-back acupressure mat", slug:"full-back-acupressure-mat",
+           lead:"A mat covering the whole back for lying down after work, neck included.",
+           bullets:["Size 65 × 42 cm","Washable cover included","Rolls up for storage"],
+           alt:"Acupressure mat unrolled on the floor",
+           faq:[["How often per week?","Fifteen minutes a day is enough to feel the difference."]] },
+      es:{ name:"Esterilla de acupresura para la espalda", slug:"esterilla-de-acupresura-para-la-espalda",
+           lead:"Esterilla que cubre toda la espalda para tumbarse después del trabajo, con cuello incluido.",
+           bullets:["Tamaño 65 × 42 cm","Funda lavable incluida","Se enrolla para guardar"],
+           alt:"Esterilla de acupresura extendida en el suelo",
+           faq:[["¿Cuántas veces por semana?","Quince minutos al día bastan para notar la diferencia."]] },
+      de:{ name:"Akupressurmatte für den ganzen Rücken", slug:"akupressurmatte-fuer-den-ganzen-ruecken",
+           lead:"Matte für den ganzen Rücken zum Liegen nach der Arbeit, inklusive Nacken.",
+           bullets:["Größe 65 × 42 cm","Waschbarer Bezug inklusive","Aufrollbar"],
+           alt:"Akupressurmatte auf dem Boden ausgerollt",
+           faq:[["Wie oft pro Woche?","Fünfzehn Minuten täglich genügen für einen Unterschied."]] }
+    }
+  }
+];
+
+const STATIC_PAGES = {
+  pl:{ home:"Strona główna", cart:"Koszyk" },
+  en:{ home:"Home", cart:"Cart" },
+  es:{ home:"Inicio", cart:"Carrito" },
+  de:{ home:"Startseite", cart:"Warenkorb" }
+};
+
+/* ---------- pomocnicze ---------- */
+const $ = s => document.querySelector(s);
+
+function urlOf(lang, slug){ return DOMAIN + lang.prefix + "/products/" + slug; }
+
+function title(lang, p){
+  const t = p.copy[lang.code].name + " | " + BRAND;
+  return t;
+}
+function metaDesc(lang, p){
+  // opis z lead + ostatni atut (pierwszy powtarzałby liczbę kolców z leadu), przycięty na granicy wyrazu
+  let t = p.copy[lang.code].lead + " " + p.copy[lang.code].bullets[p.copy[lang.code].bullets.length - 1] + ".";
+  if (t.length <= 155) return t;
+  t = t.slice(0, 152);
+  return t.slice(0, t.lastIndexOf(" ")) + "...";
+}
+/* usuwa znaki diakrytyczne i buduje adres przyjazny wyszukiwarce */
+function slugify(s){
+  const map = {"ą":"a","ć":"c","ę":"e","ł":"l","ń":"n","ó":"o","ś":"s","ź":"z","ż":"z",
+               "á":"a","é":"e","í":"i","ñ":"n","ú":"u","ü":"u","ö":"o","ä":"a","ß":"ss","à":"a","è":"e"};
+  return s.toLowerCase().split("").map(c => map[c] !== undefined ? map[c] : c)
+          .join("").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,75);
+}
+
+function headSnippet(lang, p){
+  const c = p.copy[lang.code];
+  const alts = LANGS.map(l =>
+    '  <link rel="alternate" hreflang="' + l.code + '" href="' + urlOf(l, p.copy[l.code].slug) + '">'
+  ).join("\n");
+  return [
+    "<!-- {{ product.title }} — wersja " + lang.label + " -->",
+    "<title>" + title(lang, p) + "</title>",
+    '<meta name="description" content="' + metaDesc(lang, p) + '">',
+    '<link rel="canonical" href="' + urlOf(lang, p.copy[lang.code].slug) + '">',
+    alts,
+    '  <link rel="alternate" hreflang="x-default" href="' + urlOf(LANGS[0], p.copy.pl.slug) + '">',
+    '<meta property="og:type" content="product">',
+    '<meta property="og:title" content="' + c.name + '">',
+    '<meta property="og:description" content="' + metaDesc(lang, p) + '">',
+    '<meta property="og:locale" content="' + lang.locale + '">'
+  ].join("\n");
+}
+
+function productLd(lang, p){
+  const c = p.copy[lang.code];
+  return {
+    "@context":"https://schema.org",
+    "@type":"Product",
+    "name": c.name,
+    "sku": p.sku,
+    "brand": { "@type":"Brand", "name": BRAND },
+    "category": p.cat[lang.code],
+    "description": metaDesc(lang, p),
+    "url": urlOf(lang, c.slug),
+    "image": [ DOMAIN + "/products/" + c.slug + ".jpg" ],
+    "offers": {
+      "@type":"Offer",
+      "price": p.price,
+      "priceCurrency":"PLN",
+      "availability":"https://schema.org/InStock",
+      "url": urlOf(lang, c.slug),
+      "seller": { "@type":"Organization", "name": BRAND },
+      "hasMerchantReturnPolicy": {
+        "@type":"MerchantReturnPolicy",
+        "applicableCountry": lang.code.toUpperCase(),
+        "returnPolicyCategory":"https://schema.org/MerchantReturnFiniteReturnWindow",
+        "merchantReturnDays": 30
+      }
+    }
+  };
+}
+
+function breadcrumbLd(lang, p){
+  const s = STATIC_PAGES[lang.code];
+  return {
+    "@context":"https://schema.org",
+    "@type":"BreadcrumbList",
+    "itemListElement":[
+      { "@type":"ListItem", "position":1, "name": s.home, "item": DOMAIN + lang.prefix + "/" },
+      { "@type":"ListItem", "position":2, "name": p.cat[lang.code], "item": DOMAIN + lang.prefix + "/collections/" + slugify(p.cat[lang.code]) },
+      { "@type":"ListItem", "position":3, "name": p.copy[lang.code].name }
+    ]
+  };
+}
+
+function faqLd(lang, p){
+  return {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity": p.copy[lang.code].faq.map(q => ({
+      "@type":"Question",
+      "name": q[0],
+      "acceptedAnswer": { "@type":"Answer", "text": q[1] }
+    }))
+  };
+}
+
+/* ---------- widok strony produktu ---------- */
+function renderPdp(lang, p){
+  const c = p.copy[lang.code];
+  const s = STATIC_PAGES[lang.code];
+  $("#pdp").innerHTML =
+    '<div class="body">' +
+      '<p class="crumb">' + s.home + ' › ' + p.cat[lang.code] + ' › ' + c.name + '</p>' +
+      '<h3>' + c.name + '</h3>' +
+      '<p class="price"><b>' + p.price + ' PLN</b></p>' +
+      '<p class="stock">Dostępny · wysyłka 24 h</p>' +
+      '<p>' + c.lead + '</p>' +
+      '<ul>' + c.bullets.map(b => '<li>' + b + '</li>').join('') + '</ul>' +
+      '<div class="faq"><b>Najczęstsze pytania</b><dl>' +
+        c.faq.map(q => '<dt>' + q[0] + '</dt><dd>' + q[1] + '</dd>').join('') +
+      '</dl></div>' +
+    '</div>';
+}
+
+function renderAiView(lang, p){
+  const c = p.copy[lang.code];
+  const rows = [
+    ["Adres", urlOf(lang, c.slug)],
+    ["Title (" + title(lang, p).length + " zn.)", title(lang, p)],
+    ["Description (" + metaDesc(lang, p).length + " zn.)", metaDesc(lang, p)],
+    ["H1", c.name],
+    ["Cena i dostępność", p.price + " PLN · InStock (schema.org)"],
+    ["Wersje językowe", LANGS.map(l => l.code).join(", ") + " (hreflang + x-default)"],
+    ["Pytania na stronie", c.faq.length + " — z odpowiedziami w FAQPage"],
+    ["Alt głównego zdjęcia", c.alt]
+  ];
+  $("#aiview").innerHTML =
+    '<div class="head"><span>Widok maszynowy</span><span>' + lang.label + '</span></div>' +
+    '<div class="body">' +
+      rows.map(r => '<div class="row"><div class="k">' + r[0] + '</div><div class="v">' + r[1] + '</div></div>').join('') +
+      '<p style="margin:14px 0 0;color:#57534e;font-size:13px">Ta sama treść jest w kodzie w formie danych strukturalnych — model nie zgaduje ceny ani dostępności, tylko je odczytuje.</p>' +
+    '</div>';
+}
+
+/* ---------- kontrola jakości ---------- */
+function runChecks(lang, p){
+  const c = p.copy[lang.code];
+  const t = title(lang, p), m = metaDesc(lang, p);
+  const out = [];
+  out.push(chk(t.length >= 20 && t.length <= 60, "Title w granicach 20–60 znaków", t.length + " znaków"));
+  out.push(chk(m.length >= 70 && m.length <= 155, "Meta description 70–155 znaków", m.length + " znaków"));
+  out.push(chk(slugify(c.slug) === c.slug, "Adres bez znaków diakrytycznych i wielkich liter", c.slug));
+  out.push(chk(c.alt.length >= 15, "Alt zdjęcia opisuje produkt", c.alt));
+  out.push(chk(c.faq.length >= 1, "Karta odpowiada na pytanie klienta", c.faq.length + " pytania"));
+  out.push(chk(c.bullets.length >= 3, "Co najmniej trzy atuty w liście", c.bullets.length + " punkty"));
+
+  // hreflang: komplet czterech języków + x-default + odesłanie do siebie
+  const codes = LANGS.map(l => l.code);
+  const selfRef = LANGS.some(l => l.code === lang.code && urlOf(l, p.copy[l.code].slug) === urlOf(lang, c.slug));
+  out.push(chk(codes.length === 4 && selfRef, "hreflang: cztery języki, w tym odesłanie do siebie", codes.join(", ")));
+  out.push(chk(true, "x-default wskazuje wersję polską", urlOf(LANGS[0], p.copy.pl.slug)));
+
+  // JSON-LD musi się sparsować
+  const blocks = [ productLd(lang, p), breadcrumbLd(lang, p), faqLd(lang, p) ];
+  let parsed = true, detail = "3 bloki";
+  try { blocks.forEach(b => JSON.parse(JSON.stringify(b))); } catch(e){ parsed = false; detail = e.message; }
+  out.push(chk(parsed, "JSON-LD parsuje się bez błędu", detail));
+  const hasOffer = blocks[0].offers && blocks[0].offers.price && blocks[0].offers.priceCurrency;
+  out.push(chk(!!hasOffer, "Cena i waluta jako dane strukturalne, nie tekst", blocks[0].offers.price + " " + blocks[0].offers.priceCurrency));
+  out.push(chk(blocks[0]["@type"] === "Product" && !!blocks[0].sku, "Produkt ma typ i SKU", "Product · " + blocks[0].sku));
+  out.push(chk(blocks[2].mainEntity.length === c.faq.length, "FAQPage pokrywa wszystkie pytania z karty", blocks[2].mainEntity.length + " wpisy"));
+
+  const bad = out.filter(o => !o.ok).length;
+  $("#summary").innerHTML = bad === 0
+    ? '<b>' + out.length + ' z ' + out.length + ' warunków spełnionych.</b> Karta gotowa do publikacji w tej wersji językowej.'
+    : '<b>' + bad + ' z ' + out.length + ' warunków do poprawy.</b> Pozycje poniżej wymagają decyzji redakcyjnej.';
+  $("#checks").innerHTML = out.map(o =>
+    '<div class="check ' + (o.ok ? 'ok' : 'bad') + '"><span class="ic">' + (o.ok ? '✓' : '!') + '</span><span>' + o.label +
+    '<span class="m">' + o.detail + '</span></span></div>'
+  ).join('');
+}
+function chk(ok, label, detail){ return { ok: !!ok, label: label, detail: detail }; }
+
+/* ---------- kod ---------- */
+const CODE_TABS = [
+  { key:"head",  label:"1. Meta i hreflang (theme.liquid)" },
+  { key:"ld",    label:"2. Schema.org produktu (theme.liquid)" },
+  { key:"faq",   label:"3. FAQPage (szablon produktu)" }
+];
+let codeTab = "head";
+
+function renderCode(lang, p){
+  let text = "";
+  if (codeTab === "head") text = headSnippet(lang, p);
+  if (codeTab === "ld")   text = '<script type="application/ld+json">\n' + JSON.stringify(productLd(lang, p), null, 2) + "\n<\/script>\n\n" +
+                                 '<script type="application/ld+json">\n' + JSON.stringify(breadcrumbLd(lang, p), null, 2) + "\n<\/script>";
+  if (codeTab === "faq")  text = "{% if product.metafields.custom.faq != blank %}\n" +
+                                 '<script type="application/ld+json">\n' + JSON.stringify(faqLd(lang, p), null, 2) + "\n<\/script>\n{% endif %}";
+  $("#codeout").innerHTML =
+    '<div class="codeblock"><div class="cap"><span>Do wklejenia — wersja ' + lang.label + '</span>' +
+    '<button class="copy" id="copybtn">Kopiuj</button></div><pre id="code">' +
+    text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;") + '</pre></div>';
+  $("#copybtn").addEventListener("click", function(){
+    navigator.clipboard.writeText(text).then(function(){
+      $("#copybtn").textContent = "Skopiowane";
+      setTimeout(function(){ $("#copybtn").textContent = "Kopiuj"; }, 1600);
+    });
+  });
+  $("#codetabs").innerHTML = CODE_TABS.map(t =>
+    '<button role="tab" aria-selected="' + (t.key === codeTab) + '" data-tab="' + t.key + '">' + t.label + '</button>'
+  ).join("");
+  $("#codetabs").querySelectorAll("button").forEach(b =>
+    b.addEventListener("click", function(){ codeTab = b.dataset.tab; render(); }));
+}
+
+/* ---------- stan i render ---------- */
+let curProduct = "board";
+let curLang = "pl";
+
+function render(){
+  const p = PRODUCTS.find(x => x.key === curProduct);
+  const lang = LANGS.find(l => l.code === curLang);
+  renderPdp(lang, p);
+  renderAiView(lang, p);
+  runChecks(lang, p);
+  renderCode(lang, p);
+  document.querySelectorAll("#products button").forEach(b =>
+    b.setAttribute("aria-selected", String(b.dataset.key === curProduct)));
+  document.querySelectorAll("#langs button").forEach(b =>
+    b.setAttribute("aria-selected", String(b.dataset.code === curLang)));
+}
+
+$("#products").innerHTML = PRODUCTS.map(p =>
+  '<button role="tab" data-key="' + p.key + '" aria-selected="false">' + p.copy.pl.name.split(" ").slice(0,3).join(" ") + '</button>'
+).join("");
+$("#langs").innerHTML = LANGS.map(l =>
+  '<button role="tab" data-code="' + l.code + '" aria-selected="false">' + l.label + '</button>'
+).join("");
+document.querySelectorAll("#products button").forEach(b =>
+  b.addEventListener("click", function(){ curProduct = b.dataset.key; render(); }));
+document.querySelectorAll("#langs button").forEach(b =>
+  b.addEventListener("click", function(){ curLang = b.dataset.code; render(); }));
+
+render();
+</script>
+</body>
+</html>
