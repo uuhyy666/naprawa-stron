@@ -28,8 +28,8 @@ header{position:sticky;top:0;background:rgba(251,251,253,.95);backdrop-filter:bl
 .pasek{display:flex;align-items:center;gap:16px;padding:13px 0;flex-wrap:wrap}
 .logo{font-weight:700;font-size:19px;color:var(--tekst);text-decoration:none;display:flex;align-items:center;gap:10px}
 .logo i{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:9px;background:var(--granat);color:#fff;font-style:normal;font-size:15px;font-weight:700}
-nav{display:flex;gap:16px;flex-wrap:wrap;margin-left:auto;font-size:14px}
-nav a{text-decoration:none;color:var(--mut)}
+nav{display:flex;gap:14px;flex-wrap:wrap;margin-left:auto;font-size:14px}
+nav a{text-decoration:none;color:var(--mut);display:inline-block;padding:10px 4px}
 nav a:hover{color:var(--granat)}
 .etykieta{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--akcent);background:#fdf1e7;border:1px solid #f6dcc6;border-radius:99px;padding:4px 11px;margin-bottom:14px}
 
@@ -63,7 +63,7 @@ code{background:var(--plyta);border:1px solid var(--linia);border-radius:5px;pad
 .tabela-przewij{overflow-x:auto;border:1px solid var(--linia);border-radius:12px}
 
 .filtry{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
-.filtry button{font:inherit;font-size:14px;padding:8px 14px;border-radius:99px;border:1px solid var(--linia);background:#fff;color:var(--mut);cursor:pointer}
+.filtry button{font:inherit;font-size:14px;padding:11px 16px;border-radius:99px;border:1px solid var(--linia);background:#fff;color:var(--mut);cursor:pointer}
 .filtry button[aria-pressed="true"]{background:var(--granat);border-color:var(--granat);color:#fff}
 .szkolenia{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
 .szkol{border:1px solid var(--linia);border-radius:12px;background:#fff;padding:16px;display:flex;flex-direction:column;gap:8px}
@@ -72,7 +72,7 @@ code{background:var(--plyta);border:1px solid var(--linia);border-radius:5px;pad
 .szkol p{font-size:14px;color:var(--mut);margin:0;flex:1}
 .szkol .dol{display:flex;justify-content:space-between;align-items:center;font-size:14px;border-top:1px solid var(--linia);padding-top:10px}
 .szkol .dol b{color:var(--granat)}
-.szkol a{font-size:13.5px;text-decoration:none;font-weight:600}
+.szkol a{font-size:13.5px;text-decoration:none;font-weight:600;display:inline-block;padding:11px 0}
 .pusty{display:none;padding:18px;border:1px dashed var(--linia);border-radius:12px;color:var(--mut);font-size:14.5px}
 
 .check{list-style:none;counter-reset:krok}
