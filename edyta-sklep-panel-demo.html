@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sklep z produktami cyfrowymi i panel klienta — makieta dla ustawieniasystemowe.com</title>
+<meta name="description" content="Makieta: karta produktu, konto klienta i dostęp do zakupionych nagrań oraz połączenie sklepu z zapisami na warsztaty i webinary na żywo. Plus przepisany fragment podstrony ofertowej.">
+<meta name="robots" content="noindex">
+<style>
+:root{
+  --tekst:#2b2724; --mut:#6d655d; --linia:#e8e1d8; --tlo:#fbf9f6; --plyta:#f4efe8;
+  --las:#5d7261; --las-c:#43563f; --miedz:#b5714f; --ok:#3f7a55; --zloty:#c9a227;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font:16px/1.68 -apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--tekst);background:var(--tlo)}
+.wrap{max-width:1060px;margin:0 auto;padding:0 22px}
+a{color:var(--las-c)}
+h1,h2,h3{line-height:1.24;letter-spacing:-.01em}
+h1{font-size:clamp(26px,4vw,38px);font-family:Georgia,"Times New Roman",serif;font-weight:600}
+h2{font-size:clamp(20px,2.6vw,27px);font-family:Georgia,serif;font-weight:600;margin-bottom:10px}
+h3{font-size:16.5px;margin-bottom:6px}
+p{margin-bottom:12px}
+.bezsel{position:absolute;left:-9999px}
+.bezsel:focus{position:fixed;left:0;top:0;background:var(--las-c);color:#fff;padding:10px 16px;z-index:99}
+
+header{position:sticky;top:0;background:rgba(251,249,246,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--linia);z-index:30}
+.pasek{display:flex;align-items:center;gap:16px;padding:13px 0;flex-wrap:wrap}
+.logo{font-weight:600;font-size:18px;color:var(--tekst);text-decoration:none;display:flex;align-items:center;gap:10px;font-family:Georgia,serif}
+.logo i{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--las);color:#fff;font-style:normal;font-size:14px;font-weight:700}
+nav{display:flex;gap:14px;flex-wrap:wrap;margin-left:auto;font-size:14px}
+nav a{text-decoration:none;color:var(--mut);display:inline-block;padding:10px 4px}
+nav a:hover{color:var(--las-c)}
+.etykieta{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--miedz);background:#fbf1ea;border:1px solid #f0dccd;border-radius:99px;padding:4px 11px;margin-bottom:14px}
+
+.hero{padding:46px 0 34px;border-bottom:1px solid var(--linia)}
+.hero p.lead{font-size:18px;color:var(--mut);max-width:770px}
+.fakty{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:14px;margin-top:26px}
+.fakt{background:#fff;border:1px solid var(--linia);border-radius:12px;padding:15px}
+.fakt b{display:block;font-size:23px;color:var(--las-c);letter-spacing:-.02em;font-family:Georgia,serif}
+.fakt span{font-size:13.5px;color:var(--mut)}
+
+section{padding:42px 0;border-bottom:1px solid var(--linia)}
+.uwaga{background:var(--plyta);border:1px solid var(--linia);border-left:4px solid var(--miedz);border-radius:10px;padding:14px 16px;font-size:14.5px;color:var(--mut);margin-bottom:22px}
+.uwaga b{color:var(--tekst)}
+.num{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--las);color:#fff;font-weight:700;font-size:15px;margin-right:10px;flex:0 0 auto}
+.tytul{display:flex;align-items:center;margin-bottom:14px}
+
+.dwie{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:780px){.dwie{grid-template-columns:1fr}}
+.karta{background:#fff;border:1px solid var(--linia);border-radius:12px;padding:18px}
+.karta.przed{border-top:3px solid #b3261e}
+.karta.po{border-top:3px solid var(--ok)}
+.kt{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);margin-bottom:10px}
+ul.lista{list-style:none;margin-top:8px}
+ul.lista li{padding-left:22px;position:relative;margin-bottom:7px;font-size:14.6px;color:#3d372f}
+ul.lista li::before{content:"—";position:absolute;left:0;color:var(--miedz)}
+ul.tak li::before{content:"✓";color:var(--ok);font-weight:700}
+
+/* mockup podstrony ofertowej */
+.mock{background:#fff;border:1px solid var(--linia);border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(80,60,40,.06)}
+.mock-bar{background:var(--plyta);border-bottom:1px solid var(--linia);padding:9px 14px;font-size:12.5px;color:var(--mut);display:flex;gap:7px;align-items:center}
+.mock-bar i{width:10px;height:10px;border-radius:50%;background:#d9cfc2;display:inline-block}
+.mock-body{padding:26px 24px}
+.hero-mock{font-family:Georgia,serif;font-size:clamp(21px,3vw,30px);line-height:1.28;margin-bottom:14px}
+.hero-mock b{color:var(--las-c);font-weight:600}
+.termin{display:inline-block;background:var(--plyta);border:1px solid var(--linia);border-radius:99px;padding:5px 13px;font-size:13.5px;color:var(--mut);margin-bottom:16px}
+.korzysci{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px;margin:18px 0}
+.korzysc{background:var(--tlo);border:1px solid var(--linia);border-radius:10px;padding:13px}
+.korzysc b{display:block;font-size:14.5px;margin-bottom:4px;color:var(--las-c)}
+.korzysc span{font-size:13.8px;color:var(--mut)}
+.cta-rzad{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:20px}
+.bt{display:inline-block;background:var(--las-c);color:#fff;text-decoration:none;border-radius:10px;padding:13px 22px;font-weight:600;font-size:15px;min-height:46px}
+.bt:hover{background:#33422f}
+.bt.slaby{background:#fff;color:var(--las-c);border:1.5px solid var(--las)}
+.bt.slaby:hover{background:#f2f6f1}
+
+/* karta produktu */
+.prod{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:780px){.prod{grid-template-columns:1fr}}
+.okladka{background:linear-gradient(140deg,#5d7261,#8a9c88 55%,#c9a227);border-radius:12px;min-height:200px;display:grid;place-items:center;color:#fff;text-align:center;padding:24px;font-family:Georgia,serif;font-size:19px;line-height:1.35}
+.cena{font-size:29px;font-family:Georgia,serif;color:var(--las-c);margin:6px 0 4px}
+.cena small{font-size:13px;color:var(--mut);font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;display:block;margin-top:2px}
+.spis{list-style:none;margin:12px 0}
+.spis li{padding:9px 0 9px 26px;border-bottom:1px dashed var(--linia);position:relative;font-size:14.4px}
+.spis li::before{content:"▶";position:absolute;left:0;color:var(--miedz);font-size:11px;top:12px}
+
+/* panel klienta */
+.panel{display:grid;grid-template-columns:206px 1fr;gap:0;border:1px solid var(--linia);border-radius:14px;overflow:hidden;background:#fff}
+@media(max-width:700px){.panel{grid-template-columns:1fr}}
+.panel-menu{background:var(--plyta);padding:16px 12px;border-right:1px solid var(--linia)}
+.panel-menu div{padding:9px 12px;border-radius:8px;font-size:14.3px;color:var(--mut);margin-bottom:3px}
+.panel-menu div.akt{background:#fff;color:var(--las-c);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.panel-tresc{padding:20px}
+.mat{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:13px}
+.mat-card{border:1px solid var(--linia);border-radius:11px;padding:14px;background:#fff}
+.mat-card .typ{font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;color:var(--miedz);margin-bottom:6px}
+.mat-card b{display:block;font-size:14.8px;margin-bottom:5px}
+.mat-card span{font-size:13.4px;color:var(--mut);display:block;margin-bottom:10px}
+.postep{height:6px;background:var(--plyta);border-radius:99px;overflow:hidden;margin-top:9px}
+.postep i{display:block;height:100%;background:var(--las);width:62%}
+
+.tabela{width:100%;border-collapse:collapse;font-size:14.4px;background:#fff;border:1px solid var(--linia);border-radius:12px;overflow:hidden}
+.tabela th,.tabela td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--linia);vertical-align:top}
+.tabela th{background:var(--plyta);font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
+.tabela tr:last-child td{border-bottom:none}
+.tabela td:first-child{font-weight:600;white-space:nowrap}
+.stopka{padding:30px 0 50px;font-size:13.6px;color:var(--mut)}
+.stopka a{color:var(--las-c)}
+</style>
+</head>
+<body>
+<a class="bezsel" href="#main">Przejdź do treści</a>
+
+<header>
+  <div class="wrap pasek">
+    <a class="logo" href="#main"><i>US</i> ustawieniasystemowe.com — makieta</a>
+    <nav>
+      <a href="#fragment">Przepisany fragment</a>
+      <a href="#karta">Karta produktu</a>
+      <a href="#konto">Konto klienta</a>
+      <a href="#sciezki">Ścieżki zakupu</a>
+      <a href="#technicznie">Jak to zrobić</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap">
+
+  <div class="hero">
+    <span class="etykieta">Makieta poglądowa · nie jest to gotowa strona</span>
+    <h1>Sklep z nagraniami, konto klienta i dostęp do materiałów</h1>
+    <p class="lead">Odpowiedź na pytanie o sprzedaż produktów cyfrowych: jak wygląda karta produktu, gdzie klient znajduje swoje nagrania i jak to wszystko łączy się z zapisami na warsztaty i webinary. Na końcu — obiecany przepisany fragment podstrony webinaru „O związkach”.</p>
+    <div class="fakty">
+      <div class="fakt"><b>1</b><span>miejsce na zakupy: sklep + konto klienta</span></div>
+      <div class="fakt"><b>3</b><span>drogi sprzedaży: warsztat, webinar na żywo, nagranie</span></div>
+      <div class="fakt"><b>0</b><span>ręcznej roboty po zakupie — dostęp nadaje się sam</span></div>
+      <div class="fakt"><b>1</b><span>podstrona, którą dziś przepisałem (poniżej)</span></div>
+    </div>
+  </div>
+
+  <section id="fragment">
+    <div class="tytul"><span class="num">1</span><h2>Obiecany fragment: podstrona webinaru „O związkach”</h2></div>
+    <p class="uwaga"><b>Uwaga:</b> to makieta. Treść merytoryczna pochodzi z Pani obecnej podstrony <i>/webinary/</i> — przełożyłem ją tylko w strukturę sprzedażową. Ceny na tej stronie są przykładowe, Pani je ustala.</p>
+
+    <div class="dwie">
+      <div class="karta przed">
+        <div class="kt">Dziś — co robi obecna podstrona</div>
+        <ul class="lista">
+          <li><b>„Webinar: O związkach”</b> — tytuł mówi, o czym, ale nie mówi, co z tego będę mieć.</li>
+          <li>Data i „Kup dostęp do webinaru” dopiero po długim opisie.</li>
+          <li>Cztery bloki wiedzy świetnie napisane merytorycznie, ale bez jednego zdania, które przekłada je na życie odbiorcy.</li>
+          <li>Osobno „kup webinar na żywo”, osobno „kup nagranie”. Klient po odpowiedzi nie wie, co dalej.</li>
+        </ul>
+      </div>
+      <div class="karta po">
+        <div class="kt">Po przepisaniu — ta sama treść, inna kolejność</div>
+        <ul class="lista tak">
+          <li>Nagłówek mówi o skutku, nie o temacie.</li>
+          <li>Termin i przycisk zakupu widoczne od razu.</li>
+          <li>Każda z czterech korzyści = jeden konkretny efekt dla odbiorcy.</li>
+          <li>Dwie jasne drogi: na żywo albo nagranie — pod przyciskami.</li>
+          <li>Akapit Hellingera zostaje jako cytat zamykający, nie środek strony.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mock" style="margin-top:22px">
+      <div class="mock-bar"><i></i><i></i><i></i> <span>ustawieniasystemowe.com/webinary/ — fragment, jak by wyglądał po zmianie</span></div>
+      <div class="mock-body">
+        <span class="termin">Webinar na żywo · środa 24.06.2026 · nagranie zostaje u Pani w panelu</span>
+        <div class="hero-mock">Związek nie gaśnie z braku miłości.<br><b>Gaśnie, kiedy brakuje porządku, który go trzyma.</b></div>
+        <p style="color:var(--mut);max-width:660px">Wiele par wciąż się kocha, a jednak oddala się od siebie. Podczas spotkania pokażę, które prawa rządzą bliskością — i co się dzieje, gdy jedno z nich zostaje złamane. Konkrety z życia, nie teoria.</p>
+
+        <div class="korzysci">
+          <div class="korzysc"><b>Siła pożegnania</b><span>Dlaczego bez uznania poprzednich partnerów nie masz pełnego dostępu do obecnej relacji.</span></div>
+          <div class="korzysc"><b>Partnerstwo przed rodzicielstwem</b><span>Dlaczego para musi mieć pierwszeństwo przed rodzicami — dla dobra Was i Waszych dzieci.</span></div>
+          <div class="korzysc"><b>Równowaga w wymianie</b><span>Zasady brania i dawania, które chronią miłość przed wygaśnięciem i poczuciem winy.</span></div>
+          <div class="korzysc"><b>Uwikłania rodowe</b><span>Jak nieświadoma lojalność wobec losów przodków blokuje budowanie dobrego związku.</span></div>
+        </div>
+
+        <div class="cta-rzad">
+          <a class="bt" href="#karta">Zapisz się na webinar na żywo</a>
+          <a class="bt slaby" href="#konto">Nie możesz być na żywo? Kup nagranie</a>
+        </div>
+        <p style="font-size:13.6px;color:var(--mut);margin-top:12px">Po zapisie dostęp i link do pokoju webinarowego pojawiają się od razu w koncie klienta — bez maili do Pani.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="karta">
+    <div class="tytul"><span class="num">2</span><h2>Karta produktu — jak wygląda zakup nagrania</h2></div>
+    <p>Karta odpowiada na trzy pytania w tej kolejności: czy to dla mnie, co dokładnie dostaję, ile to trwa. Przycisk kupuje się bez telefonu i bez maila.</p>
+
+    <div class="prod">
+      <div>
+        <div class="okladka">Webinar „O związkach”<br><span style="font-size:14px;opacity:.9">nagranie + materiały</span></div>
+      </div>
+      <div>
+        <span class="etykieta">Produkt cyfrowy · dostęp od razu</span>
+        <h3 style="font-family:Georgia,serif;font-size:21px">Webinar „O związkach” — nagranie i materiały</h3>
+        <div class="cena">cena: <span style="color:var(--miedz)">do ustalenia przez Panią</span><small>przykład w sklepie: cena jednorazowa, bez subskrypcji</small></div>
+        <ul class="spis">
+          <li>Nagranie wykładu — bez limitu czasu, do odtworzenia w koncie</li>
+          <li>Wersja audio (mp3) do słuchania w drodze</li>
+          <li>Notatka PDF z prawami porządków i pytaniami do własnej refleksji</li>
+          <li>Medytacja „Pojednanie z rodem” do słuchania w domu</li>
+          <li>Faktura do zamówienia — generuje się sama</li>
+        </ul>
+        <div class="cta-rzad">
+          <a class="bt" href="#konto">Dodaj do koszyka i kupuję</a>
+          <a class="bt slaby" href="#konto">Zobacz, jak wygląda dostęp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="konto">
+    <div class="tytul"><span class="num">3</span><h2>Konto klienta — „Moje materiały”</h2></div>
+    <p>Klient loguje się i widzi wszystko, co kupił, w jednym miejscu — nagrania, najbliższy webinar, faktury. Nic nie trzeba wysyłać mailem ani odtwarzać z załącznika.</p>
+
+    <div class="panel">
+      <div class="panel-menu">
+        <div class="akt">Moje materiały</div>
+        <div>Moje webinary na żywo</div>
+        <div>Moje warsztaty</div>
+        <div>Zamówienia i faktury</div>
+        <div>Dane i hasło</div>
+      </div>
+      <div class="panel-tresc">
+        <h3 style="margin-bottom:12px">Moje materiały</h3>
+        <div class="mat">
+          <div class="mat-card"><div class="typ">Nagranie</div><b>Webinar „O związkach”</b><span>1 godz. 48 min · kupiony 12.06.2026</span><a class="bt" style="padding:9px 16px;min-height:40px;font-size:14px" href="#konto">Odtwórz</a></div>
+          <div class="mat-card"><div class="typ">Na żywo</div><b>Webinar „Rodzice i dzieci”</b><span>środa 25.09, godz. 19:00 · link wejdzie tu 15 min przed</span><a class="bt" style="padding:9px 16px;min-height:40px;font-size:14px" href="#konto">Szczegóły</a></div>
+          <div class="mat-card"><div class="typ">Szkoła</div><b>Warszawska Szkoła Ustawień — XVII edycja</b><span>moduł 4 z 10 · materiały wgrywane po każdym zjeździe</span><div class="postep"><i></i></div></div>
+          <div class="mat-card"><div class="typ">Audio</div><b>Medytacja „Pojednanie z rodem”</b><span>mp3 · 22 min</span><a class="bt" style="padding:9px 16px;min-height:40px;font-size:14px" href="#konto">Pobierz</a></div>
+        </div>
+        <p style="font-size:13.7px;color:var(--mut);margin-top:14px">Dostęp jest przypisany do konta (linki jednorazowe, bez możliwości wklejenia na forum) i można go przenieść na nowe urządzenie samodzielnie — bez pisania do Pani.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="sciezki">
+    <div class="tytul"><span class="num">4</span><h2>Jak łączy się ze sprzedażą warsztatów i webinarów</h2></div>
+    <p>To jedno miejsce, nie trzy osobne systemy. Różni się tylko to, kiedy klient dostaje dostęp:</p>
+    <table class="tabela">
+      <thead><tr><th>Co klient kupuje</th><th>Co się dzieje po zapłacie</th><th>Gdzie to widzi</th></tr></thead>
+      <tbody>
+        <tr><td>Warsztat (termin)</td><td>Miejsce zablokowane, nagranie i materiały wskakują po zjeździe</td><td>Moje warsztaty + Moje materiały</td></tr>
+        <tr><td>Webinar na żywo</td><td>Link do pokoju i nagranie po spotkaniu</td><td>Moje webinary na żywo</td></tr>
+        <tr><td>Nagranie / mp3</td><td>Dostęp natychmiast, o każdej porze</td><td>Moje materiały</td></tr>
+        <tr><td>Szkoła (edycja)</td><td>Materiały wgrywane po każdym module, reszta płatności w terminach</td><td>Szkoła + Zamówienia</td></tr>
+        <tr><td>Ustawienie indywidualne / psychoterapia</td><td>Termin i formularz przed sesją, bez sklepu</td><td>Zapisy (osobna ścieżka)</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:14px">Efekt: osoba, która kupiła jedno nagranie, jest w Pani bazie i przy kolejnym webinarze dostaje propozycję jako stały klient — dziś takiej bazy nie ma, bo sprzedaż kończy się na przelewie.</p>
+  </section>
+
+  <section id="technicznie">
+    <div class="tytul"><span class="num">5</span><h2>Jak to zrobić na Pani obecnej stronie</h2></div>
+    <p>Strona już stoi na WordPressie i ma koszyk, więc nie budujemy od zera — dokładamy warstwę sprzedaży cyfrowej:</p>
+    <ul class="lista tak" style="font-size:15px">
+      <li><b>Sklep</b> — produkty wirtualne z plikami (nagranie, mp3, PDF) i produkt „webinar na żywo” z terminem.</li>
+      <li><b>Konto klienta</b> — zakładka „Moje materiały”, dostęp podpięty do zamówienia, nie do maila.</li>
+      <li><b>Płatności</b> — szybkie przelewy i BLIK (to, czym Pani klient płaci najczęściej) + karta. Pieniądze idą na Pani konto, nie przez pośrednika.</li>
+      <li><b>Dostęp</b> — nowe nagrania Pani wgrywa i podpina do produktu jednym kliknięciem, bez informatyka.</li>
+      <li><b>RODO i regulamin</b> — zgody przy zapisie, bezpieczne linki do plików, faktury automatyczne.</li>
+    </ul>
+    <p style="margin-top:14px">Ta część wchodzi w zakres, który wyceniłem w ofercie na drugie zlecenie (przebudowa strony ze szkoleniami) — 4500 zł. Nie doliczam osobno za sam sklep ani za panel, bo i tak są częścią tej samej przebudowy.</p>
+    <div class="cta-rzad">
+      <a class="bt" href="#fragment">Wróć do przepisanego fragmentu</a>
+    </div>
+  </section>
+
+  <div class="stopka">
+    <p>Makieta przygotowana dla ustawieniasystemowe.com — treść merytoryczna z obecnej strony, struktura i teksty sprzedażowe nowe. Ceny i nazwy produktów przykładowe. Strona poglądowa, <span style="color:var(--miedz)">noindex</span>.</p>
+  </div>
+
+</div>
+</main>
+</body>
+</html>
