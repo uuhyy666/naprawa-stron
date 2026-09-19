@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Utrzymanie terenów zieleni — pielęgnacja, nawadnianie, wycinka | Zielony Horyzont</title>
+<meta name="description" content="Kompleksowe utrzymanie terenów zieleni dla firm i wspólnot: pielęgnacja trawników, cięcie żywopłotów, systemy nawadniania, wycinka drzew, odbiór biomasy. Wycena w 24 h.">
+<style>
+  :root{
+    --tlo:#f7f9f5;
+    --tlo2:#e6ede1;
+    --tekst:#1f2a1c;
+    --szary:#5f6b58;
+    --akcent:#3f7d3a;
+    --akcent2:#8fbf6a;
+    --bialy:#ffffff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',system-ui,-apple-system,Arial,sans-serif;background:var(--tlo);color:var(--tekst);line-height:1.65;font-size:16px}
+  .szer{max-width:1080px;margin:0 auto;padding:0 24px}
+  .baner-makiety{background:var(--akcent);color:#fff;text-align:center;font-size:.74rem;padding:10px 16px;letter-spacing:.04em}
+  header{display:flex;justify-content:space-between;align-items:center;padding:26px 0;flex-wrap:wrap;gap:12px}
+  .logo{font-size:1.2rem;font-weight:700;letter-spacing:.02em}
+  .logo span{color:var(--akcent)}
+  nav a{color:var(--szary);text-decoration:none;margin-left:24px;font-size:.88rem}
+  nav a:hover{color:var(--akcent)}
+  .okruszki{font-size:.78rem;color:var(--szary);padding:12px 0 0}
+  .okruszki a{color:var(--szary);text-decoration:none}
+  .okruszki a:hover{color:var(--akcent)}
+  .hero{padding:36px 0 0;display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:end}
+  .hero h1{font-weight:700;font-size:clamp(1.7rem,3.6vw,2.6rem);line-height:1.2}
+  .hero p.lead{margin-top:18px;color:var(--szary);max-width:34rem;font-size:1.02rem}
+  .pasek-zaufania{display:flex;gap:26px;margin-top:26px;flex-wrap:wrap;font-size:.82rem;color:var(--szary)}
+  .pasek-zaufania b{color:var(--tekst);display:block;font-size:1.3rem}
+  .hero-foto{aspect-ratio:4/3;background:linear-gradient(150deg,var(--tlo2),#cfe0c4);border-radius:6px;position:relative;overflow:hidden}
+  .hero-foto::after{content:"Trawnik po renowacji — osiedle, 1 800 m²";position:absolute;bottom:12px;left:16px;font-size:.68rem;letter-spacing:.06em;color:#3d5138;text-transform:uppercase}
+  section{padding:56px 0 0}
+  h2{font-weight:700;font-size:clamp(1.3rem,2.4vw,1.75rem);line-height:1.3;margin-bottom:10px}
+  h3{font-weight:700;font-size:1.05rem;margin-bottom:8px}
+  .pod{color:var(--szary);max-width:44rem;margin-bottom:28px}
+  .uslugi{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .karta{background:var(--bialy);border:1px solid var(--tlo2);border-radius:6px;padding:24px 22px}
+  .karta p{color:var(--szary);font-size:.88rem}
+  .karta .link-wew{display:inline-block;margin-top:14px;font-size:.82rem;color:var(--akcent);text-decoration:none;font-weight:600}
+  .karta .link-wew:hover{text-decoration:underline}
+  .cykl{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:8px}
+  .cykl div{background:var(--tlo2);border-radius:6px;padding:18px;font-size:.85rem}
+  .cykl b{display:block;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--akcent);margin-bottom:6px}
+  .galeria{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+  figure{margin:0;background:var(--tlo2);border-radius:6px;overflow:hidden;position:relative}
+  figure img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;opacity:0;transition:opacity .4s ease}
+  figure img.wczytane{opacity:1}
+  figure figcaption{position:absolute;bottom:0;left:0;right:0;padding:20px 12px 9px;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:#2f4029;background:linear-gradient(to top,rgba(255,255,255,.94),rgba(255,255,255,0))}
+  .faq details{background:var(--bialy);border:1px solid var(--tlo2);border-radius:6px;padding:16px 20px;margin-bottom:10px}
+  .faq summary{cursor:pointer;font-weight:600;font-size:.95rem}
+  .faq p{color:var(--szary);font-size:.88rem;margin-top:10px}
+  .seo-panel{background:#1f2a1c;color:#dbe7d4;border-radius:8px;padding:30px 28px;margin-top:56px}
+  .seo-panel h2{color:#fff;font-size:1.2rem;margin-bottom:6px}
+  .seo-panel p.wstep{color:#a8bc9f;font-size:.86rem;margin-bottom:22px}
+  .seo-lista{display:grid;grid-template-columns:1fr 1fr;gap:14px 28px;font-size:.82rem}
+  .seo-lista div{border-left:2px solid var(--akcent2);padding-left:14px}
+  .seo-lista b{display:block;color:#fff;font-size:.78rem;letter-spacing:.04em}
+  .seo-lista span{color:#a8bc9f;font-family:Consolas,monospace;font-size:.78rem;word-break:break-word}
+  .cta{background:var(--tlo2);text-align:center;margin-top:64px;padding:56px 24px;border-radius:8px}
+  .cta h2{margin-bottom:12px}
+  .cta p{color:var(--szary);max-width:36rem;margin:0 auto 26px}
+  form{display:flex;gap:12px;max-width:540px;margin:0 auto;flex-wrap:wrap}
+  input,button.wyslij{font-family:inherit;font-size:.9rem;padding:14px 18px;border-radius:6px;border:1px solid #cdd9c6}
+  input{flex:1;min-width:200px;background:var(--bialy)}
+  button.wyslij{background:var(--akcent);color:#fff;border:none;cursor:pointer;font-weight:600}
+  button.wyslij:hover{background:#336530}
+  footer{padding:44px 0 30px;margin-top:56px;border-top:1px solid var(--tlo2);font-size:.8rem;color:var(--szary)}
+  .stopka-linki{display:flex;gap:22px;flex-wrap:wrap;margin-bottom:18px}
+  .stopka-linki a{color:var(--szary);text-decoration:none}
+  .stopka-linki a:hover{color:var(--akcent)}
+  @media(max-width:900px){
+    .hero{grid-template-columns:1fr;gap:28px;align-items:start}
+    .uslugi,.galeria{grid-template-columns:1fr 1fr}
+    .cykl{grid-template-columns:1fr 1fr}
+    .seo-lista{grid-template-columns:1fr}
+  }
+  @media(max-width:560px){
+    .uslugi,.galeria,.cykl{grid-template-columns:1fr}
+    nav a{margin-left:0;margin-right:18px;display:inline-block;font-size:.82rem}
+    nav{width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="baner-makiety">Makieta poglądowa — wzorcowa podstrona usługowa dla firmy utrzymującej tereny. Zdjęcia zastępcze, treści przykładowe.</div>
+
+<div class="szer">
+  <header>
+    <div class="logo">Zielony<span>Horyzont</span></div>
+    <nav>
+      <a href="#uslugi">Usługi</a>
+      <a href="#cykl">Cykl pielęgnacji</a>
+      <a href="#realizacje">Realizacje</a>
+      <a href="#faq">Pytania</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+  </header>
+
+  <div class="okruszki"><a href="#">Strona główna</a> &nbsp;›&nbsp; <a href="#uslugi">Usługi</a> &nbsp;›&nbsp; Utrzymanie terenów zieleni</div>
+
+  <section class="hero">
+    <div>
+      <h1>Utrzymanie terenów zieleni dla firm, wspólnot i obiektów</h1>
+      <p class="lead">Przejmujemy opiekę nad terenem w stałym cyklu — koszenie, cięcie, nawożenie, nawadnianie i wycinka. Jeden opiekun, jeden harmonogram, jedna faktura miesięczna.</p>
+      <div class="pasek-zaufania">
+        <div><b>180 ha</b> pod stałą opieką</div>
+        <div><b>24 h</b> na wycenę</div>
+        <div><b>7 dni</b> na interwencję</div>
+      </div>
+    </div>
+    <div class="hero-foto" role="img" aria-label="Trawnik po renowacji na terenie osiedla"></div>
+  </section>
+
+  <section id="uslugi">
+    <h2>Co wchodzi w stałą opiekę nad terenem</h2>
+    <p class="pod">Zakres dobieramy do wielkości działki i sposobu jej użytkowania. Poniżej cztery najczęściej zamawiane pakiety — każdy można rozszerzyć o prace sezonowe.</p>
+    <div class="uslugi">
+      <div class="karta">
+        <h3>Pielęgnacja trawników</h3>
+        <p>Koszenie z odbiorem pokosu, wertykulacja, aeracja, nawożenie i dosiewanie ubytków. W sezonie od marca do listopada.</p>
+        <a class="link-wew" href="#">Zobacz zakres pielęgnacji trawników →</a>
+      </div>
+      <div class="karta">
+        <h3>Cięcie żywopłotów i krzewów</h3>
+        <p>Formowanie żywopłotów, cięcie sanitarne i prześwietlające, wywóz gałęzi. Terminy dobrane do gatunku, żeby nie zaszkodzić roślinom.</p>
+        <a class="link-wew" href="#">Zobacz zakres cięcia żywopłotów →</a>
+      </div>
+      <div class="karta">
+        <h3>Nawadnianie i odwodnienie</h3>
+        <p>Projekt i montaż systemów nawadniania, przeglądy wiosenne, zimowanie instalacji, udrażnianie drenażu.</p>
+        <a class="link-wew" href="#">Zobacz zakres systemów nawadniania →</a>
+      </div>
+      <div class="karta">
+        <h3>Wycinka i pielęgnacja drzew</h3>
+        <p>Cięcia techniczne, usuwanie posuszu i wiatrołomów, wycinka z podnośnika, frezowanie pni. Prace z uprawnieniami do pracy na wysokości.</p>
+        <a class="link-wew" href="#">Zobacz zakres prac arborystycznych →</a>
+      </div>
+      <div class="karta">
+        <h3>Prace sezonowe</h3>
+        <p>Wiosenne porządki, grabienie liści, przygotowanie terenu do zimy, posypywanie ciągów pieszych, utrzymanie rabat.</p>
+        <a class="link-wew" href="#">Zobacz prace sezonowe →</a>
+      </div>
+      <div class="karta">
+        <h3>Utrzymanie całoroczne (pakiet)</h3>
+        <p>Wszystkie powyższe w jednym harmonogramie z przypisanym opiekunem terenu i miesięcznym raportem zdjęciowym.</p>
+        <a class="link-wew" href="#">Zobacz pakiet całoroczny →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="cykl">
+    <h2>Jak wygląda rok pod naszą opieką</h2>
+    <p class="pod">Harmonogram ustalamy przed startem i trzymamy się go — bez czekania, aż klient zauważy problem.</p>
+    <div class="cykl">
+      <div><b>Marzec – kwiecień</b>Wiosenne porządki, pierwsze koszenie, wertykulacja, przegląd nawadniania.</div>
+      <div><b>Maj – sierpień</b>Koszenie co 7–14 dni, cięcie żywopłotów, nawożenie, kontrola nawodnienia.</div>
+      <div><b>Wrzesień – październik</b>Aeracja, dosiewanie, grabienie liści, cięcia sanitarne drzew.</div>
+      <div><b>Listopad – luty</b>Zimowanie instalacji, usuwanie wiatrołomów, odśnieżanie i posypywanie ciągów.</div>
+    </div>
+  </section>
+
+  <section id="realizacje">
+    <h2>Realizacje</h2>
+    <p class="pod">Trzy ostatnie tereny objęte stałą opieką. Zdjęcia wczytywane leniwie — strona nie traci szybkości na telefonie.</p>
+    <div class="galeria" id="galeria">
+      <figure><img data-src="1" alt="Trawnik po renowacji na terenie osiedla mieszkaniowego — 1 800 m²" loading="lazy"><figcaption>Osiedle · 1 800 m²</figcaption></figure>
+      <figure><img data-src="2" alt="Formowany żywopłot grabowy wzdłuż ogrodzenia zakładu produkcyjnego" loading="lazy"><figcaption>Zakład produkcyjny</figcaption></figure>
+      <figure><img data-src="3" alt="System nawadniania liniowego na terenie zielonym przy biurowcu" loading="lazy"><figcaption>Biurowiec · nawadnianie</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="faq" id="faq">
+    <h2>Najczęstsze pytania</h2>
+    <p class="pod">Sekcja pytań odpowiada na to, o co klienci pytają najczęściej — i daje stronie dodatkowe miejsce w wynikach wyszukiwania.</p>
+    <details><summary>Czy podpisujecie umowę na cały sezon?</summary><p>Tak. Standardowo na 12 miesięcy z miesięcznym okresem wypowiedzenia, żeby prace zimowe i wiosenne były po jednej stronie.</p></details>
+    <details><summary>Czy wywozicie pokos i gałęzie?</summary><p>Tak, odbiór i utylizacja biomasy są w cenie pakietu. Przy jednorazowych wycinkach rozliczamy wywóz osobno, zawsze podany z góry.</p></details>
+    <details><summary>W jakim czasie przyjedziecie na interwencję?</summary><p>Do 7 dni roboczych w standardzie, do 48 godzin przy zgłoszeniu wiatrołomu lub uszkodzenia zagrażającego bezpieczeństwu.</p></details>
+  </section>
+
+  <div class="seo-panel" id="seo">
+    <h2>Co dokładnie jest zrobione na tej podstronie pod SEO</h2>
+    <p class="wstep">To jest lista Państwa wymagań, klikalna i sprawdzalna w źródle strony. Każda z dziewięciu podstron usługowych byłaby przygotowana według tego samego wzorca.</p>
+    <div class="seo-lista">
+      <div><b>Title</b><span>Utrzymanie terenów zieleni — pielęgnacja, nawadnianie, wycinka | Zielony Horyzont</span></div>
+      <div><b>Meta Description</b><span>Kompleksowe utrzymanie terenów zieleni dla firm i wspólnot: pielęgnacja trawników, cięcie żywopłotów, nawadnianie, wycinka drzew. Wycena w 24 h.</span></div>
+      <div><b>Jedno H1 na stronę</b><span>&lt;h1&gt;Utrzymanie terenów zieleni dla firm, wspólnot i obiektów&lt;/h1&gt;</span></div>
+      <div><b>Struktura H2 / H3</b><span>H2 dla sekcji (zakres, cykl, FAQ), H3 dla pojedynczej usługi</span></div>
+      <div><b>Przyjazny adres URL</b><span>/uslugi/utrzymanie-terenow-zieleni/</span></div>
+      <div><b>ALT zdjęć</b><span>opisowy, z lokalizacją i miarą — nie „IMG_2031.jpg”</span></div>
+      <div><b>Linkowanie wewnętrzne</b><span>każda usługa linkuje do swojej podstrony i z powrotem do kategorii</span></div>
+      <div><b>Wersja mobilna</b><span>jedna kolumna i menu bez rozwijania poniżej 560 px</span></div>
+      <div><b>Szybkość</b><span>zdjęcia z lazy loading, brak zewnętrznych bibliotek, strona poniżej 40 kB</span></div>
+      <div><b>Dane strukturalne</b><span>FAQPage (schema.org) — sekcja pytań może pokazać się w Google</span></div>
+    </div>
+  </div>
+
+  <div class="cta" id="kontakt">
+    <h2>Zamów wycenę utrzymania terenu</h2>
+    <p>Odpisz na wiadomość w zleceniu albo wyślij adres terenu — wycenę z harmonogramem przygotuję w 24 godziny.</p>
+    <form onsubmit="event.preventDefault();this.querySelector('button').textContent='Wysłane (makieta)'">
+      <input type="email" placeholder="Adres e-mail" aria-label="Adres e-mail" required>
+      <button class="wyslij" type="submit">Poproś o wycenę</button>
+    </form>
+  </div>
+
+  <footer>
+    <div class="stopka-linki">
+      <a href="#uslugi">Utrzymanie terenów zieleni</a>
+      <a href="#uslugi">Pielęgnacja trawników</a>
+      <a href="#uslugi">Cięcie żywopłotów</a>
+      <a href="#uslugi">Systemy nawadniania</a>
+      <a href="#uslugi">Wycinka drzew</a>
+      <a href="#uslugi">Prace sezonowe</a>
+    </div>
+    Makieta poglądowa przygotowana dla zlecenia „Strona internetowa” na Useme. Nazwa firmy, treści i zdjęcia są przykładowe.
+  </footer>
+</div>
+
+<script>
+  // Lazy loading zdjęć zastępczych (gradienty SVG zamiast plików) — pokazuje mechanizm,
+  // który w wersji produkcyjnej działa na prawdziwych zdjęciach klienta.
+  const kolory = [['#cfe0c4','#8fbf6a'],['#bfd8b5','#669c5c'],['#d8e8cd','#5c8f52']];
+  const obserw = new IntersectionObserver((wpisy) => {
+    wpisy.forEach((w) => {
+      if (!w.isIntersecting) return;
+      const img = w.target;
+      const i = Number(img.dataset.src) - 1;
+      const [a, b] = kolory[i % kolory.length];
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="400" height="300" fill="url(#g)"/></svg>`;
+      img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+      img.classList.add('wczytane');
+      obserw.unobserve(img);
+    });
+  }, { rootMargin: '120px' });
+  document.querySelectorAll('#galeria img').forEach((img) => obserw.observe(img));
+</script>
+</body>
+</html>
