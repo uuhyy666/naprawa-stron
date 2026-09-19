@@ -81,8 +81,18 @@
   }
   @media(max-width:560px){
     .uslugi,.galeria,.cykl{grid-template-columns:1fr}
-    nav a{margin-left:0;margin-right:18px;display:inline-block;font-size:.82rem}
-    nav{width:100%}
+    nav a{margin-left:0;margin-right:8px;display:inline-flex;align-items:center;font-size:.82rem}
+    nav{width:100%;flex-wrap:wrap}
+  }
+  /* Elementy dotykowe: minimum 44 px wysokości na telefonie i tablecie */
+  @media(max-width:900px){
+    nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 8px}
+    .okruszki a{display:inline-flex;align-items:center;min-height:44px}
+    .karta .link-wew{display:inline-flex;align-items:center;min-height:44px;margin-top:6px}
+    .stopka-linki{gap:0 22px}
+    .stopka-linki a{display:inline-flex;align-items:center;min-height:44px}
+    .faq summary{min-height:44px;display:flex;align-items:center}
+    .pasek-zaufania div{min-height:44px}
   }
 </style>
 </head>
