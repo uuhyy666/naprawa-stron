@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stópka mailowa — wariant 2 z 7 (zespołowy: imię, stanowisko, telefon)</title>
+<style>
+  body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background: #eef0f3; margin: 0; padding: 24px 12px; }
+  .opakowanie { max-width: 680px; margin: 0 auto; }
+  .info { background: #fff; border: 1px solid #e2e4e8; border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; font-size: 14px; color: #333; line-height: 1.55; }
+  .info h1 { font-size: 18px; margin: 0 0 8px; }
+  .kropka { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; }
+  .podpis { font-size: 12px; color: #6b7480; margin: 6px 0 22px; }
+</style>
+</head>
+<body>
+<div class="opakowanie">
+  <div class="info">
+    <h1>Wariant 2 z 7 — stópka <strong>zespołowa</strong> (imię, stanowisko i telefon podmieniane)</h1>
+    <p><span class="kropka" style="background:#2e7d32"></span>Ten sam szablon obsługuje <strong>cały zespół</strong>: podmienia się trzy pola — imię i nazwisko, stanowisko, numer telefonu. Reszta (firma, adres, kolory, prawa stopki) zostaje bez zmian. Poniżej dwa numery z <strong>jednego</strong> pliku, żeby było widać, że to działa.</p>
+    <p><span class="kropka" style="background:#2e7d32"></span>Układ poziomy, kolorowy pas nagłówka, czcionki <strong>Tahoma / Arial</strong> — czyli inny charakter niż wariant 1 (Georgia, układ pionowy). Nadal: wyłącznie tabele i styl inline, zero flexbox i zero zewnętrznego arkusza, wymiary grafik wpisane w atrybuty (Outlook tego wymaga).</p>
+    <p style="margin-bottom:0"><span class="kropka" style="background:#f2a600"></span>W wersji produkcyjnej: Państwa logo, docelowa paleta, prawdziwe dane osób i adresy grafik z Państwa serwera.</p>
+  </div>
+
+  <p class="podpis">Osoba 1 — Anna Kowalska, Project Manager:</p>
+
+  <!-- ====== START STÓPKI (kod produkcyjny — wszystko inline) ====== -->
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="width:600px; max-width:100%; margin:0 auto; background:#ffffff; font-family:Tahoma, Arial, sans-serif;">
+    <tr>
+      <td style="background:#1a3a5c; padding:14px 24px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+          <tr>
+            <td width="60%" style="font-family:Tahoma, Arial, sans-serif; font-size:15px; font-weight:bold; color:#ffffff; letter-spacing:0.3px;">FIRMA PRZYKŁADOWA</td>
+            <td width="40%" align="right" style="font-family:Tahoma, Arial, sans-serif; font-size:11px; color:#b9c9dc;">Sp. z o.o.</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:18px 24px 16px 24px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+          <tr>
+            <td width="76" style="vertical-align:top; padding-right:16px;">
+              <img src="https://uuhyy666.github.io/naprawa-stron/stopka-awatar.png" alt="" width="76" height="76" style="display:block; width:76px; height:76px; border-radius:4px;">
+            </td>
+            <td style="vertical-align:top; font-family:Tahoma, Arial, sans-serif;">
+              <div style="font-size:17px; font-weight:bold; color:#1a3a5c; padding-bottom:2px;">Anna Kowalska</div>
+              <div style="font-size:12px; color:#6b7480; padding-bottom:10px;">Project Manager</div>
+              <div style="font-size:12px; color:#6b7480; line-height:1.7;">
+                <a href="tel:+48600100200" style="color:#1a3a5c; text-decoration:none; font-weight:bold;">+48 600 100 200</a><br>
+                <a href="mailto:anna@firma-przykladowa.pl" style="color:#1a3a5c; text-decoration:none;">anna@firma-przykladowa.pl</a>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:0 24px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-top:1px solid #e2e4e8;">
+          <tr>
+            <td style="padding:12px 0;" width="50%" style="font-family:Tahoma, Arial, sans-serif; font-size:11px; color:#6b7480;">
+              <a href="https://www.firma-przykladowa.pl" style="color:#1a3a5c; text-decoration:none; font-weight:bold;">www.firma-przykladowa.pl</a>
+            </td>
+            <td align="right" style="padding:10px 0;" width="50%">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="right">
+                <tr>
+                  <td style="padding-left:8px;"><a href="https://www.linkedin.com"><img src="https://uuhyy666.github.io/naprawa-stron/stopka-ikona-li.png" alt="LinkedIn" width="22" height="22" style="display:block; width:22px; height:22px;"></a></td>
+                  <td style="padding-left:8px;"><a href="https://www.facebook.com"><img src="https://uuhyy666.github.io/naprawa-stron/stopka-ikona-fb.png" alt="Facebook" width="22" height="22" style="display:block; width:22px; height:22px;"></a></td>
+                  <td style="padding-left:8px;"><a href="https://www.instagram.com"><img src="https://uuhyy666.github.io/naprawa-stron/stopka-ikona-ig.png" alt="Instagram" width="22" height="22" style="display:block; width:22px; height:22px;"></a></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="background:#f4f5f7; padding:12px 24px; font-family:Tahoma, Arial, sans-serif; font-size:10px; color:#9aa3ad; line-height:1.55;">
+        Firma Przykładowa Sp. z o.o. · ul. Przykładowa 1, 00-001 Warszawa · NIP 000-000-00-00<br>
+        Ta wiadomość zawiera informacje przeznaczone wyłącznie dla adresata. Jeśli otrzymałeś ją pomyłkowo, prosimy o zwrot do nadawcy.
+      </td>
+    </tr>
+  </table>
+  <!-- ====== KONIEC STÓPKI ====== -->
+
+  <p class="podpis" style="margin-top:26px;">Osoba 2 — ten sam plik, podmienione trzy pola (imię, stanowisko, telefon):</p>
+
+  <!-- ====== START STÓPKI — ta sama, tylko trzy pola inne ====== -->
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="width:600px; max-width:100%; margin:0 auto; background:#ffffff; font-family:Tahoma, Arial, sans-serif;">
+    <tr>
+      <td style="background:#1a3a5c; padding:14px 24px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+          <tr>
+            <td width="60%" style="font-family:Tahoma, Arial, sans-serif; font-size:15px; font-weight:bold; color:#ffffff; letter-spacing:0.3px;">FIRMA PRZYKŁADOWA</td>
+            <td width="40%" align="right" style="font-family:Tahoma, Arial, sans-serif; font-size:11px; color:#b9c9dc;">Sp. z o.o.</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:18px 24px 16px 24px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+          <tr>
+            <td width="76" style="vertical-align:top; padding-right:16px;">
+              <img src="https://uuhyy666.github.io/naprawa-stron/stopka-awatar.png" alt="" width="76" height="76" style="display:block; width:76px; height:76px; border-radius:4px;">
+            </td>
+            <td style="vertical-align:top; font-family:Tahoma, Arial, sans-serif;">
+              <div style="font-size:17px; font-weight:bold; color:#1a3a5c; padding-bottom:2px;">Piotr Nowak</div>
+              <div style="font-size:12px; color:#6b7480; padding-bottom:10px;">Dział sprzedaży</div>
+              <div style="font-size:12px; color:#6b7480; line-height:1.7;">
+                <a href="tel:+48600900900" style="color:#1a3a5c; text-decoration:none; font-weight:bold;">+48 600 900 900</a><br>
+                <a href="mailto:piotr@firma-przykladowa.pl" style="color:#1a3a5c; text-decoration:none;">piotr@firma-przykladowa.pl</a>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:0 24px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-top:1px solid #e2e4e8;">
+          <tr>
+            <td style="padding:12px 0;" width="50%" style="font-family:Tahoma, Arial, sans-serif; font-size:11px; color:#6b7480;">
+              <a href="https://www.firma-przykladowa.pl" style="color:#1a3a5c; text-decoration:none; font-weight:bold;">www.firma-przykladowa.pl</a>
+            </td>
+            <td align="right" style="padding:10px 0;" width="50%">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="right">
+                <tr>
+                  <td style="padding-left:8px;"><a href="https://www.linkedin.com"><img src="https://uuhyy666.github.io/naprawa-stron/stopka-ikona-li.png" alt="LinkedIn" width="22" height="22" style="display:block; width:22px; height:22px;"></a></td>
+                  <td style="padding-left:8px;"><a href="https://www.facebook.com"><img src="https://uuhyy666.github.io/naprawa-stron/stopka-ikona-fb.png" alt="Facebook" width="22" height="22" style="display:block; width:22px; height:22px;"></a></td>
+                  <td style="padding-left:8px;"><a href="https://www.instagram.com"><img src="https://uuhyy666.github.io/naprawa-stron/stopka-ikona-ig.png" alt="Instagram" width="22" height="22" style="display:block; width:22px; height:22px;"></a></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="background:#f4f5f7; padding:12px 24px; font-family:Tahoma, Arial, sans-serif; font-size:10px; color:#9aa3ad; line-height:1.55;">
+        Firma Przykładowa Sp. z o.o. · ul. Przykładowa 1, 00-001 Warszawa · NIP 000-000-00-00<br>
+        Ta wiadomość zawiera informacje przeznaczone wyłącznie dla adresata. Jeśli otrzymałeś ją pomyłkowo, prosimy o zwrot do nadawcy.
+      </td>
+    </tr>
+  </table>
+  <!-- ====== KONIEC STÓPKI ====== -->
+
+</div>
+</body>
+</html>
