@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Naprawa i przyspieszenie strony internetowej — nawet dziś</title>
-<meta name="description" content="Naprawiam błędy, brak wersji mobilnej, certyfikat SSL i wolne strony małych firm. Płatność po wykonaniu. Realizacja często tego samego dnia.">
+<meta name="description" content="Naprawiam błędy, brak wersji mobilnej, certyfikat SSL i wolne strony małych firm. Darmowa diagnoza i wycena, kontakt przez Useme.">
 <style>
 :root{--bg:#0f1115;--card:#181b22;--line:#2a2f3a;--txt:#e8eaf0;--mut:#9aa3b5;--acc:#4f8cff;--acc-btn:#2f6fe0;--acc2:#7aa7ff;--ok:#3ecf8e;--warn:#ffb454}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -39,31 +39,6 @@ a{color:var(--acc2)}
 .card h4 a{text-decoration:none}
 .card h4 a:hover,.card h4 a:focus-visible{text-decoration:underline}
 footer{margin-top:40px;color:var(--mut);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
-/* ---- chat ---- */
-#chatbox{position:fixed;bottom:14px;right:14px;left:14px;max-width:400px;margin-left:auto;z-index:99}
-#chat{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.55);display:none;flex-direction:column;overflow:hidden}
-#chat.open{display:flex}
-#chat header{padding:11px 14px;border-bottom:1px solid var(--line);font-weight:600;font-size:14.5px;display:flex;align-items:center;gap:8px}
-#chat header .dot{width:9px;height:9px;border-radius:50%;background:var(--ok);flex:none}
-#chat header small{color:var(--mut);font-weight:400;margin-left:auto;font-size:12px}
-#msgs{height:min(300px,45vh);overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
-.m{max-width:88%;padding:8px 12px;border-radius:12px;font-size:14.5px;white-space:pre-wrap;word-break:break-word;line-height:1.45}
-.m.client{align-self:flex-end;background:var(--acc-btn);color:#fff;border-bottom-right-radius:4px}
-.m.dev{align-self:flex-start;background:#22262f;border-bottom-left-radius:4px}
-.m .who{display:block;font-size:11px;color:var(--mut);margin-bottom:2px}
-/* #dce9ff na niebieskim tle dawało kontrast 2,63:1 przy wymaganych 4,5:1 — biel na --acc-btn daje 4,70:1 */
-.m.client .who{color:#fff}
-#chatform{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);align-items:center}
-#chattext{flex:1;min-width:0;background:#10131a;border:1px solid var(--line);color:var(--txt);border-radius:22px;padding:10px 15px;font-size:16px}
-#chattext:focus{outline:1.5px solid var(--acc)}
-#sendbtn{background:var(--acc);border:none;color:#fff;border-radius:50%;width:42px;height:42px;font-size:18px;cursor:pointer;flex:none}
-#chatopen{position:absolute;bottom:0;right:0;background:var(--acc-btn);color:#fff;border-radius:14px;padding:13px 18px;font-weight:700;font-size:15px;cursor:pointer;border:none;box-shadow:0 8px 24px rgba(79,140,255,.4)}
-#chatopen.hidden,#chatbox.open + #chatopen{display:none}
-#namebar{display:none;padding:12px;border-bottom:1px solid var(--line);background:#141821}
-#namebar.show{display:flex;gap:8px;align-items:center}
-#nameinput{flex:1;min-width:0;background:#10131a;border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:9px 12px;font-size:15px}
-#namesave{background:var(--ok);border:none;color:#06281a;border-radius:10px;padding:9px 14px;font-weight:700;cursor:pointer}
-#editname{color:var(--acc2);font-size:12.5px;cursor:pointer;text-decoration:underline}
 .skip{position:absolute;left:-9999px;top:0;background:#fff;color:#0f1115;padding:10px 16px;border-radius:0 0 8px 0;font-weight:700;z-index:9999}
 .skip:focus{left:0}
 </style>
@@ -74,12 +49,12 @@ footer{margin-top:40px;color:var(--mut);font-size:13px;border-top:1px solid var(
 <header>
 <div class="kicker">Usługa dla małych firm</div>
 <h1>Twoja strona działa wolno albo się sypie? <em>Naprawię to — często jeszcze dziś.</em></h1>
-<p class="sub">Jestem programistą. Diagnozuję i naprawiam strony małych firm: błędy, wolne ładowanie, brak wersji mobilnej, certyfikaty SSL, formularze. <b>Diagnoza i wycena są darmowe</b>, a płatność następuje dopiero po wykonaniu i Twojej akceptacji.</p>
-<button class="cta" id="opencta">Napisz o problemie — odpowiadam w kilka minut</button>
+<p class="sub">Jestem programistą. Diagnozuję i naprawiam strony małych firm: błędy, wolne ładowanie, brak wersji mobilnej, certyfikaty SSL, formularze. <b>Diagnoza i wycena są darmowe</b>. Zakres, termin i sposób rozliczenia ustalamy przed pracą.</p>
+<a class="cta" href="https://useme.com/pl/roles/contractor/bartekdev-pl,695198/" target="_blank" rel="noopener">Napisz o problemie przez Useme</a>
 <div class="badges">
-<span class="badge"><b>✔</b> płatność po wykonaniu</span>
-<span class="badge"><b>✔</b> wycena w ~15 minut</span>
-<span class="badge"><b>✔</b> praca na kopii — zero ryzyka</span>
+<span class="badge"><b>✔</b> jasne warunki przed pracą</span>
+<span class="badge"><b>✔</b> darmowa wycena</span>
+<span class="badge"><b>✔</b> praca na kopii, gdy to możliwe</span>
 <span class="badge"><b>✔</b> stała cena od 60 zł</span>
 </div>
 </header>
@@ -97,14 +72,14 @@ footer{margin-top:40px;color:var(--mut);font-size:13px;border-top:1px solid var(
 
 <h2>Jak to działa?</h2>
 <div class="steps">
-<div class="step">Piszesz na czacie, co się dzieje (albo wklejasz adres strony) — bez zobowiązań.</div>
-<div class="step">Sprawdzam problem i dostajesz konkretną wycenę oraz termin — zwykle w kilkanaście minut.</div>
-<div class="step">Naprawiam na kopii strony i pokazuję efekt. Płacisz przelewem dopiero, gdy wszystko działa.</div>
+<div class="step">Piszesz przez Useme, co się dzieje (albo wklejasz adres strony) — bez zobowiązań.</div>
+<div class="step">Sprawdzam problem i dostajesz konkretną wycenę oraz termin.</div>
+<div class="step">Naprawiam problem i pokazuję efekt. Rozliczenie ustalamy przed rozpoczęciem pracy.</div>
 </div>
 
 <h2>Rzeczy, które zbudowałem — wszystkie działają, można kliknąć</h2>
 <p class="lead-dowody">To nie są zrzuty ekranu ani opisy. Każdy link niżej otwiera działające narzędzie
-albo raport z prawdziwego pomiaru. Jeśli interesuje Cię coś podobnego, napisz na czacie — pokażę,
+albo raport z prawdziwego pomiaru. Jeśli interesuje Cię coś podobnego, napisz przez Useme — pokażę,
 jak to wygląda na Twoich danych.</p>
 
 <h3 class="grupa">Narzędzia diagnostyczne</h3>
@@ -163,112 +138,16 @@ jak to wygląda na Twoich danych.</p>
 
 <h2>Częste pytania</h2>
 <ul class="faq">
-<li><b>Czy to bezpieczne?</b> Pracuję na kopii strony, dostęp dostajesz po ustaleniu szczegółów, a płatność jest dopiero po wykonaniu usługi i Twojej akceptacji.</li>
+<li><b>Czy to bezpieczne?</b> Zakres i potrzebne dostępy ustalamy przed pracą. Gdy to możliwe, zmiany przygotowuję na kopii strony.</li>
 <li><b>Nie wiem, co jest nie tak.</b> Napisz po prostu „strona działa dziwnie” — sam zdiagnozuję problem. Diagnoza nic nie kosztuje.</li>
 <li><b>Faktura?</b> Tak — mogę wystawić fakturę przez platformę Useme albo przygotować dane do faktury B2B.</li>
 <li><b>Kto za tym stoi?</b> Programista z publicznymi projektami: <a href="https://github.com/uuhyy666" target="_blank" rel="noopener">github.com/uuhyy666</a>.</li>
 </ul>
 
 <footer>
-© 2026 — naprawa i pielęgnacja stron WWW dla małych firm. Czat: przycisk w prawym dolnym rogu · odpowiedź zwykle w kilka minut (8:00–22:00).
+© 2026 — naprawa i pielęgnacja stron WWW dla małych firm. <a href="https://useme.com/pl/roles/contractor/bartekdev-pl,695198/" target="_blank" rel="noopener">Kontakt przez Useme</a>.
 </footer>
 </main>
 
-<div id="chatbox">
-<div id="chat">
-<header><span class="dot"></span> Czat z programistą <small>odpowiedź w kilka minut</small></header>
-<div id="namebar">
-<input id="nameinput" aria-label="Twoje imię lub nazwa firmy" placeholder="Twoje imię lub nazwa firmy" maxlength="60">
-<button id="namesave">OK</button>
-</div>
-<div id="msgs"></div>
-<form id="chatform">
-<input id="chattext" aria-label="Treść wiadomości do programisty" placeholder="Np. strona ładuje się 10 sekund…" autocomplete="off" maxlength="1500">
-<button id="sendbtn" type="submit">➤</button>
-</form>
-</div>
-<button id="chatopen">💬 Napisz do programisty</button>
-</div>
-
-<script>
-var API = (location.origin.indexOf('trycloudflare.com') >= 0 || location.origin.indexOf('localhost') >= 0) ? '' : 'https://satisfy-restrict-startup-adsl.trycloudflare.com';
-// Przywracanie rozmowy po zmianie adresu tunelu: localStorage jest per-domena, więc po
-// zmianie URL stare rozmowy "znikają". Link z #cid=<id> przywraca konwersację na tej domenie.
-(function(){ var h = location.hash.match(/cid=([A-Za-z0-9_-]+)/); if (h) { localStorage.cid = h[1]; history.replaceState(null, '', location.pathname + location.search); } })();
-var cid = localStorage.cid || (localStorage.cid = 'c' + Math.random().toString(36).slice(2, 10));
-var myName = localStorage.chatName || '';
-var last = 0;
-var polNieUdalo = 0; // liczba nieudanych sondowań z rzędu — po 2 pokazujemy ostrzeżenie (raz)
-var msgsEl = document.getElementById('msgs');
-var chat = document.getElementById('chat');
-var openbtn = document.getElementById('chatopen');
-var namebar = document.getElementById('namebar');
-
-function add(who, text, name){
-  var d = document.createElement('div');
-  d.className = 'm ' + who;
-  if (who === 'client' && myName) { var w = document.createElement('span'); w.className='who'; w.textContent = myName; d.appendChild(w); }
-  // Adresy zamieniamy na klikalne linki, ale NIE przez innerHTML — treść wiadomości
-  // wstawiamy wyłącznie jako tekst, żeby nic z czatu nie mogło wykonać się na stronie.
-  String(text).split(/(https?:\/\/[^\s]+)/g).forEach(function(cz){
-    if (!cz) return;
-    if (/^https?:\/\//.test(cz)) {
-      var a = document.createElement('a');
-      a.href = cz; a.target = '_blank'; a.rel = 'noopener noreferrer';
-      a.textContent = cz; a.style.color = 'inherit';
-      d.appendChild(a);
-    } else {
-      d.appendChild(document.createTextNode(cz));
-    }
-  });
-  msgsEl.appendChild(d); msgsEl.scrollTop = msgsEl.scrollHeight;
-}
-function openChat(){
-  chat.classList.add('open'); openbtn.style.display = 'none';
-  if (!myName) namebar.classList.add('show'); else document.getElementById('chattext').focus();
-}
-openbtn.onclick = openChat;
-document.getElementById('opencta').onclick = openChat;
-document.getElementById('namesave').onclick = function(){
-  var v = document.getElementById('nameinput').value.trim();
-  if (!v) return;
-  myName = v; localStorage.chatName = v;
-  namebar.classList.remove('show');
-  fetch(API + '/chat/send', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({clientId: cid, text: '[dołączył do czatu jako: ' + v + ']', name: v, join:true})}).catch(function(){});
-  document.getElementById('chattext').focus();
-};
-document.getElementById('nameinput').addEventListener('keydown', function(e){ if (e.key === 'Enter') document.getElementById('namesave').click(); });
-
-add('dev', 'Cześć! Opisz krótko problem ze stroną (albo wklej jej adres), a odpowiem z darmową diagnozą i wyceną.');
-
-async function poll(){
-  try{
-    var r = await fetch(API + '/chat/poll?clientId=' + cid + '&after=' + last);
-    var d = await r.json();
-    polNieUdalo = 0;
-    (d.msgs || []).forEach(function(m){ add(m.who, m.text); last = m.t; });
-  }catch(e){
-    polNieUdalo++;
-    // Sam komunikat „czat nie działa" zostawia odwiedzającego bez wyjścia. Zawsze podajemy
-    // działającą drogę kontaktu — profil Useme, gdzie wiadomość na pewno dojdzie.
-    if (polNieUdalo === 2) add('dev', '⚠️ Nie mogę dosięgnąć serwera czatu. Żeby nie tracić Twojego czasu: napisz do mnie przez Useme — wiadomość na pewno dojdzie, a rozliczenie idzie tam przez platformę, więc płacisz dopiero po odbiorze pracy.\n\nhttps://useme.com/pl/roles/contractor/bartekdev-pl,695198/');
-  }
-}
-document.getElementById('chatform').addEventListener('submit', async function(e){
-  e.preventDefault();
-  var t = document.getElementById('chattext');
-  var text = t.value.trim();
-  if (!text) return;
-  if (!myName) { namebar.classList.add('show'); document.getElementById('nameinput').focus(); return; }
-  add('client', text); t.value = '';
-  try {
-    var r = await fetch(API + '/chat/send', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({clientId: cid, text: text, name: myName})});
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-  } catch(e) {
-    add('dev', '⚠️ Wiadomość NIE dotarła — serwer czatu nie odpowiada. Skopiuj swój tekst i wyślij go przez Useme, tam na pewno do mnie trafi:\n\nhttps://useme.com/pl/roles/contractor/bartekdev-pl,695198/');
-  }
-});
-setInterval(poll, 3000); poll();
-</script>
 </body>
 </html>
